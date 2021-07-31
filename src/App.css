@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+.Header{
+  width: 100%;
+  height:60px;
+  background-color: black;
+
+}
+.Header nav a{
+  font-size: large;
+  color: white;
+  text-decoration: none;
+  line-height: 55px;
+  vertical-align: middle;
+  margin-left:20px;
+}
