@@ -20,7 +20,7 @@ export class App extends Component {
     this.state = {
       loggedIn: false,
       user: {
-        id: null,
+        userID: null,
         firstname: null,
         lastname: null,
         gender: null,
@@ -40,11 +40,15 @@ export class App extends Component {
   loggedIn = (user) => {
     this.setState({
       loggedIn: true,
-      userID: user.id,
-      firstName: user.firstname,
-      lastName: user.lastname,
-      age: user.age,
-      gender: user.gender,
+      user: {
+        userID: user.id,
+        firstName: user.firstname,
+        lastName: user.lastname,
+        age: user.age,
+        gender: user.gender,
+        auth_id: user.auth_id,
+        path: `/profile/${this.state.userID}`,
+      },
     });
     console.log('user', user);
   };
