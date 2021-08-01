@@ -26,8 +26,8 @@ export class App extends Component {
         gender: null,
         age: null,
         auth_id: null,
-        path: '/profile',
       },
+      path: '/profile',
     };
   }
 
@@ -42,15 +42,18 @@ export class App extends Component {
       loggedIn: true,
       user: {
         userID: user.id,
-        firstName: user.firstname,
-        lastName: user.lastname,
+        firstname: user.firstname,
+        lastname: user.lastname,
         age: user.age,
         gender: user.gender,
         auth_id: user.auth_id,
-        path: `/profile/${this.state.userID}`,
       },
     });
-    console.log('user', user);
+    this.setState({
+      path: `/profile/${this.state.user.userID}`,
+    });
+
+    console.log('user', this.state.path);
   };
 
   logOut = () => {
@@ -77,7 +80,7 @@ export class App extends Component {
               <FeedPage logOut={this.logOut} />
             </Route>
             <Route exact path={this.state.path}>
-              <Profile />
+              <Profile user={this.state.user} />
             </Route>
           </Switch>
         </div>
