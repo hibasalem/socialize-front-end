@@ -1,6 +1,12 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-// import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import Login from './login';
+import Signup from './Signup';
+import LogOut from './LogOut';
+import io from 'socket.io-client';
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:5000/';
+const socket = io(SERVER_URL, { transports: ['websocket'] });
 
 export class Home extends Component {
     constructor(props) {
@@ -12,6 +18,14 @@ export class Home extends Component {
             lastName: '',
         }
     }
+
+    componentDidMount = () => {
+        if (this.props.loggedIn) {
+            socket.on('connect', () => {
+                socket.emit('test', { loggedIn: this.props.loggedIn });
+            })
+        }
+    }
     signup = (e) => {
         e.preventDefault();
         console.log('sent');
@@ -21,23 +35,20 @@ export class Home extends Component {
     render() {
         return (
             <div>
-                <form onSubmit={(e)=>{this.signup(e)}}>
-                    <label>enter Email:</label>
-                    <input type='text' placeholder='your Email' required onChange={(e) => {
-                        this.setState({ email: e.target.value })
-                        console.log(this.state.email);
-                    }} />
-                    <label>enter password:</label>
-                    <input type='password' placeholder='your Password' required onChange={(e) => {
-                        this.setState({ password: e.target.value });
-                        console.log(this.state.password);
-                    }} />
-                    <label>first name:</label>
-                    <input type='text' required onChange={(e) => { this.setState({ firstName: e.target.value }); console.log(this.state.firstName) }} />
-                    <label>last name:</label>
-                    <input type='text' required onChange={(e) => { this.setState({ lastName: e.target.value }); console.log(this.state.lastName) }} />
-                    <input type='submit' />
-                </form>
+                {this.props.loggedIn &&
+                    <LogOut logOut={this.props.logOut} />}
+
+                {!this.props.loggedIn &&
+                    <>
+                        <Login loggedIn={this.props.loggedIn}
+                            loggedInFunction={this.props.loggedInFunction}
+                        />
+                        <Signup />
+                    </>
+
+                }
+                {/* {this.state.loggedIn && <Redirect to="/main" />} */}
+
             </div>
         )
     }

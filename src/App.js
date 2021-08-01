@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home';
-import Login from './components/login';
-import Main from './components/Main';
 import Header from './components/Header';
-import { Redirect } from 'react-router-dom';
 
 // import cors from 'cors';
 
@@ -21,6 +18,7 @@ export class App extends Component {
     this.setState({
       loggedIn: true,
     });
+    console.log('called saeed mad');
   };
 
   logOut = () => {
@@ -36,16 +34,15 @@ export class App extends Component {
         <div>
           <Switch>
             <Route exact path="/">
-              <Home />
+              <Home 
+               logOut={this.logOut}
+               loggedIn={this.state.loggedIn}
+               loggedInFunction={this.loggedIn} />
             </Route>
-            <Route exact path="/login">
-              <Login loggedIn={this.loggedIn} />
-              {this.state.loggedIn && <Redirect to="/main" />}
-            </Route>
-            <Route exact path="/main">
-              <Main logOut={this.logOut} />
+            {/* <Route exact path="/main">
+              <Main />
               {!this.state.loggedIn && <Redirect to="/" />}
-            </Route>
+            </Route> */}
             {/* <Route exact path="/"></Route> */}
           </Switch>
         </div>

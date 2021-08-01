@@ -23,7 +23,7 @@ export class Login extends Component {
       });
       console.log(result);
 
-      if (!(result instanceof Error)) this.props.loggedIn();
+      if (!(result instanceof Error)){ this.props.loggedInFunction()};
     } catch (err) {
       // console.log(err);
       alert(err.message);
