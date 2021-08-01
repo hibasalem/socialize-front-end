@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home';
 import Header from './components/Header';
-
-// import cors from 'cors';
+import FeedPage from './components/FeedPage';
 
 export class App extends Component {
   constructor(props) {
@@ -13,7 +12,7 @@ export class App extends Component {
       loggedIn: false,
     };
   }
-
+ 
   loggedIn = () => {
     this.setState({
       loggedIn: true,
@@ -38,12 +37,11 @@ export class App extends Component {
                logOut={this.logOut}
                loggedIn={this.state.loggedIn}
                loggedInFunction={this.loggedIn} />
+               {this.state.loggedIn && <Redirect to="/feedPage" />}
+             </Route>
+            <Route exact path="/feedPage">
+              <FeedPage logOut={this.logOut} />
             </Route>
-            {/* <Route exact path="/main">
-              <Main />
-              {!this.state.loggedIn && <Redirect to="/" />}
-            </Route> */}
-            {/* <Route exact path="/"></Route> */}
           </Switch>
         </div>
       </Router>
