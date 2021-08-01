@@ -33,6 +33,8 @@ export class App extends Component {
       allusers: [],
       allFollowing: [],
       showFollowing: false,
+      allFollowers: [],
+      showFollowers: false,
     };
   }
 
@@ -58,11 +60,26 @@ export class App extends Component {
       });
       console.log(this.state.allFollowing);
     });
+
+    socket.on('returnFollowers', (data) => {
+      let data2 = data;
+      // console.log(data);
+      this.setState({
+        allFollowers: data2,
+        showFollowers: true,
+      });
+      console.log(this.state.allFollowing);
+    });
   };
 
   getFollowing = () => {
     let userID = this.state.user.userID;
     socket.emit('getFollowing', { userID: userID });
+  };
+
+  getFollowers = () => {
+    let userID = this.state.user.userID;
+    socket.emit('getFollowers', { userID: userID });
   };
 
   loggedIn = (user) => {
@@ -119,9 +136,12 @@ export class App extends Component {
               {this.state.path && (
                 <Profile
                   getFollowing={this.getFollowing}
+                  getFollowers={this.getFollowers}
                   allFollowing={this.state.allFollowing}
+                  allFollowers={this.state.allFollowers}
                   user={this.state.user}
                   showFollowing={this.state.showFollowing}
+                  showFollowers={this.state.showFollowers}
                 />
               )}
             </Route>
