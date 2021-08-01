@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 const axios = require('axios');
 const base64 = require('base-64');
 
@@ -21,7 +21,7 @@ export class Login extends Component {
           Authorization: `Basic ${token}`,
         },
       });
-      console.log(result);
+      console.log(result.data);
 
       if (!(result instanceof Error)){ this.props.loggedInFunction()};
     } catch (err) {

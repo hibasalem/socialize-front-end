@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
  class Signup extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+    }
+}
+signup = (e) => {
+  e.preventDefault();
+  console.log('sent');
+  axios.post('http://localhost:5000/signup', { email: this.state.email, pass: this.state.password, firstName: this.state.firstName, lastName: this.state.lastName });
+
+}
   render() {
     return (
       <div>
