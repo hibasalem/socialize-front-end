@@ -11,6 +11,7 @@ export class Login extends Component {
       password: '',
     };
   }
+
   login = async (e) => {
     e.preventDefault();
     try {
@@ -23,12 +24,15 @@ export class Login extends Component {
       });
       console.log(result.data);
 
-      if (!(result instanceof Error)){ this.props.loggedInFunction()};
+      if (!(result instanceof Error)) {
+        this.props.loggedInFunction(result.data);
+      }
     } catch (err) {
       // console.log(err);
       alert(err.message);
     }
   };
+
   render() {
     return (
       <div>
