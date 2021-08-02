@@ -10,6 +10,7 @@ export class Header extends Component {
           <Link to="/feedPage">Home</Link>
           <Link to={this.props.path}>Profile</Link>
           <Link to="/addFriends">Add Friends</Link>
+          <Link to="/groups">Groups</Link>
 
           <LogOut logOut={this.props.logOut} />
         </nav>
