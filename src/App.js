@@ -10,6 +10,8 @@ import Home from './components/Home';
 import Header from './components/Header';
 import FeedPage from './components/FeedPage';
 import Profile from './components/Profile';
+import AddFriends from './components/AddFriends';
+
 import io from 'socket.io-client';
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
@@ -28,14 +30,47 @@ export class App extends Component {
         auth_id: null,
       },
       path: '/profile',
+      allusers: [],
+      allFollowing: [],
+      showFollowing: false,
+      allFollowers: [],
+      showFollowers: false,
       posts: [],
       comments: [],
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     socket.on('connect', () => {
       socket.emit('test');
+      socket.emit('getAllUsers');
+    });
+
+    socket.on('returnAllUsers', (data) => {
+      this.setState({
+        allusers: data,
+      });
+      // console.log(this.state.allusers);
+    });
+
+    socket.on('returnFollowing', (data) => {
+      let data2 = data;
+      // console.log(data);
+      this.setState({
+        allFollowing: data2,
+        showFollowing: true,
+      });
+      console.log(this.state.allFollowing);
+    });
+
+    socket.on('returnFollowers', (data) => {
+      let data2 = data;
+      // console.log(data);
+      this.setState({
+        allFollowers: data2,
+        showFollowers: true,
+      });
+      console.log(this.state.allFollowing);
     });
 
     socket.on('error', (payload) => {
@@ -67,6 +102,16 @@ export class App extends Component {
     });
   };
 
+  getFollowing = () => {
+    let userID = this.state.user.userID;
+    socket.emit('getFollowing', { userID: userID });
+  };
+
+  getFollowers = () => {
+    let userID = this.state.user.userID;
+    socket.emit('getFollowers', { userID: userID });
+  };
+
   loggedIn = (user) => {
     this.setState({
       loggedIn: true,
@@ -83,7 +128,7 @@ export class App extends Component {
       path: `/profile/${this.state.user.userID}`,
     });
 
-    console.log('user', this.state.path);
+    console.log('user', this.state.path, this.state.user);
   };
 
   logOut = () => {
@@ -92,6 +137,11 @@ export class App extends Component {
     });
   };
 
+  handleAddFriend = (reciverId) => {
+    let data = { reciverId: reciverId, senderId: this.state.user.userID };
+    console.log(data);
+    socket.emit('addFriend', data);
+  };
 
 
   //-----sending the post to the server-----//
@@ -118,7 +168,7 @@ export class App extends Component {
   render() {
     return (
       <Router>
-        <Header />
+        <Header path={this.state.path} logOut={this.logOut} />
         <div>
           <Switch>
             <Route exact path="/">
@@ -127,7 +177,9 @@ export class App extends Component {
                 loggedIn={this.state.loggedIn}
                 loggedInFunction={this.loggedIn}
               />
-              {this.state.loggedIn && <Redirect to="/feedPage" />}
+              {this.state.loggedIn && this.state.path && (
+                <Redirect to="/feedPage" />
+              )}
             </Route>
             <Route exact path="/feedPage">
               {<FeedPage
@@ -138,7 +190,23 @@ export class App extends Component {
                 logOut={this.logOut} />}
             </Route>
             <Route exact path={this.state.path}>
-              <Profile user={this.state.user} />
+              {this.state.path && (
+                <Profile
+                  getFollowing={this.getFollowing}
+                  getFollowers={this.getFollowers}
+                  allFollowing={this.state.allFollowing}
+                  allFollowers={this.state.allFollowers}
+                  user={this.state.user}
+                  showFollowing={this.state.showFollowing}
+                  showFollowers={this.state.showFollowers}
+                />
+              )}
+            </Route>
+            <Route exact path="/addFriends">
+              <AddFriends
+                allusers={this.state.allusers}
+                handleAddFriend={this.handleAddFriend}
+              />
             </Route>
           </Switch>
         </div>

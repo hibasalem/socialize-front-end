@@ -1,11 +1,8 @@
-import React, { Component } from 'react'
-// import io from 'socket.io-client';
-// const SERVER_URL = process.env.SERVER_URL || 'http://localhost:5000/';
-// const socket = io(SERVER_URL, { transports: ['websocket'] });
+import React, { Component } from 'react';
+import Profile from './Profile';
 import PostForm from './PostForm';
 import Posts from './Posts';
 class FeedPage extends Component {
-
   // componentDidMount = () => {
 
   //   socket.on('connect', () => {
@@ -27,4 +24,4 @@ class FeedPage extends Component {
   }
 }
 
-export default FeedPage
+export default FeedPage;
