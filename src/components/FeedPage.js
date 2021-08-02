@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Profile from './Profile';
 import PostForm from './PostForm';
 import Posts from './Posts';
+import FeedPosts from './FeedPosts';
 class FeedPage extends Component {
   // componentDidMount = () => {
 
@@ -10,12 +11,16 @@ class FeedPage extends Component {
   //   })
   // }
 
+
+
   render() {
     return (
       <div>
         Feed Page
         <PostForm post={this.props.post} />
-        <Posts
+        <FeedPosts
+          showPosts={this.props.showPosts}
+          userID={this.props.userID}
           like={this.props.like}
           comments={this.props.comments}
           comment={this.props.comment}
