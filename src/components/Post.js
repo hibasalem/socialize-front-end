@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 
 export class Post extends Component {
+
+    like = (id) => {
+        this.props.like(id);
+    }
     render() {
 
         return (
             <div>
                 {this.props.postContent}
+                <button onClick={() => this.like(this.props.postID)}>Like</button>
+
                 {this.props.comments.map((item, index) => {
                     let value;
                     if (this.props.postID === item.post_id) {
@@ -14,7 +20,6 @@ export class Post extends Component {
                     return value;
 
                 })}
-
 
             </div>
         )

@@ -133,6 +133,7 @@ export class App extends Component {
     });
   };
 
+
   getFollowing = () => {
     let userID = this.state.user.userID;
     socket.emit('getFollowing', { userID: userID });
@@ -239,6 +240,14 @@ export class App extends Component {
     socket.emit('comment', payload);
   }
 
+  like = (post_id) => {
+    let payload = {
+      post_id: post_id,
+      userID: this.state.user.userID,
+    }
+    socket.emit('like', payload);
+  }
+  
 
   render() {
     return (
@@ -258,6 +267,7 @@ export class App extends Component {
             </Route>
             <Route exact path="/feedPage">
               {<FeedPage
+                like={this.like}
                 comments={this.state.comments}
                 comment={this.comment}
                 allPosts={this.state.posts}
