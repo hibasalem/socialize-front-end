@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Messenger from './Messenger';
 
 class Profile extends Component {
   componentDidMount = () => {
@@ -19,20 +20,40 @@ class Profile extends Component {
         {this.props.showFollowing &&
           this.props.allFollowing.map((item) => {
             return (
-              <p>
-                {item.firstname} {item.lastname}
-              </p>
+              <>
+                <p>
+                  {item.firstname} {item.lastname}
+                </p>
+                <button onClick={() => this.props.handleShowMessenger(item.id)}>
+                  Send Message
+                </button>
+              </>
             );
           })}
         <h2>allFollowers</h2>
         {this.props.showFollowers &&
           this.props.allFollowers.map((item) => {
             return (
-              <p>
-                {item.firstname} {item.lastname}
-              </p>
+              <>
+                <p>
+                  {item.firstname} {item.lastname}
+                </p>
+                <button onClick={() => this.props.handleShowMessenger(item.id)}>
+                  Send Message
+                </button>
+              </>
             );
           })}
+          {this.props.showMessenger &&
+          <>
+          <h2>Messenger</h2>
+          <Messenger 
+          handleSendMessage={this.props.handleSendMessage}
+          allMessages={this.props.allMessages}
+          showMessages={this.props.showMessages}
+          />
+          </>
+          }
       </div>
     );
   }
