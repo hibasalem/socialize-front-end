@@ -46,6 +46,7 @@ export class App extends Component {
       showGroups: false,
       GroupRequests: [],
       showGroupsRequests: false,
+      showPosts: false,
     };
   }
 
@@ -117,15 +118,18 @@ export class App extends Component {
     });
 
     //-----requesting to get the post from the server-----//
-    socket.emit('getAllPosts');
+    socket.emit('getAllPosts', { userID: this.state.user.userID });
 
     //---requestin to get the comments from the server---//
-    socket.emit('getAllComments');
+    socket.emit('getAllComments', { userID: this.state.user.userID });
 
     //-------getting the posts from the server-------//
     socket.on('read', (payload) => {
+      console.log(payload);
+      let stuff = payload;
       this.setState({
-        posts: payload,
+        posts: stuff,
+        showPosts: true,
       });
     });
 
@@ -134,6 +138,10 @@ export class App extends Component {
       this.setState({
         comments: payload,
       });
+    });
+    //------notification of a new post ------//
+    socket.on('newPost',()=>{
+      socket.emit('getAllPosts',{ userID: this.state.user.userID });
     });
   };
 
@@ -171,8 +179,13 @@ export class App extends Component {
     this.setState({
       path: `/profile/${this.state.user.userID}`,
     });
-
-    console.log('user', this.state.path, this.state.user);
+    let payload = {
+      userID: this.state.user.userID,
+    }
+    socket.emit('getAllPosts', { userID: this.state.user.userID });
+    // console.log(this.state.posts);
+    socket.emit('join', { userID: this.state.user.userID });
+    // console.log('user', this.state.path, this.state.user);
   };
 
   logOut = () => {
@@ -187,6 +200,7 @@ export class App extends Component {
     socket.emit('addFriend', data);
     this.getFollowing();
     this.getFollowers();
+    // socket.emit('joinFollowRoom', { reciverId });
   };
 
   handleShowMessenger = (reciverId) => {
@@ -248,6 +262,7 @@ export class App extends Component {
       postContent: postContent,
       userID: this.state.user.userID,
     };
+    console.log(payload);
     socket.emit('post', payload);
   };
 
@@ -259,15 +274,16 @@ export class App extends Component {
       userID: this.state.user.userID,
     };
     socket.emit('comment', payload);
-  };
-
+  }
+  //------sending the like to the server------//
   like = (post_id) => {
     let payload = {
       post_id: post_id,
       userID: this.state.user.userID,
     };
     socket.emit('like', payload);
-  };
+  }
+
 
   render() {
     return (
@@ -286,20 +302,21 @@ export class App extends Component {
               )}
             </Route>
             <Route exact path="/feedPage">
-              {
-                <FeedPage
-                  like={this.like}
-                  comments={this.state.comments}
-                  comment={this.comment}
-                  allPosts={this.state.posts}
-                  post={this.post}
-                  logOut={this.logOut}
-                />
-              }
+              {<FeedPage
+                showPosts={this.state.showPosts}
+                userID={this.state.user.userID}
+                like={this.like}
+                comments={this.state.comments}
+                comment={this.comment}
+                allPosts={this.state.posts}
+                post={this.post}
+                logOut={this.logOut} />}
             </Route>
             <Route exact path={this.state.path}>
               {this.state.path && (
                 <Profile
+                  showPosts={this.state.showPosts}
+                  userID={this.state.user.userID}
                   getFollowing={this.getFollowing}
                   getFollowers={this.getFollowers}
                   allFollowing={this.state.allFollowing}
@@ -307,6 +324,11 @@ export class App extends Component {
                   user={this.state.user}
                   showFollowing={this.state.showFollowing}
                   showFollowers={this.state.showFollowers}
+                  like={this.like}
+                  comments={this.state.comments}
+                  comment={this.comment}
+                  allPosts={this.state.posts}
+                  post={this.post}
                   handleShowMessenger={this.handleShowMessenger}
                   showMessenger={this.state.showMessenger}
                   messageReceiverId={this.state.messageReceiverId}
