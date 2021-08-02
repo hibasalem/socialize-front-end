@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
 import Posts from './Posts';
-=======
 import Messenger from './Messenger';
 
->>>>>>> 9b9419eccf72b15ab5212be3feb741ad3e3e0d71
 class Profile extends Component {
   componentDidMount = () => {
     // console.log(this.props.user);
@@ -48,14 +45,12 @@ class Profile extends Component {
               </>
             );
           })}
-<<<<<<< HEAD
                   <Posts
           userID={this.props.userID}
           like={this.props.like}
           comments={this.props.comments}
           comment={this.props.comment}
           allPosts={this.props.allPosts} />
-=======
           {this.props.showMessenger &&
           <>
           <h2>Messenger</h2>
@@ -66,7 +61,6 @@ class Profile extends Component {
           />
           </>
           }
->>>>>>> 9b9419eccf72b15ab5212be3feb741ad3e3e0d71
       </div>
     );
   }

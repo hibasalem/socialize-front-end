@@ -22,7 +22,7 @@ export class Login extends Component {
           Authorization: `Basic ${token}`,
         },
       });
-      console.log(result.data);
+      // console.log(result.data);
 
       if (!(result instanceof Error)) {
         this.props.loggedInFunction(result.data);

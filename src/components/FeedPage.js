@@ -19,6 +19,7 @@ class FeedPage extends Component {
         Feed Page
         <PostForm post={this.props.post} />
         <FeedPosts
+          showPosts={this.props.showPosts}
           userID={this.props.userID}
           like={this.props.like}
           comments={this.props.comments}

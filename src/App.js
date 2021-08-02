@@ -43,7 +43,8 @@ export class App extends Component {
       allMessages: [],
       showMessages: false,
       allGroups: [],
-      showGroups: false
+      showGroups: false,
+      showPosts: false,
     };
   }
 
@@ -119,8 +120,11 @@ export class App extends Component {
 
     //-------getting the posts from the server-------//
     socket.on('read', (payload) => {
+      console.log(payload);
+      let stuff = payload;
       this.setState({
-        posts: payload
+        posts: stuff,
+        showPosts: true,
       });
     });
 
@@ -130,6 +134,10 @@ export class App extends Component {
       this.setState({
         comments: payload
       });
+    });
+    //------notification of a new post ------//
+    socket.on('newPost',()=>{
+      socket.emit('getAllPosts',{ userID: this.state.user.userID });
     });
   };
 
@@ -167,8 +175,9 @@ export class App extends Component {
       userID: this.state.user.userID,
     }
     socket.emit('getAllPosts', { userID: this.state.user.userID });
-
-    console.log('user', this.state.path, this.state.user);
+    // console.log(this.state.posts);
+    socket.emit('join', { userID: this.state.user.userID });
+    // console.log('user', this.state.path, this.state.user);
   };
 
   logOut = () => {
@@ -216,9 +225,9 @@ export class App extends Component {
     socket.emit('createGroup', payload);
   }
 
-  handleJoinGroup = (groupId)=>{
-    let payload={
-      id:groupId,
+  handleJoinGroup = (groupId) => {
+    let payload = {
+      id: groupId,
       senderId: this.state.user.userID
     }
     socket.emit('joinGroup', payload);
@@ -231,6 +240,7 @@ export class App extends Component {
       postContent: postContent,
       userID: this.state.user.userID,
     }
+    console.log(payload);
     socket.emit('post', payload);
   }
 
@@ -272,6 +282,7 @@ export class App extends Component {
             </Route>
             <Route exact path="/feedPage">
               {<FeedPage
+                showPosts={this.state.showPosts}
                 userID={this.state.user.userID}
                 like={this.like}
                 comments={this.state.comments}
@@ -283,7 +294,8 @@ export class App extends Component {
             <Route exact path={this.state.path}>
               {this.state.path && (
                 <Profile
-                userID={this.state.user.userID}
+                  showPosts={this.state.showPosts}
+                  userID={this.state.user.userID}
                   getFollowing={this.getFollowing}
                   getFollowers={this.getFollowers}
                   allFollowing={this.state.allFollowing}
@@ -291,20 +303,17 @@ export class App extends Component {
                   user={this.state.user}
                   showFollowing={this.state.showFollowing}
                   showFollowers={this.state.showFollowers}
-<<<<<<< HEAD
                   like={this.like}
                   comments={this.state.comments}
                   comment={this.comment}
                   allPosts={this.state.posts}
                   post={this.post}
-=======
                   handleShowMessenger={this.handleShowMessenger}
                   showMessenger={this.state.showMessenger}
                   messageReceiverId={this.state.messageReceiverId}
                   handleSendMessage={this.handleSendMessage}
                   allMessages={this.state.allMessages}
                   showMessages={this.state.showMessages}
->>>>>>> 9b9419eccf72b15ab5212be3feb741ad3e3e0d71
                 />
               )}
             </Route>
@@ -315,11 +324,11 @@ export class App extends Component {
               />
             </Route>
             <Route exact path="/groups">
-              <Groups 
-              handleCreateGroup={this.handleCreateGroup} 
-              getAllGroups={this.getAllGroups} 
-              allGroups={this.state.allGroups}
-              showGroups= {this.state.showGroups}
+              <Groups
+                handleCreateGroup={this.handleCreateGroup}
+                getAllGroups={this.getAllGroups}
+                allGroups={this.state.allGroups}
+                showGroups={this.state.showGroups}
               />
             </Route>
           </Switch>
