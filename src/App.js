@@ -13,6 +13,7 @@ import Profile from './components/Profile';
 import AddFriends from './components/AddFriends';
 
 import io from 'socket.io-client';
+import Groups from './components/Groups';
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
@@ -37,6 +38,12 @@ export class App extends Component {
       showFollowers: false,
       posts: [],
       comments: [],
+      showMessenger: false,
+      messageReceiverId: null,
+      allMessages: [],
+      showMessages: false,
+      allGroups: [],
+      showGroups: false
     };
   }
 
@@ -60,7 +67,7 @@ export class App extends Component {
         allFollowing: data2,
         showFollowing: true,
       });
-      console.log(this.state.allFollowing);
+      console.log('following', this.state.allFollowing);
     });
 
     socket.on('returnFollowers', (data) => {
@@ -70,8 +77,32 @@ export class App extends Component {
         allFollowers: data2,
         showFollowers: true,
       });
-      console.log(this.state.allFollowing);
+      console.log('followers', this.state.allFollowers);
     });
+
+
+
+    socket.on('returnMessages', (returnedMessages) => {
+      let messages = returnedMessages;
+      // console.log(data);
+      this.setState({
+        allMessages: messages,
+        showMessages: true,
+      });
+      console.log('messages', this.state.allMessages);
+    });
+
+    socket.on('returnAllGroups', (returnedGroups) => {
+      let groups = returnedGroups;
+      // console.log(data);
+      this.setState({
+        allGroups: groups,
+        showGroups: true
+      });
+      console.log('groups', this.state.allGroups);
+    });
+
+
 
     socket.on('error', (payload) => {
       console.log(payload);
@@ -113,6 +144,10 @@ export class App extends Component {
     socket.emit('getFollowers', { userID: userID });
   };
 
+  getAllGroups = () => {
+    socket.emit('getAllGroups');
+  }
+
   loggedIn = (user) => {
     this.setState({
       loggedIn: true,
@@ -143,6 +178,46 @@ export class App extends Component {
     console.log(data);
     socket.emit('addFriend', data);
   };
+
+  handleShowMessenger = (reciverId) => {
+    this.setState({
+      showMessenger: true,
+      messageReceiverId: reciverId
+    })
+  }
+
+  handleSendMessage = (messageContent) => {
+    let room;
+    if (this.state.messageReceiverId > this.state.user.userID) {
+      room = `${this.state.user.userID}_${this.state.messageReceiverId}`
+    } else {
+      room = `${this.state.messageReceiverId}_${this.state.user.userID}`
+    }
+    let payload = {
+      messageContent: messageContent,
+      receiverId: this.state.messageReceiverId,
+      senderId: this.state.user.userID,
+      messageRoomId: room
+    }
+    socket.emit('sendMessage', payload);
+  }
+
+  handleCreateGroup = (groupName, groupDescription) => {
+    let payload = {
+      group_name: groupName,
+      group_owner: this.state.user.userID,
+      group_description: groupDescription
+    }
+    socket.emit('createGroup', payload);
+  }
+
+  handleJoinGroup = (groupId)=>{
+    let payload={
+      id:groupId,
+      senderId: this.state.user.userID
+    }
+    socket.emit('joinGroup', payload);
+  }
 
 
   //-----sending the post to the server-----//
@@ -209,6 +284,12 @@ export class App extends Component {
                   user={this.state.user}
                   showFollowing={this.state.showFollowing}
                   showFollowers={this.state.showFollowers}
+                  handleShowMessenger={this.handleShowMessenger}
+                  showMessenger={this.state.showMessenger}
+                  messageReceiverId={this.state.messageReceiverId}
+                  handleSendMessage={this.handleSendMessage}
+                  allMessages={this.state.allMessages}
+                  showMessages={this.state.showMessages}
                 />
               )}
             </Route>
@@ -216,6 +297,14 @@ export class App extends Component {
               <AddFriends
                 allusers={this.state.allusers}
                 handleAddFriend={this.handleAddFriend}
+              />
+            </Route>
+            <Route exact path="/groups">
+              <Groups 
+              handleCreateGroup={this.handleCreateGroup} 
+              getAllGroups={this.getAllGroups} 
+              allGroups={this.state.allGroups}
+              showGroups= {this.state.showGroups}
               />
             </Route>
           </Switch>

@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export class Friend extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      path:`/profile/${this.props.item.id}`
+    }
+  }
+  // setPath (id){
+  //   this.setState({
+  //     path:`/profile/${id}`
+  //   })
+  // }
+  // componentDidMount=()=>{
+  //   this.props.setPath(this.props.item.id)
+  // }
+  
   render() {
     return (
       <div key={this.props.item.id}>
-        <p>
-          {this.props.item.firstname} {this.props.item.lastname}
-        </p>
+        
+        <nav>
+          <Link to={this.state.path}>{this.props.item.firstname} {this.props.item.lastname}</Link>
+        
+        </nav>
         <button onClick={() => this.props.handleAddFriend(this.props.item.id)}>
           Add Friend
         </button>
