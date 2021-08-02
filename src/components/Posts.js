@@ -12,6 +12,7 @@ export class Posts extends Component {
                         <div key={index}>
                             
                             <Post 
+                            like={this.props.like}
                             postID = {element.id}
                             comments = {this.props.comments}
                             postContent = {element.content} />

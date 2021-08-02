@@ -15,10 +15,11 @@ class FeedPage extends Component {
       <div>
         Feed Page
         <PostForm post={this.props.post} />
-        <Posts 
-        comments={this.props.comments}
-        comment={this.props.comment}
-        allPosts={this.props.allPosts}/>
+        <Posts
+          like={this.props.like}
+          comments={this.props.comments}
+          comment={this.props.comment}
+          allPosts={this.props.allPosts} />
       </div>
     )
   }
