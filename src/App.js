@@ -43,7 +43,9 @@ export class App extends Component {
       allMessages: [],
       showMessages: false,
       allGroups: [],
-      showGroups: false
+      showGroups: false,
+      GroupRequests: [],
+      showGroupsRequests: false,
     };
   }
 
@@ -80,8 +82,6 @@ export class App extends Component {
       console.log('followers', this.state.allFollowers);
     });
 
-
-
     socket.on('returnMessages', (returnedMessages) => {
       let messages = returnedMessages;
       // console.log(data);
@@ -97,12 +97,20 @@ export class App extends Component {
       // console.log(data);
       this.setState({
         allGroups: groups,
-        showGroups: true
+        showGroups: true,
       });
       console.log('groups', this.state.allGroups);
     });
 
-
+    socket.on('returnGroupRequests', (returnedGroupRequests) => {
+      let GroupRequests = returnedGroupRequests;
+      console.log('hi');
+      this.setState({
+        GroupRequests: GroupRequests,
+        showGroupsRequests: true,
+      });
+      console.log('GroupRequests', this.state.GroupRequests);
+    });
 
     socket.on('error', (payload) => {
       console.log(payload);
@@ -111,32 +119,32 @@ export class App extends Component {
     //-----requesting to get the post from the server-----//
     socket.emit('getAllPosts');
 
-
     //---requestin to get the comments from the server---//
     socket.emit('getAllComments');
-
-
 
     //-------getting the posts from the server-------//
     socket.on('read', (payload) => {
       this.setState({
-        posts: payload
+        posts: payload,
       });
     });
-
 
     //------getting the comments from the server------//
     socket.on('readComments', (payload) => {
       this.setState({
-        comments: payload
+        comments: payload,
       });
     });
   };
 
-
   getFollowing = () => {
     let userID = this.state.user.userID;
     socket.emit('getFollowing', { userID: userID });
+  };
+
+  getGroupRequests = () => {
+    let userID = this.state.user.userID;
+    socket.emit('getGroupRequests', { userID: userID });
   };
 
   getFollowers = () => {
@@ -146,7 +154,7 @@ export class App extends Component {
 
   getAllGroups = () => {
     socket.emit('getAllGroups');
-  }
+  };
 
   loggedIn = (user) => {
     this.setState({
@@ -177,58 +185,71 @@ export class App extends Component {
     let data = { reciverId: reciverId, senderId: this.state.user.userID };
     console.log(data);
     socket.emit('addFriend', data);
+    this.getFollowing();
+    this.getFollowers();
   };
 
   handleShowMessenger = (reciverId) => {
     this.setState({
       showMessenger: true,
-      messageReceiverId: reciverId
-    })
-  }
+      messageReceiverId: reciverId,
+    });
+  };
 
   handleSendMessage = (messageContent) => {
     let room;
     if (this.state.messageReceiverId > this.state.user.userID) {
-      room = `${this.state.user.userID}_${this.state.messageReceiverId}`
+      room = `${this.state.user.userID}_${this.state.messageReceiverId}`;
     } else {
-      room = `${this.state.messageReceiverId}_${this.state.user.userID}`
+      room = `${this.state.messageReceiverId}_${this.state.user.userID}`;
     }
     let payload = {
       messageContent: messageContent,
       receiverId: this.state.messageReceiverId,
       senderId: this.state.user.userID,
-      messageRoomId: room
-    }
+      messageRoomId: room,
+    };
     socket.emit('sendMessage', payload);
-  }
+  };
 
   handleCreateGroup = (groupName, groupDescription) => {
     let payload = {
       group_name: groupName,
       group_owner: this.state.user.userID,
-      group_description: groupDescription
-    }
+      group_description: groupDescription,
+    };
     socket.emit('createGroup', payload);
-  }
+    this.getAllGroups();
+  };
 
-  handleJoinGroup = (groupId)=>{
-    let payload={
-      id:groupId,
-      senderId: this.state.user.userID
-    }
+  handleJoinGroup = async (groupId, owner_id) => {
+    let payload = {
+      groupId: groupId,
+      senderId: this.state.user.userID,
+      owner_id: owner_id,
+    };
     socket.emit('joinGroup', payload);
-  }
+    this.getGroupRequests();
+  };
 
+  handleAcceptJoinGroup = (groupId, memberId) => {
+    let payload = {
+      groupId: groupId,
+      memberId: memberId,
+    };
+    socket.emit('acceptJoinGroup', payload);
+    console.log(payload);
+    this.getGroupRequests();
+  };
 
   //-----sending the post to the server-----//
   post = (postContent) => {
     let payload = {
       postContent: postContent,
       userID: this.state.user.userID,
-    }
+    };
     socket.emit('post', payload);
-  }
-
+  };
 
   //----sending the comment to the server----//
   comment = (commentContent, post_id) => {
@@ -236,18 +257,17 @@ export class App extends Component {
       content: commentContent,
       post_id: post_id,
       userID: this.state.user.userID,
-    }
+    };
     socket.emit('comment', payload);
-  }
+  };
 
   like = (post_id) => {
     let payload = {
       post_id: post_id,
       userID: this.state.user.userID,
-    }
+    };
     socket.emit('like', payload);
-  }
-  
+  };
 
   render() {
     return (
@@ -266,13 +286,16 @@ export class App extends Component {
               )}
             </Route>
             <Route exact path="/feedPage">
-              {<FeedPage
-                like={this.like}
-                comments={this.state.comments}
-                comment={this.comment}
-                allPosts={this.state.posts}
-                post={this.post}
-                logOut={this.logOut} />}
+              {
+                <FeedPage
+                  like={this.like}
+                  comments={this.state.comments}
+                  comment={this.comment}
+                  allPosts={this.state.posts}
+                  post={this.post}
+                  logOut={this.logOut}
+                />
+              }
             </Route>
             <Route exact path={this.state.path}>
               {this.state.path && (
@@ -300,11 +323,16 @@ export class App extends Component {
               />
             </Route>
             <Route exact path="/groups">
-              <Groups 
-              handleCreateGroup={this.handleCreateGroup} 
-              getAllGroups={this.getAllGroups} 
-              allGroups={this.state.allGroups}
-              showGroups= {this.state.showGroups}
+              <Groups
+                handleCreateGroup={this.handleCreateGroup}
+                handleJoinGroup={this.handleJoinGroup}
+                getAllGroups={this.getAllGroups}
+                allGroups={this.state.allGroups}
+                showGroups={this.state.showGroups}
+                getGroupRequests={this.getGroupRequests}
+                GroupRequests={this.state.GroupRequests}
+                showGroupsRequests={this.state.showGroupsRequests}
+                handleAcceptJoinGroup={this.handleAcceptJoinGroup}
               />
             </Route>
           </Switch>
