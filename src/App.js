@@ -35,6 +35,8 @@ export class App extends Component {
       showFollowing: false,
       allFollowers: [],
       showFollowers: false,
+      posts: [],
+      comments: [],
     };
   }
 
@@ -69,6 +71,34 @@ export class App extends Component {
         showFollowers: true,
       });
       console.log(this.state.allFollowing);
+    });
+
+    socket.on('error', (payload) => {
+      console.log(payload);
+    });
+
+    //-----requesting to get the post from the server-----//
+    socket.emit('getAllPosts');
+
+
+    //---requestin to get the comments from the server---//
+    socket.emit('getAllComments');
+
+
+
+    //-------getting the posts from the server-------//
+    socket.on('read', (payload) => {
+      this.setState({
+        posts: payload
+      });
+    });
+
+
+    //------getting the comments from the server------//
+    socket.on('readComments', (payload) => {
+      this.setState({
+        comments: payload
+      });
     });
   };
 
@@ -113,6 +143,28 @@ export class App extends Component {
     socket.emit('addFriend', data);
   };
 
+
+  //-----sending the post to the server-----//
+  post = (postContent) => {
+    let payload = {
+      postContent: postContent,
+      userID: this.state.user.userID,
+    }
+    socket.emit('post', payload);
+  }
+
+
+  //----sending the comment to the server----//
+  comment = (commentContent, post_id) => {
+    let payload = {
+      content: commentContent,
+      post_id: post_id,
+      userID: this.state.user.userID,
+    }
+    socket.emit('comment', payload);
+  }
+
+
   render() {
     return (
       <Router>
@@ -130,7 +182,12 @@ export class App extends Component {
               )}
             </Route>
             <Route exact path="/feedPage">
-              <FeedPage logOut={this.logOut} />
+              {<FeedPage
+                comments={this.state.comments}
+                comment={this.comment}
+                allPosts={this.state.posts}
+                post={this.post}
+                logOut={this.logOut} />}
             </Route>
             <Route exact path={this.state.path}>
               {this.state.path && (
