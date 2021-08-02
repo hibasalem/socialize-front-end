@@ -8,6 +8,7 @@ export class Posts extends Component {
         return (
             <div>
                 {this.props.allPosts.map((element, index) => {
+                    if(element.poster_id===this.props.userID){
                     return (
                         <div key={index}>
                             
@@ -19,6 +20,7 @@ export class Posts extends Component {
                          <CommentForm comment={this.props.comment} id={element.id}/>
                         </div>
                     )
+                    }
                 })}
             </div>
         )

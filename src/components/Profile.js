@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Posts from './Posts';
 class Profile extends Component {
   componentDidMount = () => {
     // console.log(this.props.user);
@@ -33,6 +33,12 @@ class Profile extends Component {
               </p>
             );
           })}
+                  <Posts
+          userID={this.props.userID}
+          like={this.props.like}
+          comments={this.props.comments}
+          comment={this.props.comment}
+          allPosts={this.props.allPosts} />
       </div>
     );
   }
