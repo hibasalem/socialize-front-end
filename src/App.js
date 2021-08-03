@@ -11,7 +11,7 @@ import Header from './components/Header';
 import FeedPage from './components/FeedPage';
 import Profile from './components/Profile';
 import AddFriends from './components/AddFriends';
-
+import CurrentGroup from './components/CurrentGroup';
 import io from 'socket.io-client';
 import Groups from './components/Groups';
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:5000/';
@@ -47,6 +47,12 @@ export class App extends Component {
       GroupRequests: [],
       showGroupsRequests: false,
       showPosts: false,
+      usergroups: [],
+      showUsergroups: false,
+      currentGroupPath: '',
+      showCurrentGroupPath: false,
+      currentGroupContent: [],
+      showCurrentGroupContent: false,
     };
   }
 
@@ -107,12 +113,32 @@ export class App extends Component {
 
     socket.on('returnGroupRequests', (returnedGroupRequests) => {
       let GroupRequests = returnedGroupRequests;
-      console.log('hi');
+      // console.log('hi');
       this.setState({
         GroupRequests: GroupRequests,
         showGroupsRequests: true,
       });
       console.log('GroupRequests', this.state.GroupRequests);
+    });
+
+    socket.on('returnUsergroups', (data) => {
+      let usergroups = data;
+      // console.log('usergroups', usergroups);
+      this.setState({
+        usergroups: usergroups,
+        showUsergroups: true,
+      });
+      console.log('usergroups', this.state.usergroups);
+    });
+
+    socket.on('returnCurrentGroupContent', (data) => {
+      let currentGroupContent = data;
+      // console.log('usergroups', usergroups);
+      this.setState({
+        currentGroupContent: currentGroupContent,
+        showCurrentGroupContent: true,
+      });
+      console.log('usergroups', this.state.usergroups);
     });
 
     socket.on('error', (payload) => {
@@ -162,6 +188,11 @@ export class App extends Component {
     socket.emit('getFollowers', { userID: userID });
   };
 
+  getUsergroups = () => {
+    let userID = this.state.user.userID;
+    socket.emit('getUsergroups', { userID: userID });
+  };
+
   getAllGroups = () => {
     socket.emit('getAllGroups');
   };
@@ -183,7 +214,7 @@ export class App extends Component {
     });
     let payload = {
       userID: this.state.user.userID,
-    }
+    };
     socket.emit('getAllPosts', { userID: this.state.user.userID });
     // console.log(this.state.posts);
     // socket.emit('join', { userID: this.state.user.userID });
@@ -259,8 +290,21 @@ export class App extends Component {
       memberId: memberId,
     };
     socket.emit('acceptJoinGroup', payload);
-    console.log(payload);
+    // console.log(payload);
     this.getGroupRequests();
+  };
+
+  handleViewgroup = (groupId) => {
+    let payload = {
+      groupId: groupId,
+    };
+    this.setState({
+      currentGroupPath: `/groups/${groupId}`,
+      showCurrentGroupPath: true,
+    });
+    socket.emit('viewGroup', payload);
+    // console.log(payload);
+    // this.getGroupRequests();
   };
 
   //-----sending the post to the server-----//
@@ -281,7 +325,7 @@ export class App extends Component {
       userID: this.state.user.userID,
     };
     socket.emit('comment', payload);
-  }
+  };
   //------sending the like to the server------//
   like = (post_id) => {
     let payload = {
@@ -289,8 +333,7 @@ export class App extends Component {
       userID: this.state.user.userID,
     };
     socket.emit('like', payload);
-  }
-
+  };
 
   render() {
     return (
@@ -309,15 +352,18 @@ export class App extends Component {
               )}
             </Route>
             <Route exact path="/feedPage">
-              {<FeedPage
-                showPosts={this.state.showPosts}
-                userID={this.state.user.userID}
-                like={this.like}
-                comments={this.state.comments}
-                comment={this.comment}
-                allPosts={this.state.posts}
-                post={this.post}
-                logOut={this.logOut} />}
+              {
+                <FeedPage
+                  showPosts={this.state.showPosts}
+                  userID={this.state.user.userID}
+                  like={this.like}
+                  comments={this.state.comments}
+                  comment={this.comment}
+                  allPosts={this.state.posts}
+                  post={this.post}
+                  logOut={this.logOut}
+                />
+              }
             </Route>
             <Route exact path={this.state.path}>
               {this.state.path && (
@@ -342,6 +388,7 @@ export class App extends Component {
                   handleSendMessage={this.handleSendMessage}
                   allMessages={this.state.allMessages}
                   showMessages={this.state.showMessages}
+                  getUsergroups={this.getUsergroups}
                 />
               )}
             </Route>
@@ -362,6 +409,18 @@ export class App extends Component {
                 GroupRequests={this.state.GroupRequests}
                 showGroupsRequests={this.state.showGroupsRequests}
                 handleAcceptJoinGroup={this.handleAcceptJoinGroup}
+                getUsergroups={this.getUsergroups}
+                usergroups={this.state.usergroups}
+                showUsergroups={this.state.showUsergroups}
+                handleViewgroup={this.handleViewgroup}
+                currentGroupPath={this.state.currentGroupPath}
+                showCurrentGroupPath={this.state.showCurrentGroupPath}
+              />
+            </Route>
+            <Route exact path={this.state.currentGroupPath}>
+              <CurrentGroup
+                currentGroupContent={this.state.currentGroupContent}
+                showCurrentGroupContent={this.state.showCurrentGroupContent}
               />
             </Route>
           </Switch>
