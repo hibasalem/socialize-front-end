@@ -7,6 +7,7 @@ class Profile extends Component {
     // console.log(this.props.user);
     this.props.getFollowing();
     this.props.getFollowers();
+    // this.props.getUsergroups();
   };
 
   render() {
@@ -45,22 +46,23 @@ class Profile extends Component {
               </>
             );
           })}
-                  <Posts
+        <Posts
           userID={this.props.userID}
           like={this.props.like}
           comments={this.props.comments}
           comment={this.props.comment}
-          allPosts={this.props.allPosts} />
-          {this.props.showMessenger &&
+          allPosts={this.props.allPosts}
+        />
+        {this.props.showMessenger && (
           <>
-          <h2>Messenger</h2>
-          <Messenger 
-          handleSendMessage={this.props.handleSendMessage}
-          allMessages={this.props.allMessages}
-          showMessages={this.props.showMessages}
-          />
+            <h2>Messenger</h2>
+            <Messenger
+              handleSendMessage={this.props.handleSendMessage}
+              allMessages={this.props.allMessages}
+              showMessages={this.props.showMessages}
+            />
           </>
-          }
+        )}
       </div>
     );
   }

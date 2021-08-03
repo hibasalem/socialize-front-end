@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export class Groups extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ export class Groups extends Component {
     // console.log(this.props.user);
     this.props.getAllGroups();
     this.props.getGroupRequests();
+    this.props.getUsergroups();
   };
   createGroup = (e) => {
     e.preventDefault();
@@ -104,6 +106,34 @@ export class Groups extends Component {
                   }
                 >
                   decline
+                </button>
+              </>
+            );
+          })}
+
+        <h2>
+          <b>your joined groups</b>
+        </h2>
+
+        {this.props.showUsergroups &&
+          this.props.usergroups.groupsNames.map((item, idx) => {
+            return (
+              <>
+                <p>
+                  <b>{item}</b>
+                </p>
+
+                <button
+                  onClick={() =>
+                    this.props.handleViewgroup(
+                      this.props.usergroups.data[idx].group_id
+                    )
+                  }
+                >
+                  view group
+                  {this.props.showCurrentGroupPath && (
+                    <Link to={this.props.currentGroupPath}> view group</Link>
+                  )}
                 </button>
               </>
             );
