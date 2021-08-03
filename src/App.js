@@ -14,6 +14,7 @@ import AddFriends from './components/AddFriends';
 import CurrentGroup from './components/CurrentGroup';
 import io from 'socket.io-client';
 import Groups from './components/Groups';
+import TargetProfile from './components/TargetProfile';
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
@@ -53,6 +54,10 @@ export class App extends Component {
       showCurrentGroupPath: false,
       currentGroupContent: [],
       showCurrentGroupContent: false,
+      targetedProfileInfo:[],
+      targetedFollowing:[],
+      targetedFollowers:[],
+      targetedPosts:[],
     };
   }
 
@@ -60,6 +65,30 @@ export class App extends Component {
     socket.on('connect', () => {
       socket.emit('test');
       socket.emit('getAllUsers');
+      socket.on('targetInfo',(payload)=>{
+        this.setState({
+          targetedProfileInfo:payload[0],
+        })
+        // console.log(this.state.targetedProfileInfo);
+      });
+      socket.on('targetFollowing',(payload)=>{
+        this.setState({
+          targetedFollowing:payload,
+        })
+        // console.log(this.state.targetedFollowing);
+      });
+      socket.on('targetFollowers',(payload)=>{
+        this.setState({
+          targetedFollowers:payload,
+        })
+        // console.log(this.state.targetedFollowers);
+      });
+      socket.on('targetPosts',(payload)=>{
+        this.setState({
+          targetedPosts:payload
+        })
+        // console.log(this.state.targetedPosts);
+      })
     });
     // socket.on('newuser',()=>{
     //   socket.emit('getAllUsers');
@@ -235,7 +264,7 @@ export class App extends Component {
     this.getFollowing();
     this.getFollowers();
     socket.on('friendAdded', () => {
-      socket.emit('getAllPosts',{userID: this.state.user.userID });
+      socket.emit('getAllPosts', { userID: this.state.user.userID });
     })
     // socket.emit('joinFollowRoom', { reciverId });
     // socket.emit('getAllPosts', { userID: this.state.user.userID });
@@ -334,6 +363,13 @@ export class App extends Component {
     };
     socket.emit('like', payload);
   };
+  //-----target getting info of the target profile from BE-----//
+  targetProfile = (id) => {
+  socket.emit('getTargetInfo',id);
+  socket.emit('getTargetFollowing',id);
+  socket.emit('getTargetFollowers',id);
+  socket.emit('getTargetPosts',id);
+  }
 
   render() {
     return (
@@ -368,7 +404,7 @@ export class App extends Component {
             <Route exact path={this.state.path}>
               {this.state.path && (
                 <Profile
-                  showPosts={this.state.showPosts}
+                  showPosts="/profile/:id"
                   userID={this.state.user.userID}
                   getFollowing={this.getFollowing}
                   getFollowers={this.getFollowers}
@@ -394,6 +430,7 @@ export class App extends Component {
             </Route>
             <Route exact path="/addFriends">
               <AddFriends
+                targetProfile={this.targetProfile}
                 allusers={this.state.allusers}
                 handleAddFriend={this.handleAddFriend}
               />
@@ -417,10 +454,18 @@ export class App extends Component {
                 showCurrentGroupPath={this.state.showCurrentGroupPath}
               />
             </Route>
-            <Route exact path={this.state.currentGroupPath}>
+            <Route exact path="/groups/:id">
               <CurrentGroup
                 currentGroupContent={this.state.currentGroupContent}
                 showCurrentGroupContent={this.state.showCurrentGroupContent}
+              />
+            </Route>
+            <Route exact path="/target/:id">
+              <TargetProfile
+              targetedProfileInfo={this.state.targetedProfileInfo}
+              targetedFollowing={this.state.targetedFollowing}
+              targetedFollowers={this.state.targetedFollowers}
+              targetedPosts={this.state.targetedPosts}
               />
             </Route>
           </Switch>
