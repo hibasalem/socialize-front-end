@@ -53,6 +53,11 @@ export class App extends Component {
       showCurrentGroupPath: false,
       currentGroupContent: [],
       showCurrentGroupContent: false,
+      groupPosts: [],
+      showGroupPosts: false,
+      currentGroupID: null,
+      groupMembers: [],
+      showGroupMembers: false,
     };
   }
 
@@ -131,6 +136,15 @@ export class App extends Component {
       console.log('usergroups', this.state.usergroups);
     });
 
+    socket.on('returnGroupMembers', (data) => {
+      let groupMembers = data;
+      this.setState({
+        groupMembers: groupMembers,
+        showGroupMembers: true,
+      });
+      console.log('usergroups', this.state.usergroups);
+    });
+
     socket.on('returnCurrentGroupContent', (data) => {
       let currentGroupContent = data;
       // console.log('usergroups', usergroups);
@@ -138,7 +152,7 @@ export class App extends Component {
         currentGroupContent: currentGroupContent,
         showCurrentGroupContent: true,
       });
-      console.log('usergroups', this.state.usergroups);
+      console.log('currentGroupContent', this.state.currentGroupContent);
     });
 
     socket.on('error', (payload) => {
@@ -171,6 +185,29 @@ export class App extends Component {
     socket.on('newPost', () => {
       socket.emit('getAllPosts', { userID: this.state.user.userID });
     });
+
+    socket.on('returnNewGroupPost', (data) => {
+      let groupPosts = data;
+      // console.log('usergroups', usergroups);
+      this.setState({
+        groupPosts: groupPosts,
+        showGroupPosts: true,
+      });
+      console.log('groupPosts', this.state.groupPosts);
+    });
+  };
+
+  getAllGroupPosts = (data) => {
+    socket.emit('getAllGroupPosts', { groupID: data });
+  };
+
+  getGroupMembers = (data) => {
+    socket.emit('getGroupMembers', { groupID: data });
+  };
+
+  getFollowing = () => {
+    let userID = this.state.user.userID;
+    socket.emit('getFollowing', { userID: userID });
   };
 
   getFollowing = () => {
@@ -194,7 +231,8 @@ export class App extends Component {
   };
 
   getAllGroups = () => {
-    socket.emit('getAllGroups');
+    let userID = this.state.user.userID;
+    socket.emit('getAllGroups', { userID: userID });
   };
 
   loggedIn = (user) => {
@@ -235,8 +273,8 @@ export class App extends Component {
     this.getFollowing();
     this.getFollowers();
     socket.on('friendAdded', () => {
-      socket.emit('getAllPosts',{userID: this.state.user.userID });
-    })
+      socket.emit('getAllPosts', { userID: this.state.user.userID });
+    });
     // socket.emit('joinFollowRoom', { reciverId });
     // socket.emit('getAllPosts', { userID: this.state.user.userID });
   };
@@ -272,6 +310,7 @@ export class App extends Component {
     };
     socket.emit('createGroup', payload);
     this.getAllGroups();
+    this.getUsergroups();
   };
 
   handleJoinGroup = async (groupId, owner_id) => {
@@ -299,6 +338,7 @@ export class App extends Component {
       groupId: groupId,
     };
     this.setState({
+      currentGroupID: groupId,
       currentGroupPath: `/groups/${groupId}`,
       showCurrentGroupPath: true,
     });
@@ -315,6 +355,16 @@ export class App extends Component {
     };
     console.log(payload);
     socket.emit('post', payload);
+  };
+
+  handelGroupPost = (postContent, groupID) => {
+    let payload = {
+      postContent: postContent,
+      userID: this.state.user.userID,
+      groupID: groupID,
+    };
+    console.log(payload);
+    socket.emit('groupPost', payload);
   };
 
   //----sending the comment to the server----//
@@ -421,6 +471,15 @@ export class App extends Component {
               <CurrentGroup
                 currentGroupContent={this.state.currentGroupContent}
                 showCurrentGroupContent={this.state.showCurrentGroupContent}
+                post={this.handelGroupPost}
+                groupPosts={this.state.groupPosts}
+                showGroupPosts={this.state.showGroupPosts}
+                getAllGroupPosts={this.getAllGroupPosts}
+                currentGroupID={this.state.currentGroupID}
+                getGroupMembers={this.getGroupMembers}
+                showCurrentGroupPath={this.state.showCurrentGroupPath}
+                groupMembers={this.state.groupMembers}
+                showGroupMembers={this.state.showGroupMembers}
               />
             </Route>
           </Switch>
