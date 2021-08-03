@@ -55,7 +55,9 @@ export class App extends Component {
       socket.emit('test');
       socket.emit('getAllUsers');
     });
-
+    // socket.on('newuser',()=>{
+    //   socket.emit('getAllUsers');
+    // })
     socket.on('returnAllUsers', (data) => {
       this.setState({
         allusers: data,
@@ -140,8 +142,8 @@ export class App extends Component {
       });
     });
     //------notification of a new post ------//
-    socket.on('newPost',()=>{
-      socket.emit('getAllPosts',{ userID: this.state.user.userID });
+    socket.on('newPost', () => {
+      socket.emit('getAllPosts', { userID: this.state.user.userID });
     });
   };
 
@@ -184,7 +186,7 @@ export class App extends Component {
     }
     socket.emit('getAllPosts', { userID: this.state.user.userID });
     // console.log(this.state.posts);
-    socket.emit('join', { userID: this.state.user.userID });
+    // socket.emit('join', { userID: this.state.user.userID });
     // console.log('user', this.state.path, this.state.user);
   };
 
@@ -195,12 +197,17 @@ export class App extends Component {
   };
 
   handleAddFriend = (reciverId) => {
+    console.log('following...');
     let data = { reciverId: reciverId, senderId: this.state.user.userID };
     console.log(data);
     socket.emit('addFriend', data);
     this.getFollowing();
     this.getFollowers();
+    socket.on('friendAdded', () => {
+      socket.emit('getAllPosts',{userID: this.state.user.userID });
+    })
     // socket.emit('joinFollowRoom', { reciverId });
+    // socket.emit('getAllPosts', { userID: this.state.user.userID });
   };
 
   handleShowMessenger = (reciverId) => {
