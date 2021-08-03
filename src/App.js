@@ -58,6 +58,10 @@ export class App extends Component {
       currentGroupID: null,
       groupMembers: [],
       showGroupMembers: false,
+      groupPostsLikes: [],
+      showGroupPostsLikes: false,
+      groupComments: [],
+      showGroupComments: false
     };
   }
 
@@ -66,6 +70,7 @@ export class App extends Component {
       socket.emit('test');
       socket.emit('getAllUsers');
     });
+   
     // socket.on('newuser',()=>{
     //   socket.emit('getAllUsers');
     // })
@@ -181,6 +186,15 @@ export class App extends Component {
         comments: payload,
       });
     });
+
+    socket.on('returnGroupComments', (payload) => {
+      this.setState({
+        groupComments: payload,
+        showGroupComments: true
+      });
+      console.log('returned comments payload',payload);
+    });
+
     //------notification of a new post ------//
     socket.on('newPost', () => {
       socket.emit('getAllPosts', { userID: this.state.user.userID });
@@ -195,10 +209,25 @@ export class App extends Component {
       });
       console.log('groupPosts', this.state.groupPosts);
     });
+    
+    socket.on('returnGroupLikes', (data) => {
+      let groupPostsLikes = data;
+      // console.log('usergroups', usergroups);
+      this.setState({
+        groupPostsLikes: groupPostsLikes,
+        showGroupPostsLikes: true,
+      });
+      console.log('groupPostsLikes', this.state.groupPostsLikes);
+    });
+
   };
 
   getAllGroupPosts = (data) => {
     socket.emit('getAllGroupPosts', { groupID: data });
+  };
+
+  getAllGroupComments = () => {
+    socket.emit('getAllGroupComments');
   };
 
   getGroupMembers = (data) => {
@@ -347,6 +376,15 @@ export class App extends Component {
     // this.getGroupRequests();
   };
 
+  groupPostLike = (postId,groupId) => {
+    let payload = {
+      postId: postId,
+      userId: this.state.user.userID,
+      groupId:groupId
+    };
+    socket.emit('groupPostLike', payload);
+  };
+
   //-----sending the post to the server-----//
   post = (postContent) => {
     let payload = {
@@ -375,6 +413,16 @@ export class App extends Component {
       userID: this.state.user.userID,
     };
     socket.emit('comment', payload);
+  };
+
+  handleGroupComment = (commentContent, post_id) => {
+    let payload = {
+      content: commentContent,
+      postId: post_id,
+      userId: this.state.user.userID,
+    };
+    // console.log('hello from group comment',payload);
+    socket.emit('groupComment', payload);
   };
   //------sending the like to the server------//
   like = (post_id) => {
@@ -480,6 +528,13 @@ export class App extends Component {
                 showCurrentGroupPath={this.state.showCurrentGroupPath}
                 groupMembers={this.state.groupMembers}
                 showGroupMembers={this.state.showGroupMembers}
+                groupPostLike={this.groupPostLike}
+                groupPostsLikes={this.state.groupPostsLikes}
+                showGroupPostsLikes={this.state.showGroupPostsLikes}
+                comment={this.handleGroupComment}
+                groupComments={this.state.groupComments}
+                showGroupComments={this.state.showGroupComments}
+                getAllGroupComments={this.getAllGroupComments}
               />
             </Route>
           </Switch>

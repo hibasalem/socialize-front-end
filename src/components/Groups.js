@@ -97,7 +97,7 @@ export class Groups extends Component {
                   accept
                 </button>
 
-                <button
+                {/* <button
                   onClick={() =>
                     this.props.handleAcceptJoinGroup(
                       this.props.GroupRequests.data.group_id,
@@ -106,7 +106,7 @@ export class Groups extends Component {
                   }
                 >
                   decline
-                </button>
+                </button> */}
               </>
             );
           })}
