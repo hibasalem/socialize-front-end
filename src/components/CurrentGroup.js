@@ -17,7 +17,7 @@ export class CurrentGroup extends Component {
         )}
         {/* getGetGroupMembers={this.getGetGroupMembers} */}
         {/* {this.props.showCurrentGroupPath && (
-         
+         something
         )} */}
 
         <h2>group Members</h2>
@@ -29,6 +29,7 @@ export class CurrentGroup extends Component {
               </p>
             );
           })}
+
         <PostForm
           post={this.props.post}
           groupId={this.props.currentGroupContent.id}
