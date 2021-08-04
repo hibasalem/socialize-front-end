@@ -11,8 +11,9 @@ export class Groups extends Component {
   }
   componentDidMount = () => {
     // console.log(this.props.user);
-    this.props.getAllGroups();
+
     this.props.getGroupRequests();
+    this.props.getAllGroups();
     this.props.getUsergroups();
   };
   createGroup = (e) => {
@@ -78,7 +79,10 @@ export class Groups extends Component {
           <b>your groups requests</b>
         </h2>
 
-        {this.props.showGroupsRequests &&
+        {
+        this.props.showGroupsRequests 
+        &&
+
           this.props.GroupRequests.groupsNames.map((item, idx) => {
             return (
               <>
@@ -90,7 +94,8 @@ export class Groups extends Component {
                   onClick={() =>
                     this.props.handleAcceptJoinGroup(
                       this.props.GroupRequests.data[idx].group_id,
-                      this.props.GroupRequests.data[idx].member_id
+                      this.props.GroupRequests.data[idx].member_id,
+                      this.props.GroupRequests.data[idx].owner_id
                     )
                   }
                 >
@@ -109,7 +114,8 @@ export class Groups extends Component {
                 </button> */}
               </>
             );
-          })}
+          })
+          }
 
         <h2>
           <b>your joined groups</b>

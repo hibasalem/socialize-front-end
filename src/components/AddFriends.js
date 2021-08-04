@@ -5,11 +5,11 @@ export class AddFriends extends Component {
 
   render() {
     return (
-
       <div>
         {this.props.allusers.map((item, idx) => {
-
-          return (
+          if (item.id !== this.props.userID) {
+            
+          return (       
             <Friend
               targetProfile={this.props.targetProfile}
               key={idx}
@@ -17,6 +17,7 @@ export class AddFriends extends Component {
               handleAddFriend={this.props.handleAddFriend}
             />
           );
+          }
         })}
       </div>
     );
