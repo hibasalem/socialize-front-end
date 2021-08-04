@@ -54,12 +54,10 @@ export class App extends Component {
       showCurrentGroupPath: false,
       currentGroupContent: [],
       showCurrentGroupContent: false,
-<<<<<<< HEAD
       targetedProfileInfo:[],
       targetedFollowing:[],
       targetedFollowers:[],
       targetedPosts:[],
-=======
       groupPosts: [],
       showGroupPosts: false,
       currentGroupID: null,
@@ -69,7 +67,6 @@ export class App extends Component {
       showGroupPostsLikes: false,
       groupComments: [],
       showGroupComments: false
->>>>>>> 6152f2d0e6aee8fe4bebf2ee69cf64db4d8638c3
     };
   }
 
@@ -335,11 +332,7 @@ export class App extends Component {
     this.getFollowers();
     socket.on('friendAdded', () => {
       socket.emit('getAllPosts', { userID: this.state.user.userID });
-<<<<<<< HEAD
-    })
-=======
     });
->>>>>>> 6152f2d0e6aee8fe4bebf2ee69cf64db4d8638c3
     // socket.emit('joinFollowRoom', { reciverId });
     // socket.emit('getAllPosts', { userID: this.state.user.userID });
   };
