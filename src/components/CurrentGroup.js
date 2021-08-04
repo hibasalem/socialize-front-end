@@ -12,10 +12,12 @@ export class CurrentGroup extends Component {
 
   render() {
     return (
-      <>
+      <div>
         {this.props.showCurrentGroupContent && (
           <>
-            <div>{this.props.currentGroupContent.group_name}</div>
+            <div className="mainDiv">
+              {this.props.currentGroupContent.group_name}
+            </div>
           </>
         )}
         {/* getGetGroupMembers={this.getGetGroupMembers} */}
@@ -41,23 +43,31 @@ export class CurrentGroup extends Component {
           this.props.groupPosts.map((item, idx) => {
             return (
               <>
-              <GroupPost groupPostLike={this.props.groupPostLike} item={item} key={idx} groupPostsLikes={this.props.groupPostsLikes}showGroupPostsLikes={this.props.showGroupPostsLikes}/>
-              <CommentForm comment={this.props.comment} id={item.id}/>
-              {this.props.showGroupComments
-               &&
-              this.props.groupComments.map((comment, index) => {
+                <GroupPost
+                  groupPostLike={this.props.groupPostLike}
+                  item={item}
+                  key={idx}
+                  groupPostsLikes={this.props.groupPostsLikes}
+                  showGroupPostsLikes={this.props.showGroupPostsLikes}
+                />
+                <CommentForm comment={this.props.comment} id={item.id} />
+                {this.props.showGroupComments &&
+                  this.props.groupComments.map((comment, index) => {
                     let value;
                     if (item.id === comment.g_post_id) {
-                        value = <p key={index}><b>{comment.g_commenter_name}</b> {comment.content} {new Date(comment.send_time).toLocaleString()}</p>
+                      value = (
+                        <p key={index}>
+                          <b>{comment.g_commenter_name}</b> {comment.content}{' '}
+                          {new Date(comment.send_time).toLocaleString()}
+                        </p>
+                      );
                     }
                     return value;
-
-                })
-                }
+                  })}
               </>
             );
           })}
-      </>
+      </div>
     );
   }
 }

@@ -4,11 +4,12 @@ import React, { Component } from 'react';
 import Login from './login';
 import Signup from './Signup';
 import LogOut from './LogOut';
+import './home.css';
 
 export class Home extends Component {
   render() {
     return (
-      <div>
+      <div className="homeH">
         {this.props.loggedIn && <LogOut logOut={this.props.logOut} />}
 
         {!this.props.loggedIn && (
@@ -17,7 +18,7 @@ export class Home extends Component {
               loggedIn={this.props.loggedIn}
               loggedInFunction={this.props.loggedInFunction}
             />
-            <Signup/>
+            <Signup />
           </>
         )}
       </div>

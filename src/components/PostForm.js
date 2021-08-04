@@ -21,16 +21,16 @@ export class PostForm extends Component {
             this.post(e);
           }}
         >
-          <label>what on your mind</label>
           <input
             type="text"
+            placeholder="type your post here "
             onChange={(e) => {
               this.setState({
                 content: e.target.value,
               });
             }}
           />
-          <input type="submit" />
+          <input className="mybuttonnn" type="submit" value="post" />
         </form>
       </div>
     );

@@ -25,7 +25,7 @@ export class Groups extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="mainDiv">
         <form
           onSubmit={(e) => {
             this.createGroup(e);
@@ -79,10 +79,7 @@ export class Groups extends Component {
           <b>your groups requests</b>
         </h2>
 
-        {
-        this.props.showGroupsRequests 
-        &&
-
+        {this.props.showGroupsRequests &&
           this.props.GroupRequests.groupsNames.map((item, idx) => {
             return (
               <>
@@ -114,8 +111,7 @@ export class Groups extends Component {
                 </button> */}
               </>
             );
-          })
-          }
+          })}
 
         <h2>
           <b>your joined groups</b>

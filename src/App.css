@@ -36,17 +36,22 @@
     transform: rotate(360deg);
   }
 }
-.Header{
+.Header {
   width: 100%;
-  height:60px;
+  height: 60px;
   background-color: black;
-
 }
-.Header nav a{
+.Header nav a {
   font-size: large;
   color: white;
   text-decoration: none;
   line-height: 55px;
   vertical-align: middle;
-  margin-left:20px;
+  margin-left: 20px;
+}
+
+.mainDiv {
+  margin-top: 140px;
+  margin-left: 7%;
+  margin-right: 7%;
 }

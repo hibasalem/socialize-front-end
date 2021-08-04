@@ -1,0 +1,51 @@
+.post {
+  border: #ececec 2px solid;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  background-color: #ffffff;
+  width: 90%;
+  margin-left: 5% !important;
+  margin-bottom: 5% !important;
+}
+
+.postCont {
+  margin-left: 20% !important;
+  margin: 3%;
+  border: #dddddd 2px solid;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  background-color: #afafaf13;
+  width: 60%;
+}
+
+.mybuttonnn {
+  border-radius: 10px;
+  border: rgb(156, 156, 156) solid !important;
+  padding: 3px;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.like {
+  /* float: left; */
+  margin-left: 5% !important;
+  border-radius: 10px;
+  border: rgb(156, 156, 156) solid !important;
+  padding: 3px;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+.comment {
+  margin-left: 18% !important;
+}
+
+.commentForm {
+  margin-left: 4% !important;
+
+  
+  border: #dddddd 2px solid;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  background-color: #afafaf13;
+}

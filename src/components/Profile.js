@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Posts from './Posts';
 import Messenger from './Messenger';
+import './profile.css';
 
 class Profile extends Component {
   componentDidMount = () => {
@@ -12,7 +13,7 @@ class Profile extends Component {
 
   render() {
     return (
-      <div>
+      <div className="mainDiv">
         <p>
           <b>hi</b> {this.props.user.firstname} {this.props.user.lastname}
         </p>

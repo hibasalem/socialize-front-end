@@ -6,6 +6,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import './header.css';
 
 export class LogOut extends Component {
   logout = async () => {
@@ -18,7 +19,7 @@ export class LogOut extends Component {
   render() {
     return (
       <a href="http://localhost:3000/">
-        <button className="button" onClick={this.logout}>
+        <button className="logout" onClick={this.logout}>
           Log Out
         </button>
       </a>

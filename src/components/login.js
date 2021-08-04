@@ -36,34 +36,39 @@ export class Login extends Component {
   render() {
     return (
       <div>
-        this is a login page
-        <form
-          onSubmit={(e) => {
-            this.login(e);
-          }}
-        >
-          <label>enter Email:</label>
-          <input
-            type="text"
-            placeholder="your Email"
-            required
-            onChange={(e) => {
-              this.setState({ email: e.target.value });
-              console.log(this.state.email);
+        <div className="sign">
+          <h4>Signin</h4>
+          <form
+            onSubmit={(e) => {
+              this.login(e);
             }}
-          />
-          <label>enter password:</label>
-          <input
-            type="password"
-            placeholder="your Password"
-            required
-            onChange={(e) => {
-              this.setState({ password: e.target.value });
-              console.log(this.state.password);
-            }}
-          />
-          <input type="submit" />
-        </form>
+          >
+            {/* <label>Email </label> */}
+            <input
+              type="text"
+              placeholder="Email"
+              required
+              onChange={(e) => {
+                this.setState({ email: e.target.value });
+                console.log(this.state.email);
+              }}
+            />
+            <br />
+
+            {/* <label>Password </label> */}
+            <input
+              type="password"
+              placeholder="Password"
+              required
+              onChange={(e) => {
+                this.setState({ password: e.target.value });
+                console.log(this.state.password);
+              }}
+            />
+            <br />
+            <input type="submit" value="Sign in" />
+          </form>
+        </div>
       </div>
     );
   }

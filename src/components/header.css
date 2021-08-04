@@ -1,0 +1,42 @@
+.Header {
+  background-color: #000000 !important;
+  position: absolute;
+  display: inline;
+  top: 0;
+  padding-left: 35%;
+  padding-top: 30px;
+  height: 110px !important;
+}
+
+.name {
+  color: #ededed !important;
+  position: absolute;
+  left: 120px;
+  font-size: 28px !important;
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+
+.names {
+  font-size: 20px !important;
+  margin-left: 40px !important;
+  letter-spacing: 2px;
+}
+
+.names:hover {
+  color: tomato !important;
+}
+
+.logout {
+  border-radius: 12px !important;
+  padding-left: 2%;
+  padding-right: 2%;
+  height: 40px !important;
+  position: absolute;
+  top: 35%;
+  font-size: 20px;
+  background-color: #ededed;
+  left: 80%;
+  padding-bottom: 10px !important;
+  justify-content: center;
+}
