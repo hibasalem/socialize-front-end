@@ -11,11 +11,10 @@ import axios from 'axios';
         lastName: '',
     }
 }
-signup = (e) => {
+signup = async (e) => {
   e.preventDefault();
   console.log('sent');
-  axios.post('http://localhost:5000/signup', { email: this.state.email, pass: this.state.password, firstName: this.state.firstName, lastName: this.state.lastName });
-
+  await axios.post('http://localhost:5000/signup', { email: this.state.email, pass: this.state.password, firstName: this.state.firstName, lastName: this.state.lastName });
 }
   render() {
     return (

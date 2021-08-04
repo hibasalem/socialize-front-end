@@ -98,6 +98,9 @@ export class App extends Component {
         })
         // console.log(this.state.targetedPosts);
       })
+      socket.on('newUsersList',()=>{
+        socket.emit('getAllUsers');
+      })
     });
    
     // socket.on('newuser',()=>{
@@ -312,6 +315,7 @@ export class App extends Component {
       userID: this.state.user.userID,
     };
     socket.emit('getAllPosts', { userID: this.state.user.userID });
+    socket.emit('getNewUsersList');
     // console.log(this.state.posts);
     // socket.emit('join', { userID: this.state.user.userID });
     // console.log('user', this.state.path, this.state.user);
@@ -419,6 +423,7 @@ export class App extends Component {
     let payload = {
       postContent: postContent,
       userID: this.state.user.userID,
+      name:`${this.state.user.firstname} ${this.state.user.lastname}`
     };
     console.log(payload);
     socket.emit('post', payload);
@@ -440,6 +445,7 @@ export class App extends Component {
       content: commentContent,
       post_id: post_id,
       userID: this.state.user.userID,
+      name:`${this.state.user.firstname} ${this.state.user.lastname}`
     };
     socket.emit('comment', payload);
   };
@@ -468,7 +474,6 @@ export class App extends Component {
   socket.emit('getTargetFollowers',id);
   socket.emit('getTargetPosts',id);
   }
-
   render() {
     return (
       <Router>
