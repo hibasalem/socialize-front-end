@@ -54,10 +54,10 @@ export class App extends Component {
       showCurrentGroupPath: false,
       currentGroupContent: [],
       showCurrentGroupContent: false,
-      targetedProfileInfo:[],
-      targetedFollowing:[],
-      targetedFollowers:[],
-      targetedPosts:[],
+      targetedProfileInfo: [],
+      targetedFollowing: [],
+      targetedFollowers: [],
+      targetedPosts: [],
       groupPosts: [],
       showGroupPosts: false,
       currentGroupID: null,
@@ -66,7 +66,7 @@ export class App extends Component {
       groupPostsLikes: [],
       showGroupPostsLikes: false,
       groupComments: [],
-      showGroupComments: false
+      showGroupComments: false,
     };
   }
 
@@ -74,60 +74,63 @@ export class App extends Component {
     socket.on('connect', () => {
       socket.emit('test');
       socket.emit('getAllUsers');
-      socket.on('requestAccepted',(payload)=>{
+      socket.on('requestAccepted', (payload) => {
         // console.log(payload.ownerId);
         // console.log(payload.memberId);
-        if(this.state.user.userID === payload.memberId || this.state.user.userID === payload.ownerId){
+        if (this.state.user.userID === payload.memberId || this.state.user.userID === payload.ownerId) {
           let userID = this.state.user.userID;
           socket.emit('getAllGroups', { userID: userID });
           socket.emit('getUsergroups', { userID: userID });
           socket.emit('getGroupRequests', { userID: userID });
         }
       })
-      socket.on('joinGroupRequest',(payload)=>{
-        if(this.state.user.userID === payload){
+      socket.on('newLike',()=>{
+        socket.emit('getAllPosts', { userID: this.state.user.userID });
+      })
+      socket.on('joinGroupRequest', (payload) => {
+        if (this.state.user.userID === payload) {
           this.getGroupRequests();
         }
       })
-      socket.on('groupisCreated',()=>{
+      socket.on('groupisCreated', () => {
         let userID = this.state.user.userID;
         socket.emit('getAllGroups', { userID: userID });
         socket.emit('getUsergroups', { userID: userID });
       })
-      socket.on('haveBeenFollowed',(payload)=>{
-        if(this.state.user.userID === payload){
+      socket.on('haveBeenFollowed', (payload) => {
+        if (this.state.user.userID === payload) {
           this.getFollowers();
         }
       })
-      socket.on('targetInfo',(payload)=>{
+      socket.on('targetInfo', (payload) => {
         this.setState({
-          targetedProfileInfo:payload[0],
+          targetedProfileInfo: payload[0],
         })
         // console.log(this.state.targetedProfileInfo);
       });
-      socket.on('targetFollowing',(payload)=>{
+      socket.on('targetFollowing', (payload) => {
         this.setState({
-          targetedFollowing:payload,
+          targetedFollowing: payload,
         })
         // console.log(this.state.targetedFollowing);
       });
-      socket.on('targetFollowers',(payload)=>{
+      socket.on('targetFollowers', (payload) => {
         this.setState({
-          targetedFollowers:payload,
+          targetedFollowers: payload,
         })
         // console.log(this.state.targetedFollowers);
       });
-      socket.on('targetPosts',(payload)=>{
+      socket.on('targetPosts', (payload) => {
         this.setState({
-          targetedPosts:payload
+          targetedPosts: payload
         })
         // console.log(this.state.targetedPosts);
       })
-      socket.on('newUsersList',()=>{
+      socket.on('newUsersList', () => {
         socket.emit('getAllUsers');
       })
     });
-   
+
     // socket.on('newuser',()=>{
     //   socket.emit('getAllUsers');
     // })
@@ -249,7 +252,7 @@ export class App extends Component {
         groupComments: payload,
         showGroupComments: true
       });
-      console.log('returned comments payload',payload);
+      console.log('returned comments payload', payload);
     });
 
     //------notification of a new post ------//
@@ -266,20 +269,17 @@ export class App extends Component {
       });
       console.log('groupPosts', this.state.groupPosts);
     });
-    
-    socket.on('returnGroupLikes', (data) => {
-      let groupPostsLikes = data;
-      // console.log('usergroups', usergroups);
-      this.setState({
-        groupPostsLikes: groupPostsLikes,
-        showGroupPostsLikes: true,
-      });
-      console.log('groupPostsLikes', this.state.groupPostsLikes);
+
+    socket.on('returnGroupLikes', (payload) => {
+      let info = payload;
+      console.log('what is this', payload);
+      socket.emit('getAllGroupPosts', { groupID: info[0].g_groups_id });
     });
 
   };
 
   getAllGroupPosts = (data) => {
+    console.log('this is data: ',data)
     socket.emit('getAllGroupPosts', { groupID: data });
   };
 
@@ -305,7 +305,7 @@ export class App extends Component {
     let userID = this.state.user.userID;
     socket.emit('getFollowers', { userID: userID });
   };
-  
+
   getGroupRequests = () => {
     let userID = this.state.user.userID;
     socket.emit('getGroupRequests', { userID: userID });
@@ -367,7 +367,7 @@ export class App extends Component {
   };
 
   handleShowMessenger = (reciverId) => {
-    
+
     this.setState({
       showMessenger: true,
       messageReceiverId: reciverId,
@@ -383,7 +383,7 @@ export class App extends Component {
       messageRoomId: room
     };
 
-    socket.emit('returnAllMessages',payload)
+    socket.emit('returnAllMessages', payload)
   };
 
   handleSendMessage = (messageContent) => {
@@ -400,7 +400,7 @@ export class App extends Component {
       messageRoomId: room,
     };
     socket.emit('sendMessage', payload);
-    
+
   };
 
   handleCreateGroup = (groupName, groupDescription) => {
@@ -424,11 +424,11 @@ export class App extends Component {
     this.getGroupRequests();
   };
 
-  handleAcceptJoinGroup = (groupId, memberId,owner_id) => {
+  handleAcceptJoinGroup = (groupId, memberId, owner_id) => {
     let payload = {
       groupId: groupId,
       memberId: memberId,
-      ownerId:owner_id
+      ownerId: owner_id
     };
     socket.emit('acceptJoinGroup', payload);
     // console.log('accept pressed');
@@ -449,11 +449,11 @@ export class App extends Component {
     // this.getGroupRequests();
   };
 
-  groupPostLike = (postId,groupId) => {
+  groupPostLike = (postId, groupId) => {
     let payload = {
       postId: postId,
       userId: this.state.user.userID,
-      groupId:groupId
+      groupId: groupId
     };
     socket.emit('groupPostLike', payload);
   };
@@ -463,7 +463,7 @@ export class App extends Component {
     let payload = {
       postContent: postContent,
       userID: this.state.user.userID,
-      name:`${this.state.user.firstname} ${this.state.user.lastname}`
+      name: `${this.state.user.firstname} ${this.state.user.lastname}`
     };
     console.log(payload);
     socket.emit('post', payload);
@@ -485,7 +485,7 @@ export class App extends Component {
       content: commentContent,
       post_id: post_id,
       userID: this.state.user.userID,
-      name:`${this.state.user.firstname} ${this.state.user.lastname}`
+      name: `${this.state.user.firstname} ${this.state.user.lastname}`
     };
     socket.emit('comment', payload);
   };
@@ -499,20 +499,16 @@ export class App extends Component {
     // console.log('hello from group comment',payload);
     socket.emit('groupComment', payload);
   };
-  //------sending the like to the server------//
-  like = (post_id) => {
-    let payload = {
-      post_id: post_id,
-      userID: this.state.user.userID,
-    };
-    socket.emit('like', payload);
-  };
   //-----target getting info of the target profile from BE-----//
   targetProfile = (id) => {
-  socket.emit('getTargetInfo',id);
-  socket.emit('getTargetFollowing',id);
-  socket.emit('getTargetFollowers',id);
-  socket.emit('getTargetPosts',id);
+    socket.emit('getTargetInfo', id);
+    socket.emit('getTargetFollowing', id);
+    socket.emit('getTargetFollowers', id);
+    socket.emit('getTargetPosts', id);
+  }
+  //----updating the post like-----//
+  like=(id)=>{
+    socket.emit('like',id);
   }
   render() {
     return (
@@ -532,7 +528,7 @@ export class App extends Component {
             </Route>
             <Route exact path="/feedPage">
               {
-                <FeedPage
+                <FeedPage  
                   showPosts={this.state.showPosts}
                   userID={this.state.user.userID}
                   like={this.like}
@@ -613,7 +609,6 @@ export class App extends Component {
                 showGroupMembers={this.state.showGroupMembers}
                 groupPostLike={this.groupPostLike}
                 groupPostsLikes={this.state.groupPostsLikes}
-                showGroupPostsLikes={this.state.showGroupPostsLikes}
                 comment={this.handleGroupComment}
                 groupComments={this.state.groupComments}
                 showGroupComments={this.state.showGroupComments}
@@ -622,10 +617,10 @@ export class App extends Component {
             </Route>
             <Route exact path="/target/:id">
               <TargetProfile
-              targetedProfileInfo={this.state.targetedProfileInfo}
-              targetedFollowing={this.state.targetedFollowing}
-              targetedFollowers={this.state.targetedFollowers}
-              targetedPosts={this.state.targetedPosts}
+                targetedProfileInfo={this.state.targetedProfileInfo}
+                targetedFollowing={this.state.targetedFollowing}
+                targetedFollowers={this.state.targetedFollowers}
+                targetedPosts={this.state.targetedPosts}
               />
             </Route>
           </Switch>

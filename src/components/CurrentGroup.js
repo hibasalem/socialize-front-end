@@ -41,7 +41,7 @@ export class CurrentGroup extends Component {
           this.props.groupPosts.map((item, idx) => {
             return (
               <>
-              <GroupPost groupPostLike={this.props.groupPostLike} item={item} key={idx} groupPostsLikes={this.props.groupPostsLikes}showGroupPostsLikes={this.props.showGroupPostsLikes}/>
+              <GroupPost groupPostLike={this.props.groupPostLike} item={item} key={idx} groupPostsLikes={this.props.groupPostsLikes}/>
               <CommentForm comment={this.props.comment} id={item.id}/>
               {this.props.showGroupComments
                &&

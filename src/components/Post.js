@@ -5,6 +5,7 @@ export class Post extends Component {
     like = (id) => {
         this.props.like(id);
     }
+
     render() {
 
         return (
@@ -12,6 +13,7 @@ export class Post extends Component {
                 <h4>{this.props.poster_name} At { new Date(this.props.post_time).toLocaleString()} </h4>
                 {this.props.postContent}
                 <button onClick={() => this.like(this.props.postID)}>Like</button>
+                <p>{this.props.post_likes}&#128077;</p>
 
                 {this.props.comments.map((item, index) => {
                     let value;
