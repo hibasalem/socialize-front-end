@@ -48,7 +48,6 @@ export class CurrentGroup extends Component {
                   item={item}
                   key={idx}
                   groupPostsLikes={this.props.groupPostsLikes}
-                  showGroupPostsLikes={this.props.showGroupPostsLikes}
                 />
                 <CommentForm comment={this.props.comment} id={item.id} />
                 {this.props.showGroupComments &&

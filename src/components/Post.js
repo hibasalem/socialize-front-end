@@ -4,6 +4,7 @@ export class Post extends Component {
   like = (id) => {
     this.props.like(id);
   };
+
   render() {
     return (
       <div>
@@ -18,6 +19,7 @@ export class Post extends Component {
           <button className="like" onClick={() => this.like(this.props.postID)}>
             Like
           </button>
+          <p>{this.props.post_likes}&#128077;</p>
         </div>
         <div className="comment">
           {this.props.comments.map((item, index) => {
