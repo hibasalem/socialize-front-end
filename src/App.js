@@ -54,10 +54,22 @@ export class App extends Component {
       showCurrentGroupPath: false,
       currentGroupContent: [],
       showCurrentGroupContent: false,
+<<<<<<< HEAD
       targetedProfileInfo:[],
       targetedFollowing:[],
       targetedFollowers:[],
       targetedPosts:[],
+=======
+      groupPosts: [],
+      showGroupPosts: false,
+      currentGroupID: null,
+      groupMembers: [],
+      showGroupMembers: false,
+      groupPostsLikes: [],
+      showGroupPostsLikes: false,
+      groupComments: [],
+      showGroupComments: false
+>>>>>>> 6152f2d0e6aee8fe4bebf2ee69cf64db4d8638c3
     };
   }
 
@@ -90,6 +102,7 @@ export class App extends Component {
         // console.log(this.state.targetedPosts);
       })
     });
+   
     // socket.on('newuser',()=>{
     //   socket.emit('getAllUsers');
     // })
@@ -160,6 +173,15 @@ export class App extends Component {
       console.log('usergroups', this.state.usergroups);
     });
 
+    socket.on('returnGroupMembers', (data) => {
+      let groupMembers = data;
+      this.setState({
+        groupMembers: groupMembers,
+        showGroupMembers: true,
+      });
+      console.log('usergroups', this.state.usergroups);
+    });
+
     socket.on('returnCurrentGroupContent', (data) => {
       let currentGroupContent = data;
       // console.log('usergroups', usergroups);
@@ -167,7 +189,7 @@ export class App extends Component {
         currentGroupContent: currentGroupContent,
         showCurrentGroupContent: true,
       });
-      console.log('usergroups', this.state.usergroups);
+      console.log('currentGroupContent', this.state.currentGroupContent);
     });
 
     socket.on('error', (payload) => {
@@ -196,10 +218,57 @@ export class App extends Component {
         comments: payload,
       });
     });
+
+    socket.on('returnGroupComments', (payload) => {
+      this.setState({
+        groupComments: payload,
+        showGroupComments: true
+      });
+      console.log('returned comments payload',payload);
+    });
+
     //------notification of a new post ------//
     socket.on('newPost', () => {
       socket.emit('getAllPosts', { userID: this.state.user.userID });
     });
+
+    socket.on('returnNewGroupPost', (data) => {
+      let groupPosts = data;
+      // console.log('usergroups', usergroups);
+      this.setState({
+        groupPosts: groupPosts,
+        showGroupPosts: true,
+      });
+      console.log('groupPosts', this.state.groupPosts);
+    });
+    
+    socket.on('returnGroupLikes', (data) => {
+      let groupPostsLikes = data;
+      // console.log('usergroups', usergroups);
+      this.setState({
+        groupPostsLikes: groupPostsLikes,
+        showGroupPostsLikes: true,
+      });
+      console.log('groupPostsLikes', this.state.groupPostsLikes);
+    });
+
+  };
+
+  getAllGroupPosts = (data) => {
+    socket.emit('getAllGroupPosts', { groupID: data });
+  };
+
+  getAllGroupComments = () => {
+    socket.emit('getAllGroupComments');
+  };
+
+  getGroupMembers = (data) => {
+    socket.emit('getGroupMembers', { groupID: data });
+  };
+
+  getFollowing = () => {
+    let userID = this.state.user.userID;
+    socket.emit('getFollowing', { userID: userID });
   };
 
   getFollowing = () => {
@@ -223,7 +292,8 @@ export class App extends Component {
   };
 
   getAllGroups = () => {
-    socket.emit('getAllGroups');
+    let userID = this.state.user.userID;
+    socket.emit('getAllGroups', { userID: userID });
   };
 
   loggedIn = (user) => {
@@ -265,7 +335,11 @@ export class App extends Component {
     this.getFollowers();
     socket.on('friendAdded', () => {
       socket.emit('getAllPosts', { userID: this.state.user.userID });
+<<<<<<< HEAD
     })
+=======
+    });
+>>>>>>> 6152f2d0e6aee8fe4bebf2ee69cf64db4d8638c3
     // socket.emit('joinFollowRoom', { reciverId });
     // socket.emit('getAllPosts', { userID: this.state.user.userID });
   };
@@ -301,6 +375,7 @@ export class App extends Component {
     };
     socket.emit('createGroup', payload);
     this.getAllGroups();
+    this.getUsergroups();
   };
 
   handleJoinGroup = async (groupId, owner_id) => {
@@ -328,12 +403,22 @@ export class App extends Component {
       groupId: groupId,
     };
     this.setState({
+      currentGroupID: groupId,
       currentGroupPath: `/groups/${groupId}`,
       showCurrentGroupPath: true,
     });
     socket.emit('viewGroup', payload);
     // console.log(payload);
     // this.getGroupRequests();
+  };
+
+  groupPostLike = (postId,groupId) => {
+    let payload = {
+      postId: postId,
+      userId: this.state.user.userID,
+      groupId:groupId
+    };
+    socket.emit('groupPostLike', payload);
   };
 
   //-----sending the post to the server-----//
@@ -346,6 +431,16 @@ export class App extends Component {
     socket.emit('post', payload);
   };
 
+  handelGroupPost = (postContent, groupID) => {
+    let payload = {
+      postContent: postContent,
+      userID: this.state.user.userID,
+      groupID: groupID,
+    };
+    console.log(payload);
+    socket.emit('groupPost', payload);
+  };
+
   //----sending the comment to the server----//
   comment = (commentContent, post_id) => {
     let payload = {
@@ -354,6 +449,16 @@ export class App extends Component {
       userID: this.state.user.userID,
     };
     socket.emit('comment', payload);
+  };
+
+  handleGroupComment = (commentContent, post_id) => {
+    let payload = {
+      content: commentContent,
+      postId: post_id,
+      userId: this.state.user.userID,
+    };
+    // console.log('hello from group comment',payload);
+    socket.emit('groupComment', payload);
   };
   //------sending the like to the server------//
   like = (post_id) => {
@@ -458,6 +563,22 @@ export class App extends Component {
               <CurrentGroup
                 currentGroupContent={this.state.currentGroupContent}
                 showCurrentGroupContent={this.state.showCurrentGroupContent}
+                post={this.handelGroupPost}
+                groupPosts={this.state.groupPosts}
+                showGroupPosts={this.state.showGroupPosts}
+                getAllGroupPosts={this.getAllGroupPosts}
+                currentGroupID={this.state.currentGroupID}
+                getGroupMembers={this.getGroupMembers}
+                showCurrentGroupPath={this.state.showCurrentGroupPath}
+                groupMembers={this.state.groupMembers}
+                showGroupMembers={this.state.showGroupMembers}
+                groupPostLike={this.groupPostLike}
+                groupPostsLikes={this.state.groupPostsLikes}
+                showGroupPostsLikes={this.state.showGroupPostsLikes}
+                comment={this.handleGroupComment}
+                groupComments={this.state.groupComments}
+                showGroupComments={this.state.showGroupComments}
+                getAllGroupComments={this.getAllGroupComments}
               />
             </Route>
             <Route exact path="/target/:id">
