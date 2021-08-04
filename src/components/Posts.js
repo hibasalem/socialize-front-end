@@ -13,6 +13,7 @@ export class Posts extends Component {
                         <div key={index}>
                             
                             <Post 
+                            post_likes={element.likes}
                             post_time={element.send_time}
                             poster_name={element.poster_name}
                             like={this.props.like}
