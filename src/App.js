@@ -74,6 +74,31 @@ export class App extends Component {
     socket.on('connect', () => {
       socket.emit('test');
       socket.emit('getAllUsers');
+      socket.on('requestAccepted',(payload)=>{
+        // console.log(payload.ownerId);
+        // console.log(payload.memberId);
+        if(this.state.user.userID === payload.memberId || this.state.user.userID === payload.ownerId){
+          let userID = this.state.user.userID;
+          socket.emit('getAllGroups', { userID: userID });
+          socket.emit('getUsergroups', { userID: userID });
+          socket.emit('getGroupRequests', { userID: userID });
+        }
+      })
+      socket.on('joinGroupRequest',(payload)=>{
+        if(this.state.user.userID === payload){
+          this.getGroupRequests();
+        }
+      })
+      socket.on('groupisCreated',()=>{
+        let userID = this.state.user.userID;
+        socket.emit('getAllGroups', { userID: userID });
+        socket.emit('getUsergroups', { userID: userID });
+      })
+      socket.on('haveBeenFollowed',(payload)=>{
+        if(this.state.user.userID === payload){
+          this.getFollowers();
+        }
+      })
       socket.on('targetInfo',(payload)=>{
         this.setState({
           targetedProfileInfo:payload[0],
@@ -144,13 +169,13 @@ export class App extends Component {
     });
 
     socket.on('returnAllGroups', (returnedGroups) => {
-      let groups = returnedGroups;
-      // console.log(data);
+      // let groups = returnedGroups;
+      // console.log('before',groups);
       this.setState({
-        allGroups: groups,
+        allGroups: returnedGroups,
         showGroups: true,
       });
-      console.log('groups', this.state.allGroups);
+      // console.log('groups', this.state.allGroups);
     });
 
     socket.on('returnGroupRequests', (returnedGroupRequests) => {
@@ -271,19 +296,19 @@ export class App extends Component {
     socket.emit('getFollowing', { userID: userID });
   };
 
-  getFollowing = () => {
-    let userID = this.state.user.userID;
-    socket.emit('getFollowing', { userID: userID });
-  };
-
-  getGroupRequests = () => {
-    let userID = this.state.user.userID;
-    socket.emit('getGroupRequests', { userID: userID });
-  };
+  // getFollowing = () => {
+  //   let userID = this.state.user.userID;
+  //   socket.emit('getFollowing', { userID: userID });
+  // };
 
   getFollowers = () => {
     let userID = this.state.user.userID;
     socket.emit('getFollowers', { userID: userID });
+  };
+  
+  getGroupRequests = () => {
+    let userID = this.state.user.userID;
+    socket.emit('getGroupRequests', { userID: userID });
   };
 
   getUsergroups = () => {
@@ -342,10 +367,23 @@ export class App extends Component {
   };
 
   handleShowMessenger = (reciverId) => {
+    
     this.setState({
       showMessenger: true,
       messageReceiverId: reciverId,
     });
+
+    let room;
+    if (reciverId > this.state.user.userID) {
+      room = `${this.state.user.userID}_${reciverId}`;
+    } else {
+      room = `${reciverId}_${this.state.user.userID}`;
+    }
+    let payload = {
+      messageRoomId: room
+    };
+
+    socket.emit('returnAllMessages',payload)
   };
 
   handleSendMessage = (messageContent) => {
@@ -362,6 +400,7 @@ export class App extends Component {
       messageRoomId: room,
     };
     socket.emit('sendMessage', payload);
+    
   };
 
   handleCreateGroup = (groupName, groupDescription) => {
@@ -371,8 +410,8 @@ export class App extends Component {
       group_description: groupDescription,
     };
     socket.emit('createGroup', payload);
-    this.getAllGroups();
-    this.getUsergroups();
+    // this.getAllGroups();
+    // this.getUsergroups();
   };
 
   handleJoinGroup = async (groupId, owner_id) => {
@@ -385,14 +424,15 @@ export class App extends Component {
     this.getGroupRequests();
   };
 
-  handleAcceptJoinGroup = (groupId, memberId) => {
+  handleAcceptJoinGroup = (groupId, memberId,owner_id) => {
     let payload = {
       groupId: groupId,
       memberId: memberId,
+      ownerId:owner_id
     };
     socket.emit('acceptJoinGroup', payload);
-    // console.log(payload);
-    this.getGroupRequests();
+    // console.log('accept pressed');
+    // this.getGroupRequests();
   };
 
   handleViewgroup = (groupId) => {
@@ -536,6 +576,7 @@ export class App extends Component {
                 targetProfile={this.targetProfile}
                 allusers={this.state.allusers}
                 handleAddFriend={this.handleAddFriend}
+                userID={this.state.user.userID}
               />
             </Route>
             <Route exact path="/groups">
