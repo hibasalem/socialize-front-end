@@ -54,12 +54,10 @@ export class App extends Component {
       showCurrentGroupPath: false,
       currentGroupContent: [],
       showCurrentGroupContent: false,
-<<<<<<< HEAD
       targetedProfileInfo:[],
       targetedFollowing:[],
       targetedFollowers:[],
       targetedPosts:[],
-=======
       groupPosts: [],
       showGroupPosts: false,
       currentGroupID: null,
@@ -69,7 +67,6 @@ export class App extends Component {
       showGroupPostsLikes: false,
       groupComments: [],
       showGroupComments: false
->>>>>>> 6152f2d0e6aee8fe4bebf2ee69cf64db4d8638c3
     };
   }
 
@@ -100,6 +97,9 @@ export class App extends Component {
           targetedPosts:payload
         })
         // console.log(this.state.targetedPosts);
+      })
+      socket.on('newUsersList',()=>{
+        socket.emit('getAllUsers');
       })
     });
    
@@ -315,6 +315,7 @@ export class App extends Component {
       userID: this.state.user.userID,
     };
     socket.emit('getAllPosts', { userID: this.state.user.userID });
+    socket.emit('getNewUsersList');
     // console.log(this.state.posts);
     // socket.emit('join', { userID: this.state.user.userID });
     // console.log('user', this.state.path, this.state.user);
@@ -335,11 +336,7 @@ export class App extends Component {
     this.getFollowers();
     socket.on('friendAdded', () => {
       socket.emit('getAllPosts', { userID: this.state.user.userID });
-<<<<<<< HEAD
-    })
-=======
     });
->>>>>>> 6152f2d0e6aee8fe4bebf2ee69cf64db4d8638c3
     // socket.emit('joinFollowRoom', { reciverId });
     // socket.emit('getAllPosts', { userID: this.state.user.userID });
   };
@@ -426,6 +423,7 @@ export class App extends Component {
     let payload = {
       postContent: postContent,
       userID: this.state.user.userID,
+      name:`${this.state.user.firstname} ${this.state.user.lastname}`
     };
     console.log(payload);
     socket.emit('post', payload);
@@ -447,6 +445,7 @@ export class App extends Component {
       content: commentContent,
       post_id: post_id,
       userID: this.state.user.userID,
+      name:`${this.state.user.firstname} ${this.state.user.lastname}`
     };
     socket.emit('comment', payload);
   };
@@ -475,7 +474,6 @@ export class App extends Component {
   socket.emit('getTargetFollowers',id);
   socket.emit('getTargetPosts',id);
   }
-
   render() {
     return (
       <Router>

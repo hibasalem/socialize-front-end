@@ -17,7 +17,7 @@ export class Home extends Component {
               loggedIn={this.props.loggedIn}
               loggedInFunction={this.props.loggedInFunction}
             />
-            <Signup />
+            <Signup/>
           </>
         )}
       </div>
