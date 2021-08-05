@@ -11,7 +11,7 @@ export class Header extends Component {
       <div className="Header">
         <nav>
           <Link className="name" to="/feedPage">
-            socialize
+            Socialize
           </Link>
           <Link className="names" to="/feedPage">
             Feed

@@ -9,19 +9,24 @@ import './home.css';
 export class Home extends Component {
   render() {
     return (
-      <div className="homeH">
-        {this.props.loggedIn && <LogOut logOut={this.props.logOut} />}
+      <>
+        <h1 className="mainTitle">SOCIALIZE</h1>
+        <div className="cover"></div>
 
-        {!this.props.loggedIn && (
-          <>
-            <Login
-              loggedIn={this.props.loggedIn}
-              loggedInFunction={this.props.loggedInFunction}
-            />
-            <Signup />
-          </>
-        )}
-      </div>
+        <div className="homeH">
+          {this.props.loggedIn && <LogOut logOut={this.props.logOut} />}
+
+          {!this.props.loggedIn && (
+            <>
+              <Login
+                loggedIn={this.props.loggedIn}
+                loggedInFunction={this.props.loggedInFunction}
+              />
+              <Signup />
+            </>
+          )}
+        </div>
+      </>
     );
   }
 }

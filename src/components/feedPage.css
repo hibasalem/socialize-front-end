@@ -5,7 +5,7 @@
   background-color: #ffffff;
   width: 90%;
   margin-left: 5% !important;
-  margin-bottom: 5% !important;
+  margin-bottom: 3% !important;
 }
 
 .postCont {
@@ -26,9 +26,14 @@
   padding-right: 10px !important;
 }
 
+.mybuttonnn :hover {
+  border: rgba(255, 99, 71, 0.5) solid !important;
+  background-color: tomato !important;
+}
+
 .like {
-  /* float: left; */
-  margin-left: 5% !important;
+  float: left;
+  margin-left: 8.2% !important;
   border-radius: 10px;
   border: rgb(156, 156, 156) solid !important;
   padding: 3px;
@@ -37,15 +42,174 @@
 }
 
 .comment {
-  margin-left: 18% !important;
+  margin-left: 8% !important;
+  margin-right: 8% !important;
+  border: #dddddd 2px solid;
+  background-color: #ebebeb !important;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  background-color: #afafaf13;
+  margin-bottom: 5px;
 }
 
 .commentForm {
-  margin-left: 4% !important;
+  margin-left: 7% !important;
+}
 
-  
+.poster {
+  float: left;
+  margin-right: 8px;
+}
+
+.posterDate {
+  margin-right: 8px;
+  line-height: 32px;
+  vertical-align: center;
+}
+
+.commeentDate {
+  margin-right: 8px;
+
+  line-height: 25px;
+  vertical-align: center;
+}
+
+.postForm {
+  margin-left: 22% !important;
+  margin-bottom: -42px !important;
+}
+
+/* from here on its for the profile page   */
+.postDiv {
+  margin-left: 20%;
+  margin-right: 20%;
   border: #dddddd 2px solid;
   padding: 2% !important;
   border-radius: 15px !important;
   background-color: #afafaf13;
+  width: 60%;
+  margin-bottom: 10px;
+}
+.profileName {
+  margin-left: 22%;
+}
+.following {
+  position: absolute;
+  height: 350px;
+  overflow: auto;
+}
+
+.followers {
+  position: absolute;
+  margin-top: 400px;
+  height: 350px;
+  overflow: auto;
+}
+
+.Messenger {
+  position: fixed;
+  margin-top: 200px;
+  left: 80%;
+  top: 0;
+}
+
+.Meessages {
+  height: 250px;
+  overflow: auto;
+}
+
+/* from here on its for the people page   */
+
+.personCont {
+  border-radius: 15px !important;
+  border: #dddddd 2px solid;
+  background-color: white;
+  padding: 25px;
+  box-sizing: border-box;
+  display: inline;
+  align-items: center;
+  text-align: center;
+  margin-right: 15px;
+  display: inline-block;
+}
+.peopleCont {
+  margin-left: 20%;
+  margin-right: 20%;
+  border: #dddddd 2px solid;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  background-color: #afafaf13;
+  width: 60%;
+  margin-bottom: 10px;
+}
+.personName {
+  text-decoration: none;
+  color: black;
+  font-size: 35px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* from here on its for the groups page   */
+
+.groupsRequests {
+  position: absolute;
+  overflow: auto;
+  height: 350px;
+}
+
+.JoinedGroups {
+  position: absolute;
+  height: 350px;
+  overflow: auto;
+  left: 80%;
+}
+
+.groupsCont {
+  margin-left: 20%;
+  margin-right: 20%;
+  border: #dddddd 2px solid;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  background-color: #afafaf13;
+  width: 60%;
+  margin-bottom: 10px;
+}
+
+.groupRapRap {
+  border-radius: 15px !important;
+  border: #dddddd 2px solid;
+  padding: 25px;
+  box-sizing: border-box;
+  /* float: left; */
+  background-color: #ffffff;
+  display: inline-block;
+  align-items: center;
+  text-align: center;
+  margin-right: 15px;
+}
+
+.groupForm {
+  margin-left: 22% !important;
+}
+
+.elementsRap {
+  border-radius: 15px !important;
+  border: #dddddd 2px solid;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 5px;
+  padding: 10px;
+}
+
+.groupMembers {
+  position: absolute;
+  overflow: auto;
+  height: 350px;
+}
+
+.profileName2 {
+  margin-left: 45%;
+  line-height: 30px;
+  vertical-align: center;
 }

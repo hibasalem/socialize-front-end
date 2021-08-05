@@ -5,18 +5,21 @@ export class AddFriends extends Component {
   render() {
     return (
       <div className="mainDiv">
-        {this.props.allusers.map((item, idx) => {
-          if (item.id !== this.props.userID) {
-            return (
-              <Friend
-                targetProfile={this.props.targetProfile}
-                key={idx}
-                item={item}
-                handleAddFriend={this.props.handleAddFriend}
-              />
-            );
-          }
-        })}
+        <h2 className="profileName">All users</h2>
+        <div className="peopleCont">
+          {this.props.allusers.map((item, idx) => {
+            if (item.id !== this.props.userID) {
+              return (
+                <Friend
+                  targetProfile={this.props.targetProfile}
+                  key={idx}
+                  item={item}
+                  handleAddFriend={this.props.handleAddFriend}
+                />
+              );
+            }
+          })}
+        </div>
       </div>
     );
   }

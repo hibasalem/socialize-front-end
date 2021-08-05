@@ -77,35 +77,38 @@ export class App extends Component {
       socket.on('requestAccepted', (payload) => {
         // console.log(payload.ownerId);
         // console.log(payload.memberId);
-        if (this.state.user.userID === payload.memberId || this.state.user.userID === payload.ownerId) {
+        if (
+          this.state.user.userID === payload.memberId ||
+          this.state.user.userID === payload.ownerId
+        ) {
           let userID = this.state.user.userID;
           socket.emit('getAllGroups', { userID: userID });
           socket.emit('getUsergroups', { userID: userID });
           socket.emit('getGroupRequests', { userID: userID });
         }
-      })
-      socket.on('newLike',()=>{
+      });
+      socket.on('newLike', () => {
         socket.emit('getAllPosts', { userID: this.state.user.userID });
-      })
+      });
       socket.on('joinGroupRequest', (payload) => {
         if (this.state.user.userID === payload) {
           this.getGroupRequests();
         }
-      })
+      });
       socket.on('groupisCreated', () => {
         let userID = this.state.user.userID;
         socket.emit('getAllGroups', { userID: userID });
         socket.emit('getUsergroups', { userID: userID });
-      })
+      });
       socket.on('haveBeenFollowed', (payload) => {
         if (this.state.user.userID === payload) {
           this.getFollowers();
         }
-      })
+      });
       socket.on('targetInfo', (payload) => {
         this.setState({
           targetedProfileInfo: payload[0],
-        })
+        });
         // console.log(this.state.targetedProfileInfo);
       });
       socket.on('targetFollowing', (payload) => {
@@ -278,7 +281,7 @@ export class App extends Component {
   };
 
   getAllGroupPosts = (data) => {
-    console.log('this is data: ',data)
+    console.log('this is data: ', data);
     socket.emit('getAllGroupPosts', { groupID: data });
   };
 
@@ -398,7 +401,6 @@ export class App extends Component {
       messageRoomId: room,
     };
     socket.emit('sendMessage', payload);
-
   };
 
   handleCreateGroup = (groupName, groupDescription) => {
@@ -451,7 +453,7 @@ export class App extends Component {
     let payload = {
       postId: postId,
       userId: this.state.user.userID,
-      groupId: groupId
+      groupId: groupId,
     };
     socket.emit('groupPostLike', payload);
   };
@@ -461,7 +463,7 @@ export class App extends Component {
     let payload = {
       postContent: postContent,
       userID: this.state.user.userID,
-      name: `${this.state.user.firstname} ${this.state.user.lastname}`
+      name: `${this.state.user.firstname} ${this.state.user.lastname}`,
     };
     console.log(payload);
     socket.emit('post', payload);
@@ -483,7 +485,7 @@ export class App extends Component {
       content: commentContent,
       post_id: post_id,
       userID: this.state.user.userID,
-      name: `${this.state.user.firstname} ${this.state.user.lastname}`
+      name: `${this.state.user.firstname} ${this.state.user.lastname}`,
     };
     socket.emit('comment', payload);
   };
@@ -503,11 +505,11 @@ export class App extends Component {
     socket.emit('getTargetFollowing', id);
     socket.emit('getTargetFollowers', id);
     socket.emit('getTargetPosts', id);
-  }
+  };
   //----updating the post like-----//
-  like=(id)=>{
-    socket.emit('like',id);
-  }
+  like = (id) => {
+    socket.emit('like', id);
+  };
   render() {
     return (
       <Router>
@@ -526,7 +528,7 @@ export class App extends Component {
             </Route>
             <Route exact path="/feedPage">
               {
-                <FeedPage  
+                <FeedPage
                   showPosts={this.state.showPosts}
                   userID={this.state.user.userID}
                   like={this.like}
@@ -562,6 +564,7 @@ export class App extends Component {
                   allMessages={this.state.allMessages}
                   showMessages={this.state.showMessages}
                   getUsergroups={this.getUsergroups}
+                  comment={this.comment}
                 />
               )}
             </Route>

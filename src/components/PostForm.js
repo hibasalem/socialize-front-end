@@ -17,11 +17,13 @@ export class PostForm extends Component {
     return (
       <div>
         <form
+          className="postForm"
           onSubmit={(e) => {
             this.post(e);
           }}
         >
           <input
+            required
             type="text"
             placeholder="type your post here "
             onChange={(e) => {

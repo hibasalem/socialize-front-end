@@ -21,6 +21,7 @@ export class CommentForm extends Component {
           }}
         >
           <input
+            required
             placeholder="type your comment here"
             type="text"
             onChange={(e) => {

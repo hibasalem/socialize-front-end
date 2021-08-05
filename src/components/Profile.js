@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Posts from './Posts';
 import Messenger from './Messenger';
-import './profile.css';
 
 class Profile extends Component {
   componentDidMount = () => {
@@ -14,39 +13,50 @@ class Profile extends Component {
   render() {
     return (
       <div className="mainDiv">
-        <p>
-          <b>hi</b> {this.props.user.firstname} {this.props.user.lastname}
-        </p>
+        <h2 className="profileName">
+          {this.props.user.firstname} {this.props.user.lastname}
+        </h2>
         <p>{this.props.user.age}</p>
         <p>{this.props.user.gender}</p>
-        <h2>allFollowing</h2>
-        {this.props.showFollowing &&
-          this.props.allFollowing.map((item) => {
-            return (
-              <>
-                <p>
-                  {item.firstname} {item.lastname}
-                </p>
-                <button onClick={() => this.props.handleShowMessenger(item.id)}>
-                  Send Message
-                </button>
-              </>
-            );
-          })}
-        <h2>allFollowers</h2>
-        {this.props.showFollowers &&
-          this.props.allFollowers.map((item) => {
-            return (
-              <>
-                <p>
-                  {item.firstname} {item.lastname}
-                </p>
-                <button onClick={() => this.props.handleShowMessenger(item.id)}>
-                  Send Message
-                </button>
-              </>
-            );
-          })}
+        <div className="following">
+          <h2>Following</h2>
+          {this.props.showFollowing &&
+            this.props.allFollowing.map((item) => {
+              return (
+                <>
+                  <p>
+                    {item.firstname} {item.lastname}
+                  </p>
+                  <button
+                    className="mybuttonnn"
+                    onClick={() => this.props.handleShowMessenger(item.id)}
+                  >
+                    Chat
+                  </button>
+                </>
+              );
+            })}
+        </div>
+
+        <div className="followers">
+          <h2>Followers</h2>
+          {this.props.showFollowers &&
+            this.props.allFollowers.map((item) => {
+              return (
+                <>
+                  <p>
+                    {item.firstname} {item.lastname}
+                  </p>
+                  <button
+                    className="mybuttonnn"
+                    onClick={() => this.props.handleShowMessenger(item.id)}
+                  >
+                    Chat
+                  </button>
+                </>
+              );
+            })}
+        </div>
         <Posts
           userID={this.props.userID}
           like={this.props.like}
@@ -55,14 +65,14 @@ class Profile extends Component {
           allPosts={this.props.allPosts}
         />
         {this.props.showMessenger && (
-          <>
+          <div className="Messenger">
             <h2>Messenger</h2>
             <Messenger
               handleSendMessage={this.props.handleSendMessage}
               allMessages={this.props.allMessages}
               showMessages={this.props.showMessages}
             />
-          </>
+          </div>
         )}
       </div>
     );
