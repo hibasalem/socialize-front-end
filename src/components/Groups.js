@@ -25,8 +25,9 @@ export class Groups extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="mainDiv">
         <form
+          className="groupForm form2"
           onSubmit={(e) => {
             this.createGroup(e);
           }}
@@ -52,57 +53,32 @@ export class Groups extends Component {
           />
           <input type="submit" />
         </form>
+        <div className="groupsRequests">
+          <h2>
+            <b>Groups requests</b>
+          </h2>
+          {this.props.showGroupsRequests &&
+            this.props.GroupRequests.groupsNames.map((item, idx) => {
+              return (
+                <div className="elementsRap">
+                  <p>
+                    <b> {this.props.GroupRequests.membersNames[idx]}</b>
+                    requsted to join <br /> <b> {item}</b>
+                  </p>
+                  <button
+                    className="mybuttonnn"
+                    onClick={() =>
+                      this.props.handleAcceptJoinGroup(
+                        this.props.GroupRequests.data[idx].group_id,
+                        this.props.GroupRequests.data[idx].member_id,
+                        this.props.GroupRequests.data[idx].owner_id
+                      )
+                    }
+                  >
+                    accept
+                  </button>
 
-        <h2>
-          <b>all groups </b>
-        </h2>
-        {this.props.showGroups &&
-          this.props.allGroups.map((item, idx) => {
-            return (
-              <>
-                <p>
-                  <b>{item.group_name}</b>
-                </p>
-                <p>Description: {item.group_description}</p>
-                <button
-                  onClick={() =>
-                    this.props.handleJoinGroup(item.id, item.owner_id)
-                  }
-                >
-                  Join Group
-                </button>
-              </>
-            );
-          })}
-
-        <h2>
-          <b>your groups requests</b>
-        </h2>
-
-        {
-        this.props.showGroupsRequests 
-        &&
-
-          this.props.GroupRequests.groupsNames.map((item, idx) => {
-            return (
-              <>
-                <p>
-                  <b> {this.props.GroupRequests.membersNames[idx]}</b> requsted
-                  to join <b> {item}</b>
-                </p>
-                <button
-                  onClick={() =>
-                    this.props.handleAcceptJoinGroup(
-                      this.props.GroupRequests.data[idx].group_id,
-                      this.props.GroupRequests.data[idx].member_id,
-                      this.props.GroupRequests.data[idx].owner_id
-                    )
-                  }
-                >
-                  accept
-                </button>
-
-                {/* <button
+                  {/* <button
                   onClick={() =>
                     this.props.handleAcceptJoinGroup(
                       this.props.GroupRequests.data.group_id,
@@ -112,38 +88,64 @@ export class Groups extends Component {
                 >
                   decline
                 </button> */}
-              </>
-            );
-          })
-          }
+                </div>
+              );
+            })}
+        </div>
+        <div className="JoinedGroups">
+          <h2>
+            <b>Joined groups</b>
+          </h2>
 
-        <h2>
-          <b>your joined groups</b>
-        </h2>
+          {this.props.showUsergroups &&
+            this.props.usergroups.groupsNames.map((item, idx) => {
+              return (
+                <div className="elementsRap">
+                  <p>
+                    <b>{item}</b>
+                  </p>
 
-        {this.props.showUsergroups &&
-          this.props.usergroups.groupsNames.map((item, idx) => {
-            return (
-              <>
-                <p>
-                  <b>{item}</b>
-                </p>
-
-                <button
-                  onClick={() =>
-                    this.props.handleViewgroup(
-                      this.props.usergroups.data[idx].group_id
-                    )
-                  }
-                >
-                  view group
-                  {this.props.showCurrentGroupPath && (
-                    <Link to={this.props.currentGroupPath}> view group</Link>
-                  )}
-                </button>
-              </>
-            );
-          })}
+                  <button
+                    className="mybuttonnn"
+                    onClick={() =>
+                      this.props.handleViewgroup(
+                        this.props.usergroups.data[idx].group_id
+                      )
+                    }
+                  >
+                    view group
+                    {this.props.showCurrentGroupPath && (
+                      <Link to={this.props.currentGroupPath}> view group</Link>
+                    )}
+                  </button>
+                </div>
+              );
+            })}
+        </div>{' '}
+        <div className="groupsCont">
+          <h2>
+            <b>All groups </b>
+          </h2>
+          {this.props.showGroups &&
+            this.props.allGroups.map((item, idx) => {
+              return (
+                <div className="groupRapRap">
+                  <p>
+                    <b>{item.group_name}</b>
+                  </p>
+                  <p>Description {item.group_description}</p>
+                  <button
+                    className="mybuttonnn"
+                    onClick={() =>
+                      this.props.handleJoinGroup(item.id, item.owner_id)
+                    }
+                  >
+                    Join group
+                  </button>
+                </div>
+              );
+            })}
+        </div>
       </div>
     );
   }

@@ -3,6 +3,8 @@ import Profile from './Profile';
 import PostForm from './PostForm';
 import Posts from './Posts';
 import FeedPosts from './FeedPosts';
+import './feedPage.css';
+
 class FeedPage extends Component {
   // componentDidMount = () => {
 
@@ -11,12 +13,9 @@ class FeedPage extends Component {
   //   })
   // }
 
-
-
   render() {
     return (
-      <div>
-        Feed Page
+      <div className="mainDiv">
         <PostForm post={this.props.post} />
         <FeedPosts
           showPosts={this.props.showPosts}
@@ -24,9 +23,10 @@ class FeedPage extends Component {
           like={this.props.like}
           comments={this.props.comments}
           comment={this.props.comment}
-          allPosts={this.props.allPosts} />
+          allPosts={this.props.allPosts}
+        />
       </div>
-    )
+    );
   }
 }
 

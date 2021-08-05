@@ -1,44 +1,85 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
- class Signup extends Component {
+class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        email: '',
-        password: '',
-        firstName: '',
-        lastName: '',
-    }
-}
-signup = async (e) => {
-  e.preventDefault();
-  console.log('sent');
-  await axios.post('http://localhost:5000/signup', { email: this.state.email, pass: this.state.password, firstName: this.state.firstName, lastName: this.state.lastName });
-}
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+    };
+  }
+  signup = async (e) => {
+    e.preventDefault();
+    console.log('sent');
+    await axios.post('http://localhost:5000/signup', {
+      email: this.state.email,
+      pass: this.state.password,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+    });
+  };
   render() {
     return (
       <div>
-        <form onSubmit={(e) => { this.signup(e) }}>
-                    <label>enter Email:</label>
-                    <input type='text' placeholder='your Email' required onChange={(e) => {
-                        this.setState({ email: e.target.value })
-                        console.log(this.state.email);
-                    }} />
-                    <label>enter password:</label>
-                    <input type='password' placeholder='your Password' required onChange={(e) => {
-                        this.setState({ password: e.target.value });
-                        console.log(this.state.password);
-                    }} />
-                    <label>first name:</label>
-                    <input type='text' required onChange={(e) => { this.setState({ firstName: e.target.value }); console.log(this.state.firstName) }} />
-                    <label>last name:</label>
-                    <input type='text' required onChange={(e) => { this.setState({ lastName: e.target.value }); console.log(this.state.lastName) }} />
-                    <input type='submit' />
-                </form>
+        <div className="sign">
+          <h4>Sign up</h4>
+          <form
+            onSubmit={(e) => {
+              this.signup(e);
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Email"
+              required
+              onChange={(e) => {
+                this.setState({ email: e.target.value });
+                console.log(this.state.email);
+              }}
+            />
+            <br />
+            <input
+              type="password"
+              placeholder="Password"
+              required
+              onChange={(e) => {
+                this.setState({ password: e.target.value });
+                console.log(this.state.password);
+              }}
+            />
+            <br />
+
+            <input
+              type="text"
+              required
+              placeholder="First name"
+              onChange={(e) => {
+                this.setState({ firstName: e.target.value });
+                console.log(this.state.firstName);
+              }}
+            />
+            <br />
+
+            <input
+              type="text"
+              required
+              placeholder="Last name"
+              onChange={(e) => {
+                this.setState({ lastName: e.target.value });
+                console.log(this.state.lastName);
+              }}
+            />
+            <br />
+
+            <input type="submit" value="Sign up" />
+          </form>
+        </div>
       </div>
-    )
+    );
   }
 }
 
-export default Signup
+export default Signup;
