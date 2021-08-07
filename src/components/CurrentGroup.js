@@ -55,20 +55,27 @@ export class CurrentGroup extends Component {
                     groupPostsLikes={this.props.groupPostsLikes}
                   />
                   <CommentForm comment={this.props.comment} id={item.id} />
+                  {this.props.showGroupComments &&
+                    this.props.groupComments.map((comment, index) => {
+                      let value;
+                      if (item.id === comment.g_post_id) {
+                        value = (
+                          <div className="comment">
+                            <h5 className="poster">
+                              {comment.g_commenter_name}
+                            </h5>
+
+                            <p className="commeentDate">
+                              at {new Date(comment.send_time).toLocaleString()}
+                            </p>
+
+                            <div key={index}>{comment.content}</div>
+                          </div>
+                        );
+                      }
+                      return value;
+                    })}
                 </div>
-                {this.props.showGroupComments &&
-                  this.props.groupComments.map((comment, index) => {
-                    let value;
-                    if (item.id === comment.g_post_id) {
-                      value = (
-                        <p key={index}>
-                          <b>{comment.g_commenter_name}</b> {comment.content}{' '}
-                          {new Date(comment.send_time).toLocaleString()}
-                        </p>
-                      );
-                    }
-                    return value;
-                  })}
               </>
             );
           })}

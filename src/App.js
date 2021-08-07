@@ -265,7 +265,7 @@ export class App extends Component {
 
     socket.on('returnNewGroupPost', (data) => {
       let groupPosts = data;
-      // console.log('usergroups', usergroups);
+      console.log('groupPosts', groupPosts);
       this.setState({
         groupPosts: groupPosts,
         showGroupPosts: true,
@@ -281,7 +281,7 @@ export class App extends Component {
   };
 
   getAllGroupPosts = (data) => {
-    console.log('this is data: ', data);
+    // console.log('this is data: ', data);
     socket.emit('getAllGroupPosts', { groupID: data });
   };
 
