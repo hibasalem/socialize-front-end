@@ -15,7 +15,7 @@ import CurrentGroup from './components/CurrentGroup';
 import io from 'socket.io-client';
 import Groups from './components/Groups';
 import TargetProfile from './components/TargetProfile';
-const SERVER_URL = process.env.SERVER_URL || 'http://localhost:5000/';
+const SERVER_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
 export class App extends Component {
