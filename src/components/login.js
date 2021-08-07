@@ -17,7 +17,7 @@ export class Login extends Component {
     try {
       console.log('trying to login');
       const token = base64.encode(`${this.state.email}:${this.state.password}`);
-      let result = await axios.get('http://localhost:5000/signin', {
+      let result = await axios.get('https://socialize401.herokuapp.com/signin', {
         headers: {
           Authorization: `Basic ${token}`,
         },
