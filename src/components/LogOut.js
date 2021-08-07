@@ -18,7 +18,7 @@ export class LogOut extends Component {
 
   render() {
     return (
-      <a href="http://localhost:3000/">
+      <a href="https://socialize401.netlify.app/">
         <button className="logout" onClick={this.logout}>
           Log Out
         </button>
