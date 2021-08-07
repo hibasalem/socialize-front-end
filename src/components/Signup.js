@@ -14,7 +14,7 @@ class Signup extends Component {
   signup = async (e) => {
     e.preventDefault();
     console.log('sent');
-    await axios.post('http://localhost:5000/signup', {
+    await axios.post('https://socialize401.herokuapp.com/signup', {
       email: this.state.email,
       pass: this.state.password,
       firstName: this.state.firstName,
