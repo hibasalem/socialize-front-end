@@ -8,13 +8,12 @@ export class GroupPost extends Component {
     return (
       <div>
         <div className="post">
-          <p>
-            <h4 className="poster">{this.props.item.poster_name}</h4>
+          <h4 className="poster">{this.props.item.poster_name}</h4>
+
+          <p className="posterDate">
+            at {new Date(this.props.item.send_time).toLocaleString()}
           </p>
           <p>{this.props.item.content}</p>
-          <p className="posterDate">
-            at {new Date(this.props.item.post_time).toLocaleString()}
-          </p>
         </div>
 
         <button
