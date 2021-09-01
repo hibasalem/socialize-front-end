@@ -198,7 +198,7 @@ export class App extends Component {
         GroupRequests: GroupRequests,
         showGroupsRequests: true,
       });
-      console.log('GroupRequests', this.state.GroupRequests);
+      console.log('GroupRequests', GroupRequests);
     });
 
     socket.on('returnUsergroups', (data) => {
@@ -242,12 +242,12 @@ export class App extends Component {
 
     //-------getting the posts from the server-------//
     socket.on('read', (payload) => {
-      console.log(payload);
       let stuff = payload;
       this.setState({
         posts: stuff,
         showPosts: true,
       });
+      console.log('this is the read ',this.state.posts.length);
     });
 
     //------getting the comments from the server------//
