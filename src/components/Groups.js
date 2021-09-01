@@ -58,20 +58,20 @@ export class Groups extends Component {
             <b>Groups requests</b>
           </h2>
           {this.props.showGroupsRequests &&
-            this.props.GroupRequests.groupsNames.map((item, idx) => {
+            this.props.GroupRequests.map((item, idx) => {
               return (
                 <div className="elementsRap">
                   <p>
-                    <b> {this.props.GroupRequests.membersNames[idx]}</b>
-                    requsted to join <br /> <b> {item}</b>
+                    <b> {item.firstname} {item.lastname}</b>
+                    requsted to join <br /> <b> {item.group_name}</b>
                   </p>
                   <button
                     className="mybuttonnn"
                     onClick={() =>
                       this.props.handleAcceptJoinGroup(
-                        this.props.GroupRequests.data[idx].group_id,
-                        this.props.GroupRequests.data[idx].member_id,
-                        this.props.GroupRequests.data[idx].owner_id
+                        item.group_id,
+                        item.member_id,
+                        item.owner_id
                       )
                     }
                   >
@@ -98,18 +98,18 @@ export class Groups extends Component {
           </h2>
 
           {this.props.showUsergroups &&
-            this.props.usergroups.groupsNames.map((item, idx) => {
+            this.props.usergroups.map((item, idx) => {
               return (
                 <div className="elementsRap">
                   <p>
-                    <b>{item}</b>
+                    <b>{item.group_name}</b>
                   </p>
 
                   <button
                     className="mybuttonnn"
                     onClick={() =>
                       this.props.handleViewgroup(
-                        this.props.usergroups.data[idx].group_id
+                        item.group_id
                       )
                     }
                   >

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import { Redirect } from 'react-router-dom';
 const axios = require('axios');
 const base64 = require('base-64');
+require('dotenv').config();
 
 export class Login extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ export class Login extends Component {
     try {
       console.log('trying to login');
       const token = base64.encode(`${this.state.email}:${this.state.password}`);
-      let result = await axios.get('https://socialize401.herokuapp.com/signin', {
+      let result = await axios.get(`${process.env.REACT_APP_SERVER_URL}/signin`, {
         headers: {
           Authorization: `Basic ${token}`,
         },

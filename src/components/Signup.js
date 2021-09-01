@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+require('dotenv').config();
 class Signup extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +14,7 @@ class Signup extends Component {
   signup = async (e) => {
     e.preventDefault();
     console.log('sent');
-    await axios.post('https://socialize401.herokuapp.com/signup', {
+    await axios.post(`${process.env.REACT_APP_SERVER_URL}/signup`, {
       email: this.state.email,
       pass: this.state.password,
       firstName: this.state.firstName,
