@@ -15,7 +15,7 @@ import CurrentGroup from './components/CurrentGroup';
 import io from 'socket.io-client';
 import Groups from './components/Groups';
 import TargetProfile from './components/TargetProfile';
-const SERVER_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:5000/';
+const SERVER_URL ='localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
 export class App extends Component {
@@ -105,6 +105,13 @@ export class App extends Component {
           this.getFollowers();
         }
       });
+      socket.on('newGroupPostMade',(payload)=>{
+        console.log('currentGroupID ',this.state.currentGroupID);
+        console.log('payload ',payload);
+        if(this.state.currentGroupID===payload){
+          socket.emit('getAllGroupPosts',{ groupID: this.state.currentGroupID });
+        }
+      })
       socket.on('targetInfo', (payload) => {
         this.setState({
           targetedProfileInfo: payload[0],
