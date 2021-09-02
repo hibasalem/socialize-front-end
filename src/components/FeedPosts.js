@@ -22,6 +22,7 @@ export class Posts extends Component {
                   postContent={element.content}
                   comment={this.props.comment}
                   id={element.id}
+                  image_url={element.image_url}
                 />
               </div>
             );

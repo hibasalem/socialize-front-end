@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Posts from './Posts';
 import Messenger from './Messenger';
+import Image from 'react-bootstrap/Image';
 
 class Profile extends Component {
   componentDidMount = () => {
@@ -13,7 +14,11 @@ class Profile extends Component {
   render() {
     return (
       <div className="mainDiv">
+        {console.log('hello', this.props.user)}
+
         <h2 className="profileName">
+          <Image src={this.props.user.image_url} roundedCircle height="80px" />
+          &nbsp; &nbsp;
           {this.props.user.firstname} {this.props.user.lastname}
         </h2>
         <p>{this.props.user.age}</p>

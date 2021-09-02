@@ -32,7 +32,7 @@
   display: inline;
   float: left;
   width: 43.5%;
-  height: 350px;
+  height: 400px;
 }
 
 input {
@@ -41,6 +41,8 @@ input {
   border: rgb(156, 156, 156) solid !important;
   padding: 3px;
 }
+
+
 
 .cover {
   height: 750px;

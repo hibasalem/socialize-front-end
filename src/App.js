@@ -15,7 +15,9 @@ import CurrentGroup from './components/CurrentGroup';
 import io from 'socket.io-client';
 import Groups from './components/Groups';
 import TargetProfile from './components/TargetProfile';
-const SERVER_URL ='localhost:5000/';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
 export class App extends Component {
@@ -30,6 +32,7 @@ export class App extends Component {
         gender: null,
         age: null,
         auth_id: null,
+        image_url: null,
       },
       path: '/profile',
       allusers: [],
@@ -105,13 +108,15 @@ export class App extends Component {
           this.getFollowers();
         }
       });
-      socket.on('newGroupPostMade',(payload)=>{
-        console.log('currentGroupID ',this.state.currentGroupID);
-        console.log('payload ',payload);
-        if(this.state.currentGroupID===payload){
-          socket.emit('getAllGroupPosts',{ groupID: this.state.currentGroupID });
+      socket.on('newGroupPostMade', (payload) => {
+        console.log('currentGroupID ', this.state.currentGroupID);
+        console.log('payload ', payload);
+        if (this.state.currentGroupID === payload) {
+          socket.emit('getAllGroupPosts', {
+            groupID: this.state.currentGroupID,
+          });
         }
-      })
+      });
       socket.on('targetInfo', (payload) => {
         this.setState({
           targetedProfileInfo: payload[0],
@@ -247,7 +252,7 @@ export class App extends Component {
         posts: stuff,
         showPosts: true,
       });
-      console.log('this is the read ',this.state.posts.length);
+      console.log('this is the read ', this.state.posts.length);
     });
 
     //------getting the comments from the server------//
@@ -331,6 +336,7 @@ export class App extends Component {
   };
 
   loggedIn = (user) => {
+    console.log('user', user);
     this.setState({
       loggedIn: true,
       user: {
@@ -340,6 +346,7 @@ export class App extends Component {
         age: user.age,
         gender: user.gender,
         auth_id: user.auth_id,
+        image_url: user.image_url,
       },
     });
     this.setState({
@@ -466,9 +473,10 @@ export class App extends Component {
   };
 
   //-----sending the post to the server-----//
-  post = (postContent) => {
+  post = (postContent, imageUrl) => {
     let payload = {
       postContent: postContent,
+      imageUrl: imageUrl,
       userID: this.state.user.userID,
       name: `${this.state.user.firstname} ${this.state.user.lastname}`,
     };
@@ -476,13 +484,14 @@ export class App extends Component {
     socket.emit('post', payload);
   };
 
-  handelGroupPost = (postContent, groupID) => {
+  handelGroupPost = (postContent, imageUrl, groupID) => {
     let payload = {
       postContent: postContent,
       userID: this.state.user.userID,
       groupID: groupID,
+      imageUrl: imageUrl,
     };
-    console.log(payload);
+    console.log('groupPost', payload);
     socket.emit('groupPost', payload);
   };
 
