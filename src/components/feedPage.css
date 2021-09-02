@@ -191,6 +191,7 @@
 
 .groupForm {
   margin-left: 22% !important;
+  margin-bottom: 50px !important;
 }
 
 .elementsRap {
@@ -212,4 +213,10 @@
   margin-left: 45%;
   line-height: 30px;
   vertical-align: center;
+}
+
+
+img {
+  border-radius: 12px !important;
+  border: #dddddd 2px solid;
 }

@@ -13,10 +13,6 @@ export class CurrentGroup extends Component {
   render() {
     return (
       <div className="mainDiv">
-        {/* getGetGroupMembers={this.getGetGroupMembers} */}
-        {/* {this.props.showCurrentGroupPath && (
-         something
-        )} */}
         <div className="groupMembers">
           <h2>Group members</h2>
           {this.props.showGroupMembers &&
@@ -30,7 +26,7 @@ export class CurrentGroup extends Component {
         </div>
 
         <PostForm
-          className="form2"
+          className="form3"
           post={this.props.post}
           groupId={this.props.currentGroupContent.id}
         />

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CommentForm from './CommentForm';
+import Image from 'react-bootstrap/Image';
 
 export class Post extends Component {
   like = (id) => {
@@ -16,6 +17,10 @@ export class Post extends Component {
               at {new Date(this.props.post_time).toLocaleString()}
             </p>
             {this.props.postContent}
+            <br />
+            {this.props.image_url && (
+              <img src={this.props.image_url} width="100%" />
+            )}
           </div>
           <button className="like" onClick={() => this.like(this.props.postID)}>
             Like
