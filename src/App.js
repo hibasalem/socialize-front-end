@@ -76,8 +76,7 @@ function App() {
       socket.emit('test');
       socket.emit('getAllUsers');
       socket.on('requestAccepted', (payload) => {
-        // console.log(payload.ownerId);
-        // console.log(payload.memberId);
+
         if (
           user.userID === payload.memberId ||
           user.userID === payload.ownerId
@@ -107,8 +106,8 @@ function App() {
         }
       });
       socket.on('newGroupPostMade', (payload) => {
-        console.log('currentGroupID ', currentGroupID);
-        console.log('payload ', payload);
+
+
         if (currentGroupID === payload) {
           socket.emit('getAllGroupPosts', {
             groupID: currentGroupID,
@@ -117,7 +116,7 @@ function App() {
       });
       socket.on('targetInfo', (payload) => {
         setTargetedProfileInfo(payload[0]);
-        // console.log( targetedProfileInfo);
+
       });
       socket.on('targetFollowing', (payload) => {
         setTargetedFollowing(payload)
@@ -127,13 +126,13 @@ function App() {
 
         setTargetedFollowers(payload)
 
-        // console.log( targetedFollowers);
+
       });
       socket.on('targetPosts', (payload) => {
 
         setTargetedPosts(payload)
 
-        // console.log( targetedPosts);
+
       });
       socket.on('newUsersList', () => {
         socket.emit('getAllUsers');
@@ -147,65 +146,64 @@ function App() {
 
       setAllusers(data);
 
-      // console.log( allusers);
+
     });
 
     socket.on('returnFollowing', (data) => {
       let data2 = data;
-      // console.log(data);
+
 
       setAllFollowing(data2);
       setShowFollowing(true);
 
-      // console.log('following',  allFollowing);
+
     });
 
     socket.on('returnFollowers', (data) => {
       let data2 = data;
-      // console.log(data);
+
       setAllFollowers(data2);
       setShowFollowers(true);
-      // console.log('followers',  allFollowers);
+
     });
 
     socket.on('returnMessages', (returnedMessages) => {
       let messages = returnedMessages;
-      // console.log(data);
+
 
       setAllMessages(messages);
       setShowMessages(true);
 
-      // console.log('messages',  allMessages);
+
     });
 
     socket.on('returnAllGroups', (returnedGroups) => {
       // let groups = returnedGroups;
-      // console.log('before',groups);
+
 
       setAllGroups(returnedGroups);
       setShowGroups(true);
 
-      // console.log('groups',  allGroups);
+
     });
 
     socket.on('returnGroupRequests', (returnedGroupRequests) => {
       let GroupRequests = returnedGroupRequests;
-      // console.log('hi');
+
 
       setGroupRequests(GroupRequests);
       setShowGroupsRequests(true);
 
-      // console.log('GroupRequests', GroupRequests);
     });
 
     socket.on('returnUsergroups', (data) => {
       let usergroups = data;
-      // console.log('usergroups', usergroups);
+
 
       setUsergroups(usergroups);
       setShowUsergroups(true);
 
-      // console.log('usergroups',  usergroups);
+
     });
 
     socket.on('returnGroupMembers', (data) => {
@@ -214,17 +212,13 @@ function App() {
       setGroupMembers(groupMembers);
       setShowGroupMembers(true);
 
-      // console.log('usergroups',  usergroups);
+
     });
 
     socket.on('returnCurrentGroupContent', (data) => {
       let currentGroupContent = data;
-      // console.log('usergroups', usergroups);
-
       setCurrentGroupContent(currentGroupContent);
       setShowCurrentGroupContent(true);
-
-      // console.log('currentGroupContent',  currentGroupContent);
     });
 
     socket.on('error', (payload) => {
@@ -233,6 +227,7 @@ function App() {
 
     //-----requesting to get the post from the server-----//
     socket.emit('getAllPosts', { userID: user.userID });
+
 
     //---requestin to get the comments from the server---//
     socket.emit('getAllComments', { userID: user.userID });
@@ -244,7 +239,7 @@ function App() {
       setPosts(stuff);
       setShowPosts(true);
 
-      // console.log('this is the read ',  posts.length);
+
     });
 
     //------getting the comments from the server------//
@@ -257,33 +252,32 @@ function App() {
       setGroupComments(payload);
       setShowGroupComments(true);
 
-      console.log('returned comments payload', payload);
+
     });
 
+
+
+    socket.on('returnNewGroupPost', (data) => {
+      let groupPosts = data;
+      setGroupPosts(groupPosts);
+      setShowGroupPosts(true);
+
+    });
     //------notification of a new post ------//
     socket.on('newPost', () => {
       socket.emit('getAllPosts', { userID: user.userID });
     });
-
-    socket.on('returnNewGroupPost', (data) => {
-      let groupPosts = data;
-      console.log('groupPosts', groupPosts);
-
-      setGroupPosts(groupPosts);
-      setShowGroupPosts(true);
-
-      console.log('groupPosts', groupPosts);
-    });
-
+    
     socket.on('returnGroupLikes', (payload) => {
       let info = payload;
-      console.log('what is this', payload);
+
       socket.emit('getAllGroupPosts', { groupID: info[0].g_groups_id });
     });
   }, []);
 
+
   const getAllGroupPosts = (data) => {
-    // console.log('this is data: ', data);
+
     socket.emit('getAllGroupPosts', { groupID: data });
   };
 
@@ -323,7 +317,6 @@ function App() {
   };
 
   const loggedInFunction = (user) => {
-    console.log('user', user);
 
     setLoggedIn(true);
     setUser({
@@ -335,22 +328,22 @@ function App() {
       auth_id: user.auth_id,
       image_url: user.image_url,
     });
-    setPath(`/profile/${user.userID}`);
+
+  };
+  useEffect(() => {
     socket.emit('getAllPosts', { userID: user.userID });
     socket.emit('getNewUsersList');
-    // console.log( posts);
-    // socket.emit('join', { userID:  user.userID });
-    // console.log('user',  path,  user);
-  };
+    setPath(`/profile/${user.userID}`);
+  }, [user]);
 
   const logOut = () => {
     setLoggedIn(false);
   };
 
   const handleAddFriend = (reciverId) => {
-    console.log('following...');
+
     let data = { reciverId: reciverId, senderId: user.userID };
-    console.log(data);
+
     socket.emit('addFriend', data);
     getFollowing();
     getFollowers();
@@ -363,8 +356,8 @@ function App() {
 
   const handleShowMessenger = (reciverId) => {
 
-      showMessenger(true);
-      messageReceiverId(reciverId);
+    showMessenger(true);
+    messageReceiverId(reciverId);
 
     let room;
     if (reciverId > user.userID) {
@@ -423,7 +416,6 @@ function App() {
       ownerId: owner_id,
     };
     socket.emit('acceptJoinGroup', payload);
-    // console.log('accept pressed');
     //  getGroupRequests();
   };
 
@@ -431,13 +423,12 @@ function App() {
     let payload = {
       groupId: groupId,
     };
-  
-      setCurrentGroupID(groupId);
-      setCurrentGroupPath(`/groups/${groupId}`);
-      setShowCurrentGroupPath(true);
+
+    setCurrentGroupID(groupId);
+    setCurrentGroupPath(`/groups/${groupId}`);
+    setShowCurrentGroupPath(true);
 
     socket.emit('viewGroup', payload);
-    // console.log(payload);
     //  getGroupRequests();
   };
 
@@ -452,13 +443,13 @@ function App() {
 
   //-----sending the post to the server-----//
   const newPost = (postContent, imageUrl) => {
+
     let payload = {
       postContent: postContent,
       imageUrl: imageUrl,
       userID: user.userID,
       name: `${user.firstname} ${user.lastname}`,
     };
-    console.log(payload);
     socket.emit('post', payload);
   };
 
@@ -469,7 +460,6 @@ function App() {
       groupID: groupID,
       imageUrl: imageUrl,
     };
-    console.log('groupPost', payload);
     socket.emit('groupPost', payload);
   };
 
@@ -490,7 +480,6 @@ function App() {
       postId: post_id,
       userId: user.userID,
     };
-    // console.log('hello from group comment',payload);
     socket.emit('groupComment', payload);
   };
   //-----target getting info of the target profile from BE-----//
