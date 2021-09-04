@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Image from 'react-bootstrap/Image';
 
 export class Groups extends Component {
   constructor(props) {
@@ -57,12 +58,17 @@ export class Groups extends Component {
           <h2>
             <b>Groups requests</b>
           </h2>
+          {/* {console.log(this.props.GroupRequests)} */}
           {this.props.showGroupsRequests &&
             this.props.GroupRequests.map((item, idx) => {
               return (
                 <div className="elementsRap">
                   <p>
-                    <b> {item.firstname} {item.lastname}</b>
+                    <b>
+                      <Image src={item.image_url} roundedCircle height="30px" />
+                      &nbsp;
+                      {item.firstname} {item.lastname}
+                    </b>
                     requsted to join <br /> <b> {item.group_name}</b>
                   </p>
                   <button
@@ -77,17 +83,6 @@ export class Groups extends Component {
                   >
                     accept
                   </button>
-
-                  {/* <button
-                  onClick={() =>
-                    this.props.handleAcceptJoinGroup(
-                      this.props.GroupRequests.data.group_id,
-                      this.props.GroupRequests.data.member_id
-                    )
-                  }
-                >
-                  decline
-                </button> */}
                 </div>
               );
             })}
@@ -96,7 +91,6 @@ export class Groups extends Component {
           <h2>
             <b>Joined groups</b>
           </h2>
-
           {this.props.showUsergroups &&
             this.props.usergroups.map((item, idx) => {
               return (
@@ -107,11 +101,7 @@ export class Groups extends Component {
 
                   <button
                     className="mybuttonnn"
-                    onClick={() =>
-                      this.props.handleViewgroup(
-                        item.group_id
-                      )
-                    }
+                    onClick={() => this.props.handleViewgroup(item.group_id)}
                   >
                     view group
                     {this.props.showCurrentGroupPath && (

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Image from 'react-bootstrap/Image';
 
 export class GroupPost extends Component {
   postLike = (id, groupId) => {
@@ -9,7 +10,15 @@ export class GroupPost extends Component {
       <div>
         {console.log(this.props.item)}
         <div className="post">
-          <h4 className="poster">{this.props.item.poster_name}</h4>
+          <h4 className="poster">
+            <Image
+              src={this.props.item.poster_image_url}
+              roundedCircle
+              height="30px"
+            />
+            &nbsp;
+            {this.props.item.poster_name}
+          </h4>
 
           <p className="posterDate">
             at {new Date(this.props.item.send_time).toLocaleString()}

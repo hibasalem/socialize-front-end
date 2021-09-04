@@ -478,6 +478,7 @@ export class App extends Component {
       postContent: postContent,
       imageUrl: imageUrl,
       userID: this.state.user.userID,
+      poster_image_url: this.state.user.image_url,
       name: `${this.state.user.firstname} ${this.state.user.lastname}`,
     };
     console.log(payload);
@@ -501,6 +502,7 @@ export class App extends Component {
       content: commentContent,
       post_id: post_id,
       userID: this.state.user.userID,
+      commenter_image_url: this.state.user.image_url,
       name: `${this.state.user.firstname} ${this.state.user.lastname}`,
     };
     socket.emit('comment', payload);
