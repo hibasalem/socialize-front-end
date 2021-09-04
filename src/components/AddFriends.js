@@ -1,28 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Friend from './Friend';
 
-export class AddFriends extends Component {
-  render() {
-    return (
+export default function AddFriends(props) {
+  return (
+    <div>
       <div className="mainDiv">
         <h2 className="profileName">All users</h2>
         <div className="peopleCont">
-          {this.props.allusers.map((item, idx) => {
-            if (item.id !== this.props.userID) {
+          {props.allusers.map((item, idx) => {
+            if (item.id !== props.userID) {
               return (
                 <Friend
-                  targetProfile={this.props.targetProfile}
+                  targetProfile={props.targetProfile}
                   key={idx}
                   item={item}
-                  handleAddFriend={this.props.handleAddFriend}
+                  handleAddFriend={props.handleAddFriend}
                 />
               );
             }
           })}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default AddFriends;
