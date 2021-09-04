@@ -8,23 +8,54 @@ import {
 } from 'react-router-dom';
 import './header.css';
 require('dotenv').config();
-export class LogOut extends Component {
-  logout = async () => {
+
+
+function LogOut(props) {
+
+  async function logout(){
     // await axios.get('http://localhost:5000/logout');
-    this.props.logOut();
+    props.logOut();
     console.log('buy');
     // <Redirect to="/" />;
   };
 
-  render() {
-    return (
-      <a href={`${process.env.REACT_APP_FRONT_END}/`}>
-        <button className="logout" onClick={this.logout}>
+
+  return (
+    <a href={`${process.env.REACT_APP_FRONT_END}/`}>
+        <button className="logout" onClick={logout}>
           Log Out
         </button>
       </a>
-    );
-  }
+  )
 }
 
-export default LogOut;
+export default LogOut
+
+
+
+
+
+
+
+
+
+// export class LogOut extends Component {
+//   logout = async () => {
+//     // await axios.get('http://localhost:5000/logout');
+//     this.props.logOut();
+//     console.log('buy');
+//     // <Redirect to="/" />;
+//   };
+
+//   render() {
+//     return (
+//       <a href={`${process.env.REACT_APP_FRONT_END}/`}>
+//         <button className="logout" onClick={this.logout}>
+//           Log Out
+//         </button>
+//       </a>
+//     );
+//   }
+// }
+
+// export default LogOut;
