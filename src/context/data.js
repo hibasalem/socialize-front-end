@@ -149,7 +149,7 @@ export default function Data(props) {
       let messages = returnedMessages;
       // console.log(data);
       setAllMessages(messages);
-      setshowMessages(true);
+      setShowMessages(true);
 
       console.log('messages', allMessages);
     });
@@ -218,7 +218,7 @@ export default function Data(props) {
 
     //------getting the comments from the server------//
     socket.on('readComments', (payload) => {
-      setComments(payload);
+      setComment(payload);
     });
 
     socket.on('returnGroupComments', (payload) => {
@@ -329,7 +329,7 @@ export default function Data(props) {
 
   const handleShowMessenger = (reciverId) => {
     setShowMessenger(true);
-    setMessageReceiverId(receiverId);
+    setMessageReceiverId(reciverId);
 
     let room;
     if (reciverId > user.userID) {
@@ -481,6 +481,7 @@ export default function Data(props) {
     allFollowers,
     showFollowers,
     posts,
+    showPosts,
     comment,
     showMessenger,
     messageReceiverId,
@@ -490,7 +491,6 @@ export default function Data(props) {
     showGroups,
     GroupRequests,
     showGroupsRequests,
-    showPosts,
     usergroups,
     showUsergroups,
     currentGroupPath,
@@ -539,7 +539,7 @@ export default function Data(props) {
   };
 
   return (
-    <DataContext.Provider value={(state, methods)}>
+    <DataContext.Provider value={{ state: state, methods: methods }}>
       {props.children}
     </DataContext.Provider>
   );

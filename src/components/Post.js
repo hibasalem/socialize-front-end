@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import CommentForm from './CommentForm';
 import Image from 'react-bootstrap/Image';
 
+import { DataContext } from '../context/data';
+
 export default function Post(props) {
+  const context = useContext(DataContext);
   const like = (id) => {
-    props.like(id);
+    context.methods.like(id);
   };
 
   return (
@@ -29,11 +32,11 @@ export default function Post(props) {
         <p>{props.post_likes}&#128077;</p>
       </div>
 
-      <CommentForm comment={props.comment} id={props.postID} />
+      <CommentForm id={props.postID} />
 
       <div>
-        {console.log(props.comments)}
-        {props.comments.map((item, index) => {
+        {/* {console.log(props.comments)} */}
+        {context.state.comment.map((item, index) => {
           let value;
           if (props.postID === item.post_id) {
             value = (

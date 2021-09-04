@@ -1,9 +1,12 @@
 // import e from 'cors'
-import React, { Component, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 
+import { DataContext } from '../context/data';
 
 export default function PostForm(props) {
+  const context = useContext(DataContext);
+
   const [content, setContent] = useState('');
   const [file, setFile] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -11,23 +14,17 @@ export default function PostForm(props) {
   function post(e) {
     e.preventDefault();
 
-    props.post(
-      content,
-      imageUrl,
-      props.groupId
-    );
+    props.post(content, imageUrl, context.state.currentGroupID);
+
     setFile('');
     setImageUrl('');
     e.target.reset();
-  };
-
+  }
 
   function handelOnChangeImage(e) {
     console.log(e.target.files[0]);
     setFile(e.target.files[0]);
-
-  };
-
+  }
 
   function handelUploadImage() {
     const fd = new FormData();
@@ -40,8 +37,8 @@ export default function PostForm(props) {
           onUploadProgress: (ProgressEvent) => {
             console.log(
               'upload Progress : ' +
-              Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100) +
-              '%'
+                Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100) +
+                '%'
             );
           },
         }
@@ -50,7 +47,7 @@ export default function PostForm(props) {
         console.log(res.data.url);
         setImageUrl(res.data.url);
       });
-  };
+  }
 
   return (
     <div>
@@ -66,21 +63,13 @@ export default function PostForm(props) {
           placeholder="type your post here "
           onChange={(e) => {
             setContent(e.target.value);
-
           }}
         />
         <input type="file" onChange={handelOnChangeImage} />
-        <input
-          type="button"
-          value="Upload"
-          onClick={handelUploadImage}
-        />
+        <input type="button" value="Upload" onClick={handelUploadImage} />
 
         <input className="mybuttonnn" type="submit" value="post" />
       </form>
     </div>
-  )
+  );
 }
-
-
-

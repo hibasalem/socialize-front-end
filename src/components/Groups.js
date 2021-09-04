@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
+import { DataContext } from '../context/data';
 
-export default function Groups(props) {
+export default function Groups() {
+  const context = useContext(DataContext);
+
   const [groupName, setgroupName] = useState('');
   const [groupDescription, setgroupDescription] = useState('');
 
   useEffect(() => {
-    props.getGroupRequests();
-    props.getAllGroups();
-    props.getUsergroups();
+    context.methods.getGroupRequests();
+    context.methods.getAllGroups();
+    context.methods.getUsergroups();
   }, []);
 
   const createGroup = (e) => {
     e.preventDefault();
-    props.handleCreateGroup(groupName, groupDescription);
+    context.methods.handleCreateGroup(groupName, groupDescription);
   };
 
   return (
@@ -47,8 +50,8 @@ export default function Groups(props) {
           <b>Groups requests</b>
         </h2>
         {/* {console.log(props.GroupRequests)} */}
-        {props.showGroupsRequests &&
-          props.GroupRequests.map((item, idx) => {
+        {context.state.showGroupsRequests &&
+          context.state.GroupRequests.map((item, idx) => {
             return (
               <div className="elementsRap">
                 <p>
@@ -62,7 +65,7 @@ export default function Groups(props) {
                 <button
                   className="mybuttonnn"
                   onClick={() =>
-                    props.handleAcceptJoinGroup(
+                    context.methods.handleAcceptJoinGroup(
                       item.group_id,
                       item.member_id,
                       item.owner_id
@@ -79,8 +82,8 @@ export default function Groups(props) {
         <h2>
           <b>Joined groups</b>
         </h2>
-        {props.showUsergroups &&
-          props.usergroups.map((item, idx) => {
+        {context.state.showUsergroups &&
+          context.state.usergroups.map((item, idx) => {
             return (
               <div className="elementsRap">
                 <p>
@@ -89,11 +92,11 @@ export default function Groups(props) {
 
                 <button
                   className="mybuttonnn"
-                  onClick={() => props.handleViewgroup(item.group_id)}
+                  onClick={() => context.methods.handleViewgroup(item.group_id)}
                 >
                   view group
-                  {props.showCurrentGroupPath && (
-                    <Link to={props.currentGroupPath}> view group</Link>
+                  {context.state.showCurrentGroupPath && (
+                    <Link to={context.state.currentGroupPath}> view group</Link>
                   )}
                 </button>
               </div>
@@ -104,8 +107,8 @@ export default function Groups(props) {
         <h2>
           <b>All groups </b>
         </h2>
-        {props.showGroups &&
-          props.allGroups.map((item, idx) => {
+        {context.state.showGroups &&
+          context.state.allGroups.map((item, idx) => {
             return (
               <div className="groupRapRap">
                 <p>
@@ -114,7 +117,9 @@ export default function Groups(props) {
                 <p>Description {item.group_description}</p>
                 <button
                   className="mybuttonnn"
-                  onClick={() => props.handleJoinGroup(item.id, item.owner_id)}
+                  onClick={() =>
+                    context.methods.handleJoinGroup(item.id, item.owner_id)
+                  }
                 >
                   Join group
                 </button>

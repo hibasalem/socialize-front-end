@@ -1,22 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import CommentForm from './CommentForm';
 import GroupPost from './GroupPost';
 import PostForm from './PostForm';
 import Image from 'react-bootstrap/Image';
+import { DataContext } from '../context/data';
 
-export default function CurrentGroup(props) {
+export default function CurrentGroup() {
+  const context = useContext(DataContext);
+
   useEffect(() => {
-    props.getAllGroupPosts(props.currentGroupID);
-    props.getGroupMembers(props.currentGroupID);
-    props.getAllGroupComments();
+    context.methods.getAllGroupPosts(context.state.currentGroupID);
+    context.methods.getGroupMembers(context.state.currentGroupID);
+    context.methods.getAllGroupComments();
   }, []);
 
   return (
     <div className="mainDiv">
       <div className="groupMembers">
         <h2>Group members</h2>
-        {props.showGroupMembers &&
-          props.groupMembers.map((item, idx) => {
+        {context.state.showGroupMembers &&
+          context.state.groupMembers.map((item, idx) => {
             return (
               <p>
                 <Image src={item.image_url} roundedCircle height="30px" />
@@ -27,36 +30,29 @@ export default function CurrentGroup(props) {
           })}
       </div>
 
-      <PostForm
-        className="form3"
-        post={props.post}
-        groupId={props.currentGroupContent.id}
-      />
-      {props.showCurrentGroupContent && (
+      <PostForm className="form3" post={context.methods.handelGroupPost} />
+
+      {context.state.showCurrentGroupContent && (
         <>
           <div>
             <h2 className="profileName2">
-              {props.currentGroupContent.group_name}
+              {context.state.currentGroupContent.group_name}
             </h2>
           </div>
         </>
       )}
+
       {/* {console.log(props.GroupPost)} */}
-      {props.showGroupPosts &&
-        props.groupPosts.map((item, idx) => {
+      {context.state.showGroupPosts &&
+        context.state.groupPosts.map((item, idx) => {
           return (
             <>
               <div className="postDiv">
-                <GroupPost
-                  groupPostLike={props.groupPostLike}
-                  item={item}
-                  key={idx}
-                  groupPostsLikes={props.groupPostsLikes}
-                />
-                <CommentForm comment={props.comment} id={item.id} />
+                <GroupPost item={item} key={idx} />
+                <CommentForm id={item.id} />
                 {/* {console.log('hii', props.groupComments)} */}
-                {props.showGroupComments &&
-                  props.groupComments.map((comment, index) => {
+                {context.state.showGroupComments &&
+                  context.state.groupComments.map((comment, index) => {
                     let value;
                     if (item.id === comment.g_post_id) {
                       value = (
