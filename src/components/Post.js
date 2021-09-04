@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import CommentForm from './CommentForm';
 import Image from 'react-bootstrap/Image';
 
@@ -12,11 +12,7 @@ export default function Post(props) {
       <div>
         <div className="post">
           <h4 className="poster">
-            <Image
-              src={props.poster_image_url}
-              roundedCircle
-              height="30px"
-            />
+            <Image src={props.poster_image_url} roundedCircle height="30px" />
             &nbsp;
             {props.poster_name}
           </h4>
@@ -25,9 +21,7 @@ export default function Post(props) {
           </p>
           {props.postContent}
           <br />
-          {props.image_url && (
-            <img src={props.image_url} width="100%" />
-          )}
+          {props.image_url && <img src={props.image_url} width="100%" />}
         </div>
         <button className="like" onClick={() => like(props.postID)}>
           Like
