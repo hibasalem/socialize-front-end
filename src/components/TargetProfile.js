@@ -1,17 +1,9 @@
 import React from 'react';
-<<<<<<< HEAD
-import '../App.css';
-import Image from 'react-bootstrap/Image';
-
-
-function TargetProfile(props) {
-=======
 
 import '../App.css';
 import Image from 'react-bootstrap/Image';
 
 export default function TargetProfile(props) {
->>>>>>> 3872703efec9107a8e34212825565a976d412526
   return (
     <div className="mainDiv">
       <div className="mainDiv">
@@ -73,13 +65,5 @@ export default function TargetProfile(props) {
         })}
       </div>
     </div>
-<<<<<<< HEAD
-  )
-}
-
-export default TargetProfile
-
-=======
   );
 }
->>>>>>> 3872703efec9107a8e34212825565a976d412526
