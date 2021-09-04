@@ -6,7 +6,7 @@ export class Posts extends Component {
   render() {
     return (
       <div>
-        {console.log(this.props.allPosts)}
+        {/* {console.log('hi', this.props.allPosts)} */}
         {this.props.allPosts.map((element, index) => {
           if (element.poster_id === this.props.userID) {
             return (
@@ -22,6 +22,7 @@ export class Posts extends Component {
                   comment={this.props.comment}
                   id={element.id}
                   image_url={element.image_url}
+                  poster_image_url={element.poster_image_url}
                 />
               </div>
             );

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import Image from 'react-bootstrap/Image';
 
 export class TargetProfile extends Component {
   render() {
@@ -16,6 +17,8 @@ export class TargetProfile extends Component {
           {this.props.targetedFollowing.map((element, index) => {
             return (
               <div key={index}>
+                <Image src={element.image_url} roundedCircle height="30px" />
+                &nbsp;
                 {element.firstname} {element.lastname}
               </div>
             );
@@ -27,6 +30,8 @@ export class TargetProfile extends Component {
           {this.props.targetedFollowers.map((element, index) => {
             return (
               <div key={index}>
+                <Image src={element.image_url} roundedCircle height="30px" />
+                &nbsp;
                 {element.firstname} {element.lastname}
               </div>
             );
@@ -35,10 +40,21 @@ export class TargetProfile extends Component {
 
         <div>
           {this.props.targetedPosts.map((element, index) => {
+            {
+              console.log(this.props.targetedPosts);
+            }
             return (
               <div className="postDiv" key={index}>
                 <div className="post">
-                  <h4 className="poster">{element.poster_name}</h4>
+                  <h4 className="poster">
+                    <Image
+                      src={element.poster_image_url}
+                      roundedCircle
+                      height="30px"
+                    />
+                    &nbsp;
+                    {element.poster_name}
+                  </h4>
                   <p className="posterDate">
                     at {new Date(element.send_time).toLocaleString()}
                   </p>

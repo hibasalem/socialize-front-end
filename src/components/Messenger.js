@@ -16,6 +16,7 @@ export class Messenger extends Component {
     return (
       <div>
         <div className="Meessages">
+          {console.log('hiii', this.props.allMessages)}
           {this.props.showMessages && (
             <Message allMessages={this.props.allMessages} />
           )}

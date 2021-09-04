@@ -12,7 +12,15 @@ export class Post extends Component {
       <div>
         <div>
           <div className="post">
-            <h4 className="poster">{this.props.poster_name}</h4>
+            <h4 className="poster">
+              <Image
+                src={this.props.poster_image_url}
+                roundedCircle
+                height="30px"
+              />
+              &nbsp;
+              {this.props.poster_name}
+            </h4>
             <p className="posterDate">
               at {new Date(this.props.post_time).toLocaleString()}
             </p>
@@ -31,13 +39,21 @@ export class Post extends Component {
         <CommentForm comment={this.props.comment} id={this.props.postID} />
 
         <div>
+          {console.log(this.props.comments)}
           {this.props.comments.map((item, index) => {
             let value;
             if (this.props.postID === item.post_id) {
               value = (
                 <div className="comment">
-                  <h5 className="poster">{item.commenter_name}</h5>
-
+                  <h5 className="poster">
+                    <Image
+                      src={item.commenter_image_url}
+                      roundedCircle
+                      height="30px"
+                    />
+                    &nbsp;
+                    {item.commenter_name}
+                  </h5>
                   <p className="commeentDate">
                     at {new Date(item.send_time).toLocaleString()}
                   </p>

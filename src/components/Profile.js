@@ -14,13 +14,14 @@ class Profile extends Component {
   render() {
     return (
       <div className="mainDiv">
-        {console.log('hello', this.props.user)}
+        {/* {console.log('hello', this.props.user)} */}
 
         <h2 className="profileName">
-          <Image src={this.props.user.image_url} roundedCircle height="80px" />
+          <Image src={this.props.user.image_url} roundedCircle height="70px" />
           &nbsp; &nbsp;
           {this.props.user.firstname} {this.props.user.lastname}
         </h2>
+
         <p>{this.props.user.age}</p>
         <p>{this.props.user.gender}</p>
         <div className="following">
@@ -29,7 +30,11 @@ class Profile extends Component {
             this.props.allFollowing.map((item) => {
               return (
                 <>
+                  {/* {console.log(this.props.allFollowing)} */}
+
                   <p>
+                    <Image src={item.image_url} roundedCircle height="30px" />
+                    &nbsp;
                     {item.firstname} {item.lastname}
                   </p>
                   <button
@@ -45,11 +50,15 @@ class Profile extends Component {
 
         <div className="followers">
           <h2>Followers</h2>
+
           {this.props.showFollowers &&
             this.props.allFollowers.map((item) => {
               return (
                 <>
+                  {/* {console.log(this.props.allFollowers)} */}
                   <p>
+                    <Image src={item.image_url} roundedCircle height="30px" />
+                    &nbsp;
                     {item.firstname} {item.lastname}
                   </p>
                   <button

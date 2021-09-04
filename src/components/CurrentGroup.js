@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CommentForm from './CommentForm';
 import GroupPost from './GroupPost';
 import PostForm from './PostForm';
+import Image from 'react-bootstrap/Image';
 
 export class CurrentGroup extends Component {
   componentDidMount = async () => {
@@ -19,6 +20,8 @@ export class CurrentGroup extends Component {
             this.props.groupMembers.map((item, idx) => {
               return (
                 <p>
+                  <Image src={item.image_url} roundedCircle height="30px" />
+                  &nbsp;
                   {item.firstname} {item.lastname}
                 </p>
               );
@@ -39,6 +42,7 @@ export class CurrentGroup extends Component {
             </div>
           </>
         )}
+        {/* {console.log(this.props.GroupPost)} */}
         {this.props.showGroupPosts &&
           this.props.groupPosts.map((item, idx) => {
             return (
@@ -51,6 +55,7 @@ export class CurrentGroup extends Component {
                     groupPostsLikes={this.props.groupPostsLikes}
                   />
                   <CommentForm comment={this.props.comment} id={item.id} />
+                  {/* {console.log('hii', this.props.groupComments)} */}
                   {this.props.showGroupComments &&
                     this.props.groupComments.map((comment, index) => {
                       let value;
@@ -58,6 +63,12 @@ export class CurrentGroup extends Component {
                         value = (
                           <div className="comment">
                             <h5 className="poster">
+                              <Image
+                                src={comment.commenter_image_url}
+                                roundedCircle
+                                height="30px"
+                              />
+                              &nbsp;
                               {comment.g_commenter_name}
                             </h5>
 
