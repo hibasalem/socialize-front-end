@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Image from 'react-bootstrap/Image';
+import { DataContext } from '../context/data';
 
 export default function GroupPost(props) {
+  const context = useContext(DataContext);
   const postLike = (id, groupId) => {
-    props.groupPostLike(id, groupId);
+    context.methods.groupPostLike(id, groupId);
   };
   return (
-    <div>
+    <div key={props.key}>
       {/* {console.log(props.item)} */}
       <div className="post">
         <h4 className="poster">
@@ -31,9 +33,7 @@ export default function GroupPost(props) {
 
       <button
         className="like"
-        onClick={() =>
-          postLike(props.item.id, props.item.g_groups_id)
-        }
+        onClick={() => postLike(props.item.id, props.item.g_groups_id)}
       >
         Like
       </button>

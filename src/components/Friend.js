@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
+import { DataContext } from '../context/data';
 
 export default function Friend(props) {
+  const context = useContext(DataContext);
+
   const [path, setpath] = useState(`/target/${props.item.id}`);
   const targetProfile = () => {
-    props.targetProfile(props.item.id);
+    context.methods.targetProfile(props.item.id);
   };
   return (
     <div className="personCont" key={props.item.id}>
@@ -25,7 +28,7 @@ export default function Friend(props) {
       </nav>
       <button
         className="mybuttonnn"
-        onClick={() => props.handleAddFriend(props.item.id)}
+        onClick={() => context.methods.handleAddFriend(props.item.id)}
       >
         Follow
       </button>

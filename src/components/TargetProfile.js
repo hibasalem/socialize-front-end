@@ -1,20 +1,22 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
 import '../App.css';
 import Image from 'react-bootstrap/Image';
+import { DataContext } from '../context/data';
 
-export default function TargetProfile(props) {
+export default function TargetProfile() {
+  const context = useContext(DataContext);
+
   return (
     <div className="mainDiv">
       <div className="mainDiv">
         <h2 className="profileName">
-          {props.targetedProfileInfo.firstname}
-          {props.targetedProfileInfo.lastname}
+          {context.state.targetedProfileInfo.firstname}
+          {context.state.targetedProfileInfo.lastname}
         </h2>
       </div>
       <div className="following">
         <h2>Following</h2>
-        {props.targetedFollowing.map((element, index) => {
+        {context.state.targetedFollowing.map((element, index) => {
           return (
             <div key={index}>
               <Image src={element.image_url} roundedCircle height="30px" />
@@ -27,7 +29,7 @@ export default function TargetProfile(props) {
 
       <div className="followers">
         <h2>Followers</h2>
-        {props.targetedFollowers.map((element, index) => {
+        {context.state.targetedFollowers.map((element, index) => {
           return (
             <div key={index}>
               <Image src={element.image_url} roundedCircle height="30px" />
@@ -39,10 +41,10 @@ export default function TargetProfile(props) {
       </div>
 
       <div>
-        {props.targetedPosts.map((element, index) => {
-          {
-            console.log(props.targetedPosts);
-          }
+        {context.state.targetedPosts.map((element, index) => {
+          // {
+          //   console.log(context.state.targetedPosts);
+          // }
           return (
             <div className="postDiv" key={index}>
               <div className="post">

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { DataContext } from '../context/data';
 
 export default function CommentForm(props) {
+  const context = useContext(DataContext);
+
   const [content, setcontent] = useState('');
   const comment = (e) => {
     e.preventDefault();
-    props.comment(content, props.id);
+    context.methods.newComment(content, props.id);
   };
   return (
     <div>

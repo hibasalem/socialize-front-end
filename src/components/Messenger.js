@@ -1,23 +1,22 @@
-import React, {Component, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Message from './Message';
 
+import { DataContext } from '../context/data';
 
-
-function Messenger(props) {
+function Messenger() {
+  const context = useContext(DataContext);
   const [messageContent, setMessageContent] = useState('');
 
   function sendMessage(e) {
     e.preventDefault();
-    props.handleSendMessage(messageContent);
-  };
+    context.methods.handleSendMessage(messageContent);
+  }
 
   return (
     <div>
       <div className="Meessages">
-        {console.log('hiii', props.allMessages)}
-        {props.showMessages && (
-          <Message allMessages={props.allMessages} />
-        )}
+        {/* {console.log('hiii', props.allMessages)} */}
+        {context.state.showMessages && <Message />}
       </div>
       <form
         onSubmit={(e) => {
@@ -34,53 +33,7 @@ function Messenger(props) {
         <input type="submit" />
       </form>
     </div>
-  )
+  );
 }
 
-export default Messenger
-
-
-
-
-// export class Messenger extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       messageContent: '',
-//     };
-//   }
-//   sendMessage = (e) => {
-//     e.preventDefault();
-//     this.props.handleSendMessage(this.state.messageContent);
-//   };
-//   render() {
-//     return (
-//       <div>
-//         <div className="Meessages">
-//           {console.log('hiii', this.props.allMessages)}
-//           {this.props.showMessages && (
-//             <Message allMessages={this.props.allMessages} />
-//           )}
-//         </div>
-//         <form
-//           onSubmit={(e) => {
-//             this.sendMessage(e);
-//           }}
-//         >
-//           <input
-//             type="text"
-//             placeholder="Type Your Message Here"
-//             onChange={(e) => {
-//               this.setState({
-//                 messageContent: e.target.value,
-//               });
-//             }}
-//           />
-//           <input type="submit" />
-//         </form>
-//       </div>
-//     );
-//   }
-// }
-
-// export default Messenger;
+export default Messenger;
