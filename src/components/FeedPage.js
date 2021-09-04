@@ -14,6 +14,7 @@ class FeedPage extends Component {
   // }
 
   render() {
+
     return (
       <div className="mainDiv">
         <PostForm post={this.props.post} />

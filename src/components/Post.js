@@ -35,7 +35,7 @@ export class Post extends Component {
             let value;
             if (this.props.postID === item.post_id) {
               value = (
-                <div className="comment">
+                <div className="comment" key={index}>
                   <h5 className="poster">{item.commenter_name}</h5>
 
                   <p className="commeentDate">

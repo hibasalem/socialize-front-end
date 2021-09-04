@@ -11,6 +11,7 @@ export default function postReducer(state = initialState, actions) {
         case 'READ':
             return {
                 posts: payload,
+                comments: [],
                 showPosts: true,
             }
         case 'READ_COMMENTS':
@@ -26,7 +27,7 @@ export default function postReducer(state = initialState, actions) {
 export function read(payload) {
     return {
         type: 'READ',
-        paylaod: payload
+        payload: payload
     }
 }
 

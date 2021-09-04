@@ -1,5 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -21,118 +20,126 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
+export class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loggedIn: false,
+      user: {
+        userID: null,
+        firstname: null,
+        lastname: null,
+        gender: null,
+        age: null,
+        auth_id: null,
+        image_url: null,
+      },
+      path: '/profile',
+      allusers: [],
+      allFollowing: [],
+      showFollowing: false,
+      allFollowers: [],
+      showFollowers: false,
+      posts: [],
+      comments: [],
+      showMessenger: false,
+      messageReceiverId: null,
+      allMessages: [],
+      showMessages: false,
+      allGroups: [],
+      showGroups: false,
+      GroupRequests: [],
+      showGroupsRequests: false,
+      showPosts: false,
+      usergroups: [],
+      showUsergroups: false,
+      currentGroupPath: '',
+      showCurrentGroupPath: false,
+      currentGroupContent: [],
+      showCurrentGroupContent: false,
+      targetedProfileInfo: [],
+      targetedFollowing: [],
+      targetedFollowers: [],
+      targetedPosts: [],
+      groupPosts: [],
+      showGroupPosts: false,
+      currentGroupID: null,
+      groupMembers: [],
+      showGroupMembers: false,
+      groupPostsLikes: [],
+      showGroupPostsLikes: false,
+      groupComments: [],
+      showGroupComments: false,
+    };
+  }
 
-function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState({
-    userID: null,
-    firstname: null,
-    lastname: null,
-    gender: null,
-    age: null,
-    auth_id: null,
-    image_url: null,
-  });
-  const [path, setPath] = useState('/profile');
-  const [allusers, setAllusers] = useState([]);
-  const [allFollowing, setAllFollowing] = useState([]);
-  const [showFollowing, setShowFollowing] = useState(false);
-  const [allFollowers, setAllFollowers] = useState([]);
-  const [showFollowers, setShowFollowers] = useState(false);
-  const [posts, setPosts] = useState([]);
-  const [comment, setComment] = useState([]);
-  const [showMessenger, setShowMessenger] = useState(false);
-  const [messageReceiverId, setMessageReceiverId] = useState(null);
-  const [allMessages, setAllMessages] = useState([]);
-  const [showMessages, setShowMessages] = useState(false);
-  const [allGroups, setAllGroups] = useState([]);
-  const [showGroups, setShowGroups] = useState(false);
-  const [GroupRequests, setGroupRequests] = useState([]);
-  const [showGroupsRequests, setShowGroupsRequests] = useState(false);
-  const [showPosts, setShowPosts] = useState(false);
-  const [usergroups, setUsergroups] = useState([]);
-  const [showUsergroups, setShowUsergroups] = useState(false);
-  const [currentGroupPath, setCurrentGroupPath] = useState('');
-  const [showCurrentGroupPath, setShowCurrentGroupPath] = useState(false);
-  const [currentGroupContent, setCurrentGroupContent] = useState([]);
-  const [showCurrentGroupContent, setShowCurrentGroupContent] = useState(false);
-  const [targetedProfileInfo, setTargetedProfileInfo] = useState([]);
-  const [targetedFollowing, setTargetedFollowing] = useState([]);
-  const [targetedFollowers, setTargetedFollowers] = useState([]);
-  const [targetedPosts, setTargetedPosts] = useState([]);
-  const [groupPosts, setGroupPosts] = useState([]);
-  const [showGroupPosts, setShowGroupPosts] = useState(false);
-  const [currentGroupID, setCurrentGroupID] = useState(null);
-  const [groupMembers, setGroupMembers] = useState([]);
-  const [showGroupMembers, setShowGroupMembers] = useState(false);
-  const [groupPostsLikes, setGroupPostsLikes] = useState([]);
-  // const [showGroupPostsLikes, setShowGroupPostsLikes] = useState(false);
-  const [groupComments, setGroupComments] = useState([]);
-  const [showGroupComments, setShowGroupComments] = useState(false);
-
-  useEffect(() => {
-
+  componentDidMount = async () => {
     socket.on('connect', () => {
       socket.emit('test');
       socket.emit('getAllUsers');
       socket.on('requestAccepted', (payload) => {
-
+        // console.log(payload.ownerId);
+        // console.log(payload.memberId);
         if (
-          user.userID === payload.memberId ||
-          user.userID === payload.ownerId
+          this.state.user.userID === payload.memberId ||
+          this.state.user.userID === payload.ownerId
         ) {
-          let userID = user.userID;
+          let userID = this.state.user.userID;
           socket.emit('getAllGroups', { userID: userID });
           socket.emit('getUsergroups', { userID: userID });
           socket.emit('getGroupRequests', { userID: userID });
         }
       });
       socket.on('newLike', () => {
-        socket.emit('getAllPosts', { userID: user.userID });
+        socket.emit('getAllPosts', { userID: this.state.user.userID });
       });
       socket.on('joinGroupRequest', (payload) => {
-        if (user.userID === payload) {
-          getGroupRequests();
+        if (this.state.user.userID === payload) {
+          this.getGroupRequests();
         }
       });
       socket.on('groupisCreated', () => {
-        let userID = user.userID;
+        let userID = this.state.user.userID;
         socket.emit('getAllGroups', { userID: userID });
         socket.emit('getUsergroups', { userID: userID });
       });
       socket.on('haveBeenFollowed', (payload) => {
-        if (user.userID === payload) {
-          getFollowers();
+        if (this.state.user.userID === payload) {
+          this.getFollowers();
         }
       });
       socket.on('newGroupPostMade', (payload) => {
-
-
-        if (currentGroupID === payload) {
+        console.log('currentGroupID ', this.state.currentGroupID);
+        console.log('payload ', payload);
+        if (this.state.currentGroupID === payload) {
           socket.emit('getAllGroupPosts', {
-            groupID: currentGroupID,
+            groupID: this.state.currentGroupID,
           });
         }
       });
       socket.on('targetInfo', (payload) => {
-        setTargetedProfileInfo(payload[0]);
-
+        this.setState({
+          targetedProfileInfo: payload[0],
+        });
+        // console.log(this.state.targetedProfileInfo);
       });
       socket.on('targetFollowing', (payload) => {
-        setTargetedFollowing(payload)
-
+        this.setState({
+          targetedFollowing: payload,
+        });
+        // console.log(this.state.targetedFollowing);
       });
       socket.on('targetFollowers', (payload) => {
-
-        setTargetedFollowers(payload)
-
-
+        this.setState({
+          targetedFollowers: payload,
+        });
+        // console.log(this.state.targetedFollowers);
       });
       socket.on('targetPosts', (payload) => {
-
-        setTargetedPosts(payload)
-
-
+        this.setState({
+          targetedPosts: payload,
+        });
+        // console.log(this.state.targetedPosts);
       });
       socket.on('newUsersList', () => {
         socket.emit('getAllUsers');
@@ -143,82 +150,89 @@ function App() {
     //   socket.emit('getAllUsers');
     // })
     socket.on('returnAllUsers', (data) => {
-
-      setAllusers(data);
-
-
+      this.setState({
+        allusers: data,
+      });
+      // console.log(this.state.allusers);
     });
 
     socket.on('returnFollowing', (data) => {
       let data2 = data;
-
-
-      setAllFollowing(data2);
-      setShowFollowing(true);
-
-
+      // console.log(data);
+      this.setState({
+        allFollowing: data2,
+        showFollowing: true,
+      });
+      console.log('following', this.state.allFollowing);
     });
 
     socket.on('returnFollowers', (data) => {
       let data2 = data;
-
-      setAllFollowers(data2);
-      setShowFollowers(true);
-
+      // console.log(data);
+      this.setState({
+        allFollowers: data2,
+        showFollowers: true,
+      });
+      console.log('followers', this.state.allFollowers);
     });
 
     socket.on('returnMessages', (returnedMessages) => {
       let messages = returnedMessages;
-
-
-      setAllMessages(messages);
-      setShowMessages(true);
-
-
+      // console.log(data);
+      this.setState({
+        allMessages: messages,
+        showMessages: true,
+      });
+      console.log('messages', this.state.allMessages);
     });
 
     socket.on('returnAllGroups', (returnedGroups) => {
       // let groups = returnedGroups;
-
-
-      setAllGroups(returnedGroups);
-      setShowGroups(true);
-
-
+      // console.log('before',groups);
+      this.setState({
+        allGroups: returnedGroups,
+        showGroups: true,
+      });
+      // console.log('groups', this.state.allGroups);
     });
 
     socket.on('returnGroupRequests', (returnedGroupRequests) => {
       let GroupRequests = returnedGroupRequests;
-
-
-      setGroupRequests(GroupRequests);
-      setShowGroupsRequests(true);
-
+      // console.log('hi');
+      this.setState({
+        GroupRequests: GroupRequests,
+        showGroupsRequests: true,
+      });
+      console.log('GroupRequests', GroupRequests);
     });
 
     socket.on('returnUsergroups', (data) => {
       let usergroups = data;
-
-
-      setUsergroups(usergroups);
-      setShowUsergroups(true);
-
-
+      // console.log('usergroups', usergroups);
+      this.setState({
+        usergroups: usergroups,
+        showUsergroups: true,
+      });
+      console.log('usergroups', this.state.usergroups);
     });
 
     socket.on('returnGroupMembers', (data) => {
       let groupMembers = data;
-
-      setGroupMembers(groupMembers);
-      setShowGroupMembers(true);
-
-
+      this.setState({
+        groupMembers: groupMembers,
+        showGroupMembers: true,
+      });
+      console.log('usergroups', this.state.usergroups);
     });
 
     socket.on('returnCurrentGroupContent', (data) => {
       let currentGroupContent = data;
-      setCurrentGroupContent(currentGroupContent);
-      setShowCurrentGroupContent(true);
+      // console.log('usergroups', usergroups);
+      this.setState({
+        currentGroupContent: currentGroupContent,
+        showCurrentGroupContent: true,
+      });
+      console.log('currentGroupContent', this.state.currentGroupContent);
     });
 
     socket.on('error', (payload) => {
@@ -226,144 +240,159 @@ function App() {
     });
 
     //-----requesting to get the post from the server-----//
-    socket.emit('getAllPosts', { userID: user.userID });
-
+    socket.emit('getAllPosts', { userID: this.state.user.userID });
 
     //---requestin to get the comments from the server---//
-    socket.emit('getAllComments', { userID: user.userID });
+    socket.emit('getAllComments', { userID: this.state.user.userID });
 
     //-------getting the posts from the server-------//
     socket.on('read', (payload) => {
       let stuff = payload;
-
-      setPosts(stuff);
-      setShowPosts(true);
-
-
+      this.setState({
+        posts: stuff,
+        showPosts: true,
+      });
+      console.log('this is the read ', this.state.posts.length);
     });
 
     //------getting the comments from the server------//
     socket.on('readComments', (payload) => {
-      setComment(payload);
+      this.setState({
+        comments: payload,
+      });
     });
 
     socket.on('returnGroupComments', (payload) => {
-
-      setGroupComments(payload);
-      setShowGroupComments(true);
-
-
+      this.setState({
+        groupComments: payload,
+        showGroupComments: true,
+      });
+      console.log('returned comments payload', payload);
     });
 
-
+    //------notification of a new post ------//
+    socket.on('newPost', () => {
+      socket.emit('getAllPosts', { userID: this.state.user.userID });
+    });
 
     socket.on('returnNewGroupPost', (data) => {
       let groupPosts = data;
-      setGroupPosts(groupPosts);
-      setShowGroupPosts(true);
+      console.log('groupPosts', groupPosts);
+      this.setState({
+        groupPosts: groupPosts,
+        showGroupPosts: true,
+      });
+      console.log('groupPosts', this.state.groupPosts);
+    });
 
-    });
-    //------notification of a new post ------//
-    socket.on('newPost', () => {
-      socket.emit('getAllPosts', { userID: user.userID });
-    });
-    
     socket.on('returnGroupLikes', (payload) => {
       let info = payload;
-
+      console.log('what is this', payload);
       socket.emit('getAllGroupPosts', { groupID: info[0].g_groups_id });
     });
-  }, []);
+  };
 
-
-  const getAllGroupPosts = (data) => {
-
+  getAllGroupPosts = (data) => {
+    // console.log('this is data: ', data);
     socket.emit('getAllGroupPosts', { groupID: data });
   };
 
-  const getAllGroupComments = () => {
+  getAllGroupComments = () => {
     socket.emit('getAllGroupComments');
   };
 
-  const getGroupMembers = (data) => {
+  getGroupMembers = (data) => {
     socket.emit('getGroupMembers', { groupID: data });
   };
 
-  const getFollowing = () => {
-    let userID = user.userID;
+  getFollowing = () => {
+    let userID = this.state.user.userID;
     socket.emit('getFollowing', { userID: userID });
   };
 
+  // getFollowing = () => {
+  //   let userID = this.state.user.userID;
+  //   socket.emit('getFollowing', { userID: userID });
+  // };
 
-
-  const getFollowers = () => {
-    let userID = user.userID;
+  getFollowers = () => {
+    let userID = this.state.user.userID;
     socket.emit('getFollowers', { userID: userID });
   };
 
-  const getGroupRequests = () => {
-    let userID = user.userID;
+  getGroupRequests = () => {
+    let userID = this.state.user.userID;
     socket.emit('getGroupRequests', { userID: userID });
   };
 
-  const getUsergroups = () => {
-    let userID = user.userID;
+  getUsergroups = () => {
+    let userID = this.state.user.userID;
     socket.emit('getUsergroups', { userID: userID });
   };
 
-  const getAllGroups = () => {
-    let userID = user.userID;
+  getAllGroups = () => {
+    let userID = this.state.user.userID;
     socket.emit('getAllGroups', { userID: userID });
   };
 
-  const loggedInFunction = (user) => {
-
-    setLoggedIn(true);
-    setUser({
-      userID: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      age: user.age,
-      gender: user.gender,
-      auth_id: user.auth_id,
-      image_url: user.image_url,
+  loggedIn = (user) => {
+    console.log('user', user);
+    this.setState({
+      loggedIn: true,
+      user: {
+        userID: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        age: user.age,
+        gender: user.gender,
+        auth_id: user.auth_id,
+        image_url: user.image_url,
+      },
     });
-
-  };
-  useEffect(() => {
-    socket.emit('getAllPosts', { userID: user.userID });
+    this.setState({
+      path: `/profile/${this.state.user.userID}`,
+    });
+    let payload = {
+      userID: this.state.user.userID,
+    };
+    socket.emit('getAllPosts', { userID: this.state.user.userID });
     socket.emit('getNewUsersList');
-    setPath(`/profile/${user.userID}`);
-  }, [user]);
-
-  const logOut = () => {
-    setLoggedIn(false);
+    // console.log(this.state.posts);
+    // socket.emit('join', { userID: this.state.user.userID });
+    // console.log('user', this.state.path, this.state.user);
   };
 
-  const handleAddFriend = (reciverId) => {
+  logOut = () => {
+    this.setState({
+      loggedIn: false,
+    });
+  };
 
-    let data = { reciverId: reciverId, senderId: user.userID };
-
+  handleAddFriend = (reciverId) => {
+    console.log('following...');
+    let data = { reciverId: reciverId, senderId: this.state.user.userID };
+    console.log(data);
     socket.emit('addFriend', data);
-    getFollowing();
-    getFollowers();
+    this.getFollowing();
+    this.getFollowers();
     socket.on('friendAdded', () => {
-      socket.emit('getAllPosts', { userID: user.userID });
+      socket.emit('getAllPosts', { userID: this.state.user.userID });
     });
     // socket.emit('joinFollowRoom', { reciverId });
-    // socket.emit('getAllPosts', { userID:  user.userID });
+    // socket.emit('getAllPosts', { userID: this.state.user.userID });
   };
 
-  const handleShowMessenger = (reciverId) => {
-
-    showMessenger(true);
-    messageReceiverId(reciverId);
+  handleShowMessenger = (reciverId) => {
+    this.setState({
+      showMessenger: true,
+      messageReceiverId: reciverId,
+    });
 
     let room;
-    if (reciverId > user.userID) {
-      room = `${user.userID}_${reciverId}`;
+    if (reciverId > this.state.user.userID) {
+      room = `${this.state.user.userID}_${reciverId}`;
     } else {
-      room = `${reciverId}_${user.userID}`;
+      room = `${reciverId}_${this.state.user.userID}`;
     }
     let payload = {
       messageRoomId: room,
@@ -372,247 +401,252 @@ function App() {
     socket.emit('returnAllMessages', payload);
   };
 
-  const handleSendMessage = (messageContent) => {
+  handleSendMessage = (messageContent) => {
     let room;
-    if (messageReceiverId > user.userID) {
-      room = `${user.userID}_${messageReceiverId}`;
+    if (this.state.messageReceiverId > this.state.user.userID) {
+      room = `${this.state.user.userID}_${this.state.messageReceiverId}`;
     } else {
-      room = `${messageReceiverId}_${user.userID}`;
+      room = `${this.state.messageReceiverId}_${this.state.user.userID}`;
     }
     let payload = {
       messageContent: messageContent,
-      receiverId: messageReceiverId,
-      senderId: user.userID,
+      receiverId: this.state.messageReceiverId,
+      senderId: this.state.user.userID,
       messageRoomId: room,
     };
     socket.emit('sendMessage', payload);
   };
 
-  const handleCreateGroup = (groupName, groupDescription) => {
+  handleCreateGroup = (groupName, groupDescription) => {
     let payload = {
       group_name: groupName,
-      group_owner: user.userID,
+      group_owner: this.state.user.userID,
       group_description: groupDescription,
     };
     socket.emit('createGroup', payload);
-    //  getAllGroups();
-    //  getUsergroups();
+    // this.getAllGroups();
+    // this.getUsergroups();
   };
 
-  const handleJoinGroup = async (groupId, owner_id) => {
+  handleJoinGroup = async (groupId, owner_id) => {
     let payload = {
       groupId: groupId,
-      senderId: user.userID,
+      senderId: this.state.user.userID,
       owner_id: owner_id,
     };
     socket.emit('joinGroup', payload);
-    getGroupRequests();
+    this.getGroupRequests();
   };
 
-  const handleAcceptJoinGroup = (groupId, memberId, owner_id) => {
+  handleAcceptJoinGroup = (groupId, memberId, owner_id) => {
     let payload = {
       groupId: groupId,
       memberId: memberId,
       ownerId: owner_id,
     };
     socket.emit('acceptJoinGroup', payload);
-    //  getGroupRequests();
+    // console.log('accept pressed');
+    // this.getGroupRequests();
   };
 
-  const handleViewgroup = (groupId) => {
+  handleViewgroup = (groupId) => {
     let payload = {
       groupId: groupId,
     };
-
-    setCurrentGroupID(groupId);
-    setCurrentGroupPath(`/groups/${groupId}`);
-    setShowCurrentGroupPath(true);
-
+    this.setState({
+      currentGroupID: groupId,
+      currentGroupPath: `/groups/${groupId}`,
+      showCurrentGroupPath: true,
+    });
     socket.emit('viewGroup', payload);
-    //  getGroupRequests();
+    // console.log(payload);
+    // this.getGroupRequests();
   };
 
-  const groupPostLike = (postId, groupId) => {
+  groupPostLike = (postId, groupId) => {
     let payload = {
       postId: postId,
-      userId: user.userID,
+      userId: this.state.user.userID,
       groupId: groupId,
     };
     socket.emit('groupPostLike', payload);
   };
 
   //-----sending the post to the server-----//
-  const newPost = (postContent, imageUrl) => {
-
+  post = (postContent, imageUrl) => {
     let payload = {
       postContent: postContent,
       imageUrl: imageUrl,
-      userID: user.userID,
-      name: `${user.firstname} ${user.lastname}`,
+      userID: this.state.user.userID,
+      poster_image_url: this.state.user.image_url,
+      name: `${this.state.user.firstname} ${this.state.user.lastname}`,
     };
+    console.log(payload);
     socket.emit('post', payload);
   };
 
-  const handelGroupPost = (postContent, imageUrl, groupID) => {
+  handelGroupPost = (postContent, imageUrl, groupID) => {
     let payload = {
       postContent: postContent,
-      userID: user.userID,
+      userID: this.state.user.userID,
       groupID: groupID,
       imageUrl: imageUrl,
     };
+    console.log('groupPost', payload);
     socket.emit('groupPost', payload);
   };
 
   //----sending the comment to the server----//
-  const newComment = (commentContent, post_id) => {
+  comment = (commentContent, post_id) => {
     let payload = {
       content: commentContent,
       post_id: post_id,
-      userID: user.userID,
-      name: `${user.firstname} ${user.lastname}`,
+      userID: this.state.user.userID,
+      commenter_image_url: this.state.user.image_url,
+      name: `${this.state.user.firstname} ${this.state.user.lastname}`,
     };
     socket.emit('comment', payload);
   };
 
-  const handleGroupComment = (commentContent, post_id) => {
+  handleGroupComment = (commentContent, post_id) => {
     let payload = {
       content: commentContent,
       postId: post_id,
-      userId: user.userID,
+      userId: this.state.user.userID,
     };
+    // console.log('hello from group comment',payload);
     socket.emit('groupComment', payload);
   };
   //-----target getting info of the target profile from BE-----//
-  const targetProfile = (id) => {
+  targetProfile = (id) => {
     socket.emit('getTargetInfo', id);
     socket.emit('getTargetFollowing', id);
     socket.emit('getTargetFollowers', id);
     socket.emit('getTargetPosts', id);
   };
   //----updating the post like-----//
-  const like = (id) => {
+  like = (id) => {
     socket.emit('like', id);
   };
-
-  return (
-    <Router>
-      <Header path={path} logOut={logOut} />
-      <div>
-        <Switch>
-          <Route exact path="/">
-            <Home
-              logOut={logOut}
-              loggedIn={loggedIn}
-              loggedInFunction={loggedInFunction}
-            />
-            {loggedIn && path && (
-              <Redirect to="/feedPage" />
-            )}
-          </Route>
-          <Route exact path="/feedPage">
-            {
-              <FeedPage
-                showPosts={showPosts}
-                userID={user.userID}
-                like={like}
-                comments={comment}
-                comment={newComment}
-                allPosts={posts}
-                post={newPost}
-                logOut={logOut}
+  render() {
+    return (
+      <Router>
+        <Header path={this.state.path} logOut={this.logOut} />
+        <div>
+          <Switch>
+            <Route exact path="/">
+              <Home
+                logOut={this.logOut}
+                loggedIn={this.state.loggedIn}
+                loggedInFunction={this.loggedIn}
               />
-            }
-          </Route>
-          <Route exact path={path}>
-            {path && (
-              <Profile
-                showPosts="/profile/:id"
-                userID={user.userID}
-                getFollowing={getFollowing}
-                getFollowers={getFollowers}
-                allFollowing={allFollowing}
-                allFollowers={allFollowers}
-                user={user}
-                showFollowing={showFollowing}
-                showFollowers={showFollowers}
-                like={like}
-                comments={comment}
-                allPosts={posts}
-                post={newPost}
-                handleShowMessenger={handleShowMessenger}
-                showMessenger={showMessenger}
-                messageReceiverId={messageReceiverId}
-                handleSendMessage={handleSendMessage}
-                allMessages={allMessages}
-                showMessages={showMessages}
-                getUsergroups={getUsergroups}
-                comment={newComment}
+              {this.state.loggedIn && this.state.path && (
+                <Redirect to="/feedPage" />
+              )}
+            </Route>
+            <Route exact path="/feedPage">
+              {
+                <FeedPage
+                  showPosts={this.state.showPosts}
+                  userID={this.state.user.userID}
+                  like={this.like}
+                  comments={this.state.comments}
+                  comment={this.comment}
+                  allPosts={this.state.posts}
+                  post={this.post}
+                  logOut={this.logOut}
+                />
+              }
+            </Route>
+            <Route exact path={this.state.path}>
+              {this.state.path && (
+                <Profile
+                  showPosts="/profile/:id"
+                  userID={this.state.user.userID}
+                  getFollowing={this.getFollowing}
+                  getFollowers={this.getFollowers}
+                  allFollowing={this.state.allFollowing}
+                  allFollowers={this.state.allFollowers}
+                  user={this.state.user}
+                  showFollowing={this.state.showFollowing}
+                  showFollowers={this.state.showFollowers}
+                  like={this.like}
+                  comments={this.state.comments}
+                  comment={this.comment}
+                  allPosts={this.state.posts}
+                  post={this.post}
+                  handleShowMessenger={this.handleShowMessenger}
+                  showMessenger={this.state.showMessenger}
+                  messageReceiverId={this.state.messageReceiverId}
+                  handleSendMessage={this.handleSendMessage}
+                  allMessages={this.state.allMessages}
+                  showMessages={this.state.showMessages}
+                  getUsergroups={this.getUsergroups}
+                  comment={this.comment}
+                />
+              )}
+            </Route>
+            <Route exact path="/addFriends">
+              <AddFriends
+                targetProfile={this.targetProfile}
+                allusers={this.state.allusers}
+                handleAddFriend={this.handleAddFriend}
+                userID={this.state.user.userID}
               />
-            )}
-          </Route>
-          <Route exact path="/addFriends">
-            <AddFriends
-              targetProfile={targetProfile}
-              allusers={allusers}
-              handleAddFriend={handleAddFriend}
-              userID={user.userID}
-            />
-          </Route>
-          <Route exact path="/groups">
-            <Groups
-              handleCreateGroup={handleCreateGroup}
-              handleJoinGroup={handleJoinGroup}
-              getAllGroups={getAllGroups}
-              allGroups={allGroups}
-              showGroups={showGroups}
-              getGroupRequests={getGroupRequests}
-              GroupRequests={GroupRequests}
-              showGroupsRequests={showGroupsRequests}
-              handleAcceptJoinGroup={handleAcceptJoinGroup}
-              getUsergroups={getUsergroups}
-              usergroups={usergroups}
-              showUsergroups={showUsergroups}
-              handleViewgroup={handleViewgroup}
-              currentGroupPath={currentGroupPath}
-              showCurrentGroupPath={showCurrentGroupPath}
-            />
-          </Route>
-          <Route exact path="/groups/:id">
-            <CurrentGroup
-              currentGroupContent={currentGroupContent}
-              showCurrentGroupContent={showCurrentGroupContent}
-              post={handelGroupPost}
-              groupPosts={groupPosts}
-              showGroupPosts={showGroupPosts}
-              getAllGroupPosts={getAllGroupPosts}
-              currentGroupID={currentGroupID}
-              getGroupMembers={getGroupMembers}
-              showCurrentGroupPath={showCurrentGroupPath}
-              groupMembers={groupMembers}
-              showGroupMembers={showGroupMembers}
-              groupPostLike={groupPostLike}
-              groupPostsLikes={groupPostsLikes}
-              comment={handleGroupComment}
-              groupComments={groupComments}
-              showGroupComments={showGroupComments}
-              getAllGroupComments={getAllGroupComments}
-            />
-          </Route>
-          <Route exact path="/target/:id">
-            <TargetProfile
-              targetedProfileInfo={targetedProfileInfo}
-              targetedFollowing={targetedFollowing}
-              targetedFollowers={targetedFollowers}
-              targetedPosts={targetedPosts}
-            />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
-  );
+            </Route>
+            <Route exact path="/groups">
+              <Groups
+                handleCreateGroup={this.handleCreateGroup}
+                handleJoinGroup={this.handleJoinGroup}
+                getAllGroups={this.getAllGroups}
+                allGroups={this.state.allGroups}
+                showGroups={this.state.showGroups}
+                getGroupRequests={this.getGroupRequests}
+                GroupRequests={this.state.GroupRequests}
+                showGroupsRequests={this.state.showGroupsRequests}
+                handleAcceptJoinGroup={this.handleAcceptJoinGroup}
+                getUsergroups={this.getUsergroups}
+                usergroups={this.state.usergroups}
+                showUsergroups={this.state.showUsergroups}
+                handleViewgroup={this.handleViewgroup}
+                currentGroupPath={this.state.currentGroupPath}
+                showCurrentGroupPath={this.state.showCurrentGroupPath}
+              />
+            </Route>
+            <Route exact path="/groups/:id">
+              <CurrentGroup
+                currentGroupContent={this.state.currentGroupContent}
+                showCurrentGroupContent={this.state.showCurrentGroupContent}
+                post={this.handelGroupPost}
+                groupPosts={this.state.groupPosts}
+                showGroupPosts={this.state.showGroupPosts}
+                getAllGroupPosts={this.getAllGroupPosts}
+                currentGroupID={this.state.currentGroupID}
+                getGroupMembers={this.getGroupMembers}
+                showCurrentGroupPath={this.state.showCurrentGroupPath}
+                groupMembers={this.state.groupMembers}
+                showGroupMembers={this.state.showGroupMembers}
+                groupPostLike={this.groupPostLike}
+                groupPostsLikes={this.state.groupPostsLikes}
+                comment={this.handleGroupComment}
+                groupComments={this.state.groupComments}
+                showGroupComments={this.state.showGroupComments}
+                getAllGroupComments={this.getAllGroupComments}
+              />
+            </Route>
+            <Route exact path="/target/:id">
+              <TargetProfile
+                targetedProfileInfo={this.state.targetedProfileInfo}
+                targetedFollowing={this.state.targetedFollowing}
+                targetedFollowers={this.state.targetedFollowers}
+                targetedPosts={this.state.targetedPosts}
+              />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;
-
-
-
