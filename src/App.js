@@ -16,6 +16,8 @@ import io from 'socket.io-client';
 import Groups from './components/Groups';
 import TargetProfile from './components/TargetProfile';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import cookie from 'react-cookies';
+import jwt from 'jsonwebtoken';
 
 const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
@@ -74,6 +76,13 @@ export class App extends Component {
   }
 
   componentDidMount = async () => {
+    const token = cookie.load('auth');
+    this.loggedIn(token);
+
+    // const myCookie = cookie.load('auth');
+    socket.emit('getAllPosts', { userID: token.id });
+
+
     socket.on('connect', () => {
       socket.emit('test');
       socket.emit('getAllUsers');
@@ -240,8 +249,7 @@ export class App extends Component {
     });
 
     //-----requesting to get the post from the server-----//
-    // socket.emit('getAllPosts', { userID: this.state.user.userID });
-
+  
     //---requestin to get the comments from the server---//
     socket.emit('getAllComments', { userID: this.state.user.userID });
 
@@ -292,7 +300,7 @@ export class App extends Component {
 
     socket.on('returnGroupLikes', (payload) => {
       let info = payload;
-      console.log('what is this', payload);
+      // console.log('what is this', payload);
       socket.emit('getAllGroupPosts', { groupID: info[0].g_groups_id });
     });
   };
@@ -340,23 +348,34 @@ export class App extends Component {
     socket.emit('getAllGroups', { userID: userID });
   };
 
-  loggedIn = (user) => {
-    console.log('user', user);
-    this.setState({
-      loggedIn: true,
-      user: {
-        userID: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        age: user.age,
-        gender: user.gender,
-        auth_id: user.auth_id,
-        image_url: user.image_url,
-      },
-    });
-    this.setState({
-      path: `/profile/${this.state.user.userID}`,
-    });
+  loggedIn = (token) => {
+    try {
+
+      const user = jwt.decode(token.token);
+      console.log('user', user)
+      if (user) {
+        cookie.save('auth', token);
+        this.setState({
+          loggedIn: true,
+          user: {
+            userID: token.id,
+            firstname: user.user.firstname,
+            lastname: user.user.lastname,
+            age: user.user.age,
+            gender: user.user.gender,
+            auth_id: user.user.auth_id,
+            image_url: user.user.image_url,
+          },
+        });
+        this.setState({
+          path: `/profile/${this.state.user.userID}`,
+        });
+      }
+    } catch (error) {
+      this.logOut();
+    }
+
+    // console.log('user', user);
     let payload = {
       userID: this.state.user.userID,
     };
@@ -370,7 +389,9 @@ export class App extends Component {
   logOut = () => {
     this.setState({
       loggedIn: false,
+      user: {}
     });
+    cookie.save('auth', null);
   };
 
   handleAddFriend = (reciverId) => {
@@ -419,7 +440,7 @@ export class App extends Component {
       senderId: this.state.user.userID,
       messageRoomId: room,
     };
-    console.log('message payload',payload);
+    console.log('message payload', payload);
     socket.emit('sendMessage', payload);
   };
 
@@ -589,6 +610,7 @@ export class App extends Component {
                   showMessages={this.state.showMessages}
                   getUsergroups={this.getUsergroups}
                   comment={this.comment}
+                  loggedIn={this.state.loggedIn}
                 />
               )}
             </Route>
