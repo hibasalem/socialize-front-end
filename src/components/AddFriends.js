@@ -1,22 +1,28 @@
-import React, { useContext } from 'react';
+import React, { Component } from 'react';
 import Friend from './Friend';
-import { DataContext } from '../context/data';
 
-export default function AddFriends() {
-  const context = useContext(DataContext);
-
-  return (
-    <div>
+export class AddFriends extends Component {
+  render() {
+    return (
       <div className="mainDiv">
         <h2 className="profileName">All users</h2>
         <div className="peopleCont">
-          {context.state.allusers.map((item, idx) => {
-            if (item.id !== context.state.user.userID) {
-              return <Friend key={idx} item={item} />;
+          {this.props.allusers.map((item, idx) => {
+            if (item.id !== this.props.userID) {
+              return (
+                <Friend
+                  targetProfile={this.props.targetProfile}
+                  key={idx}
+                  item={item}
+                  handleAddFriend={this.props.handleAddFriend}
+                />
+              );
             }
           })}
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
+
+export default AddFriends;

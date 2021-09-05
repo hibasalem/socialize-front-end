@@ -1,6 +1,5 @@
 import axios from 'axios';
-import React, { useContext } from 'react';
-import { DataContext } from '../context/data';
+import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -9,24 +8,23 @@ import {
 } from 'react-router-dom';
 import './header.css';
 require('dotenv').config();
-
-function LogOut() {
-  const context = useContext(DataContext);
-
-  async function logout() {
+export class LogOut extends Component {
+  logout = async () => {
     // await axios.get('http://localhost:5000/logout');
-    context.methods.logOut();
-    console.log('bye!');
+    this.props.logOut();
+    console.log('buy');
     // <Redirect to="/" />;
-  }
+  };
 
-  return (
-    <a href={`${process.env.REACT_APP_FRONT_END}/`}>
-      <button className="logout" onClick={logout}>
-        Log Out
-      </button>
-    </a>
-  );
+  render() {
+    return (
+      <a href={`${process.env.REACT_APP_FRONT_END}/`}>
+        <button className="logout" onClick={this.logout}>
+          Log Out
+        </button>
+      </a>
+    );
+  }
 }
 
 export default LogOut;
