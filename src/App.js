@@ -77,10 +77,23 @@ export class App extends Component {
 
   componentDidMount = async () => {
     const token = cookie.load('auth');
-    this.loggedIn(token);
+    if (token) {
+      this.loggedIn(token);
+      // const myCookie = cookie.load('auth');
+      socket.emit('getAllPosts', { userID: token.id });
+      socket.emit('getAllGroups', { userID: token.id });
+      socket.emit('getUsergroups', { userID: token.id });
+      socket.emit('getGroupRequests', { userID: token.id });
+    }
+    let currGroupID = localStorage.getItem('currentGroupId');
+    if (currGroupID) {
+      console.log('group id in curr', JSON.parse(currGroupID).groupId);
+      socket.emit('getAllGroupPosts', {
+        groupID: JSON.parse(currGroupID).groupId,
+      });
+    }
 
-    // const myCookie = cookie.load('auth');
-    socket.emit('getAllPosts', { userID: token.id });
+
 
 
     socket.on('connect', () => {
@@ -249,7 +262,7 @@ export class App extends Component {
     });
 
     //-----requesting to get the post from the server-----//
-  
+
     //---requestin to get the comments from the server---//
     socket.emit('getAllComments', { userID: this.state.user.userID });
 
@@ -354,7 +367,7 @@ export class App extends Component {
       const user = jwt.decode(token.token);
       console.log('user', user)
       if (user) {
-        cookie.save('auth', token);
+        cookie.save('auth', token, { path: '/' });
         this.setState({
           loggedIn: true,
           user: {
@@ -391,7 +404,7 @@ export class App extends Component {
       loggedIn: false,
       user: {}
     });
-    cookie.save('auth', null);
+    cookie.save('auth', null, { path: '/' });
   };
 
   handleAddFriend = (reciverId) => {
@@ -480,6 +493,9 @@ export class App extends Component {
     let payload = {
       groupId: groupId,
     };
+    let currID = localStorage.setItem('currentGroupId', JSON.stringify({ groupId }));
+    console.log('curr id: ', currID);
+
     this.setState({
       currentGroupID: groupId,
       currentGroupPath: `/groups/${groupId}`,
