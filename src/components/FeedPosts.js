@@ -7,7 +7,7 @@ export class Posts extends Component {
   render() {
     return (
       <div>
-        {console.log(this.props.allPosts)}
+        {/* {console.log(this.props.allPosts)} */}
         {this.props.showPosts &&
           this.props.allPosts.map((element, index) => {
             return (

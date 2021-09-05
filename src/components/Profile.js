@@ -4,11 +4,15 @@ import Messenger from './Messenger';
 import Image from 'react-bootstrap/Image';
 
 class Profile extends Component {
+ 
+  
   componentDidMount = () => {
+    
     // console.log(this.props.user);
     this.props.getFollowing();
     this.props.getFollowers();
     // this.props.getUsergroups();
+  console.log(this.props.loggedIn)
   };
 
   render() {
@@ -76,6 +80,7 @@ class Profile extends Component {
           comments={this.props.comments}
           comment={this.props.comment}
           allPosts={this.props.allPosts}
+          socket={this.props.socket}
         />
         {this.props.showMessenger && (
           <div className="Messenger">

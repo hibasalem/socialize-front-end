@@ -39,7 +39,7 @@ export class Post extends Component {
         <CommentForm comment={this.props.comment} id={this.props.postID} />
 
         <div>
-          {console.log(this.props.comments)}
+          {/* {console.log(this.props.comments)} */}
           {this.props.comments.map((item, index) => {
             let value;
             if (this.props.postID === item.post_id) {

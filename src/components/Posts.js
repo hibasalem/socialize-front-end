@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Post from './Post';
-import CommentForm from './CommentForm';
+// import CommentForm from './CommentForm';
 
 export class Posts extends Component {
   render() {
