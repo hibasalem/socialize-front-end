@@ -1,86 +1,95 @@
-import React, { Component, useEffect, useContext } from 'react';
+import React, { Component } from 'react';
 import Posts from './Posts';
 import Messenger from './Messenger';
 import Image from 'react-bootstrap/Image';
 
-import { DataContext } from '../context/data';
+class Profile extends Component {
+  componentDidMount = () => {
+    // console.log(this.props.user);
+    this.props.getFollowing();
+    this.props.getFollowers();
+    // this.props.getUsergroups();
+  };
 
-function Profile() {
-  const context = useContext(DataContext);
+  render() {
+    return (
+      <div className="mainDiv">
+        {/* {console.log('hello', this.props.user)} */}
 
-  useEffect(() => {
-    context.methods.getFollowing();
-    context.methods.getFollowers();
-  }, []);
+        <h2 className="profileName">
+          <Image src={this.props.user.image_url} roundedCircle height="70px" />
+          &nbsp; &nbsp;
+          {this.props.user.firstname} {this.props.user.lastname}
+        </h2>
 
-  return (
-    <div className="mainDiv">
-      {/* {console.log('hello', props.user)} */}
+        <p>{this.props.user.age}</p>
+        <p>{this.props.user.gender}</p>
+        <div className="following">
+          <h2>Following</h2>
+          {this.props.showFollowing &&
+            this.props.allFollowing.map((item) => {
+              return (
+                <>
+                  {/* {console.log(this.props.allFollowing)} */}
 
-      <h2 className="profileName">
-        <Image src={context.state.user.image_url} roundedCircle height="70px" />
-        &nbsp; &nbsp;
-        {context.state.user.firstname} {context.state.user.lastname}
-      </h2>
-
-      <p>{context.state.user.age}</p>
-      <p>{context.state.user.gender}</p>
-      <div className="following">
-        <h2>Following</h2>
-        {context.state.showFollowing &&
-          context.state.allFollowing.map((item) => {
-            return (
-              <>
-                {/* {console.log(props.allFollowing)} */}
-
-                <p>
-                  <Image src={item.image_url} roundedCircle height="30px" />
-                  &nbsp;
-                  {item.firstname} {item.lastname}
-                </p>
-                <button
-                  className="mybuttonnn"
-                  onClick={() => context.methods.handleShowMessenger(item.id)}
-                >
-                  Chat
-                </button>
-              </>
-            );
-          })}
-      </div>
-
-      <div className="followers">
-        <h2>Followers</h2>
-
-        {context.state.showFollowers &&
-          context.state.allFollowers.map((item) => {
-            return (
-              <>
-                {/* {console.log(props.allFollowers)} */}
-                <p>
-                  <Image src={item.image_url} roundedCircle height="30px" />
-                  &nbsp;
-                  {item.firstname} {item.lastname}
-                </p>
-                <button
-                  className="mybuttonnn"
-                  onClick={() => context.methods.handleShowMessenger(item.id)}
-                >
-                  Chat
-                </button>
-              </>
-            );
-          })}
-      </div>
-      <Posts />
-      {context.state.showMessenger && (
-        <div className="Messenger">
-          <h2>Messenger</h2>
-          <Messenger />
+                  <p>
+                    <Image src={item.image_url} roundedCircle height="30px" />
+                    &nbsp;
+                    {item.firstname} {item.lastname}
+                  </p>
+                  <button
+                    className="mybuttonnn"
+                    onClick={() => this.props.handleShowMessenger(item.receiverid)}
+                  >
+                    Chat
+                  </button>
+                </>
+              );
+            })}
         </div>
-      )}
-    </div>
-  );
+
+        <div className="followers">
+          <h2>Followers</h2>
+
+          {this.props.showFollowers &&
+            this.props.allFollowers.map((item) => {
+              return (
+                <>
+                  <p>
+                    <Image src={item.image_url} roundedCircle height="30px" />
+                    &nbsp;
+                    {item.firstname} {item.lastname}
+                  </p>
+                  <button
+                    className="mybuttonnn"
+                    onClick={() => this.props.handleShowMessenger(item.id)}
+                  >
+                    Chat
+                  </button>
+                </>
+              );
+            })}
+        </div>
+        <Posts
+          userID={this.props.userID}
+          like={this.props.like}
+          comments={this.props.comments}
+          comment={this.props.comment}
+          allPosts={this.props.allPosts}
+        />
+        {this.props.showMessenger && (
+          <div className="Messenger">
+            <h2>Messenger</h2>
+            <Messenger
+              handleSendMessage={this.props.handleSendMessage}
+              allMessages={this.props.allMessages}
+              showMessages={this.props.showMessages}
+            />
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
 export default Profile;
