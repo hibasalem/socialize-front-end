@@ -31,9 +31,9 @@ class Profile extends Component {
         <div className="following">
           <h2>Following</h2>
           {this.props.showFollowing &&
-            this.props.allFollowing.map((item) => {
+            this.props.allFollowing.map((item,idx) => {
               return (
-                <>
+                <div key={idx}>
                   {/* {console.log(this.props.allFollowing)} */}
 
                   <p>
@@ -47,7 +47,7 @@ class Profile extends Component {
                   >
                     Chat
                   </button>
-                </>
+                </div>
               );
             })}
         </div>
@@ -56,9 +56,9 @@ class Profile extends Component {
           <h2>Followers</h2>
 
           {this.props.showFollowers &&
-            this.props.allFollowers.map((item) => {
+            this.props.allFollowers.map((item, idx) => {
               return (
-                <>
+                <div key={idx}>
                   <p>
                     <Image src={item.image_url} roundedCircle height="30px" />
                     &nbsp;
@@ -70,7 +70,7 @@ class Profile extends Component {
                   >
                     Chat
                   </button>
-                </>
+                </div>
               );
             })}
         </div>
