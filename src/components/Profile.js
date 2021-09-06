@@ -66,7 +66,7 @@ class Profile extends Component {
                   </p>
                   <button
                     className="mybuttonnn"
-                    onClick={() => this.props.handleShowMessenger(item.id)}
+                    onClick={() => this.props.handleShowMessenger(item.senderid)}
                   >
                     Chat
                   </button>

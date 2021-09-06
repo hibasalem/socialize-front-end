@@ -38,7 +38,7 @@ export class GroupPost extends Component {
         >
           Like
         </button>
-        <p>{this.props.item.likes}&#128077;</p>
+        <p>{this.props.item.likes?this.props.item.likes.length:0}&#128077;</p>
       </div>
     );
   }
