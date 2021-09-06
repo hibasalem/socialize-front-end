@@ -4,7 +4,10 @@ import Messenger from './Messenger';
 import Image from 'react-bootstrap/Image';
 
 class Profile extends Component {
+ 
+  
   componentDidMount = () => {
+    
     this.props.getFollowing();
     this.props.getFollowers();
   };
@@ -31,9 +34,9 @@ class Profile extends Component {
         <div className="following">
           <h2>Following</h2>
           {this.props.showFollowing &&
-            this.props.allFollowing.map((item) => {
+            this.props.allFollowing.map((item,idx) => {
               return (
-                <>
+                <div key={idx}>
                   {/* {console.log(this.props.allFollowing)} */}
 
                   <p>
@@ -54,7 +57,7 @@ class Profile extends Component {
                   >
                     Chat
                   </button>
-                </>
+                </div>
               );
             })}
         </div>
@@ -63,9 +66,9 @@ class Profile extends Component {
           <h2>Followers</h2>
 
           {this.props.showFollowers &&
-            this.props.allFollowers.map((item) => {
+            this.props.allFollowers.map((item, idx) => {
               return (
-                <>
+                <div key={idx}>
                   <p>
                     <Image
                       src={item.image_url}
@@ -84,7 +87,7 @@ class Profile extends Component {
                   >
                     Chat
                   </button>
-                </>
+                </div>
               );
             })}
         </div>
@@ -94,6 +97,7 @@ class Profile extends Component {
           comments={this.props.comments}
           comment={this.props.comment}
           allPosts={this.props.allPosts}
+          socket={this.props.socket}
         />
         {this.props.showMessenger && (
           <div className="Messenger">

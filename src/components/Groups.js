@@ -99,21 +99,15 @@ export class Groups extends Component {
           </h2>
           {this.props.showUsergroups &&
             this.props.usergroups.map((item, idx) => {
+          
               return (
                 <div className="elementsRap">
                   <p>
                     <b>{item.group_name}</b>
                   </p>
 
-                  <button
-                    className="mybuttonnn"
-                    onClick={() => this.props.handleViewgroup(item.group_id)}
-                  >
-                    view group
-                    {this.props.showCurrentGroupPath && (
-                      <Link to={this.props.currentGroupPath}> view group</Link>
-                    )}
-                  </button>
+                  <Link to={`/groups/${item.group_id}`} onClick={()=>{this.props.handleViewgroup(item.group_id)}}> view group</Link>
+
                 </div>
               );
             })}

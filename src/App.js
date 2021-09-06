@@ -17,6 +17,10 @@ import Groups from './components/Groups';
 import TargetProfile from './components/TargetProfile';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MainMessnger from './components/MainMessnger';
+import cookie from 'react-cookies';
+import jwt from 'jsonwebtoken';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
@@ -79,6 +83,26 @@ export class App extends Component {
   }
 
   componentDidMount = async () => {
+    const token = cookie.load('auth');
+    if (token) {
+      this.loggedIn(token);
+      // const myCookie = cookie.load('auth');
+      socket.emit('getAllPosts', { userID: token.id });
+      socket.emit('getAllGroups', { userID: token.id });
+      socket.emit('getUsergroups', { userID: token.id });
+      socket.emit('getGroupRequests', { userID: token.id });
+    }
+    let currGroupID = localStorage.getItem('currentGroupId');
+    if (currGroupID) {
+      console.log('group id in curr', JSON.parse(currGroupID).groupId);
+      socket.emit('getAllGroupPosts', {
+        groupID: JSON.parse(currGroupID).groupId,
+      });
+    }
+
+
+
+
     socket.on('connect', () => {
       socket.emit('test');
       socket.emit('getAllUsers');
@@ -107,8 +131,10 @@ export class App extends Component {
         socket.emit('getUsergroups', { userID: userID });
       });
       socket.on('haveBeenFollowed', (payload) => {
-        if (this.state.user.userID === payload) {
+        let name = `${payload.firstName} ${payload.lastName}`
+        if (this.state.user.userID === payload.reciverId) {
           this.getFollowers();
+          NotificationManager.info(`${name} has followed you!`);
         }
       });
       socket.on('newGroupPostMade', (payload) => {
@@ -185,6 +211,16 @@ export class App extends Component {
       // console.log('messages', this.state.allMessages);
     });
 
+    socket.on('notification', (roomID) => {
+      let notifiedID = roomID.receiverId;
+      let name = `${roomID.firstName} ${roomID.lastName}`
+      if(this.state.user.userID === notifiedID){
+        NotificationManager.info(`New message from ${name}`);
+      }
+      console.log('roomID', roomID);
+    });
+
+
     socket.on('returnAllGroups', (returnedGroups) => {
       this.setState({
         allGroups: returnedGroups,
@@ -233,7 +269,6 @@ export class App extends Component {
     });
 
     //-----requesting to get the post from the server-----//
-    // socket.emit('getAllPosts', { userID: this.state.user.userID });
 
     //---requestin to get the comments from the server---//
     socket.emit('getAllComments', { userID: this.state.user.userID });
@@ -284,7 +319,7 @@ export class App extends Component {
 
     socket.on('returnGroupLikes', (payload) => {
       let info = payload;
-      console.log('what is this', payload);
+      // console.log('what is this', payload);
       socket.emit('getAllGroupPosts', { groupID: info[0].g_groups_id });
     });
   };
@@ -326,23 +361,34 @@ export class App extends Component {
     socket.emit('getAllGroups', { userID: userID });
   };
 
-  loggedIn = (user) => {
+  loggedIn = (token) => {
+    try {
+
+      const user = jwt.decode(token.token);
+      console.log('user', user)
+      if (user) {
+        cookie.save('auth', token, { path: '/' });
+        this.setState({
+          loggedIn: true,
+          user: {
+            userID: token.id,
+            firstname: user.user.firstname,
+            lastname: user.user.lastname,
+            age: user.user.age,
+            gender: user.user.gender,
+            auth_id: user.user.auth_id,
+            image_url: user.user.image_url,
+          },
+        });
+        this.setState({
+          path: `/profile/${this.state.user.userID}`,
+        });
+      }
+    } catch (error) {
+      this.logOut();
+    }
+
     // console.log('user', user);
-    this.setState({
-      loggedIn: true,
-      user: {
-        userID: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        age: user.age,
-        gender: user.gender,
-        auth_id: user.auth_id,
-        image_url: user.image_url,
-      },
-    });
-    this.setState({
-      path: `/profile/${this.state.user.userID}`,
-    });
     let payload = {
       userID: this.state.user.userID,
     };
@@ -353,13 +399,16 @@ export class App extends Component {
   logOut = () => {
     this.setState({
       loggedIn: false,
+      user: {}
     });
+    cookie.save('auth', null, { path: '/' });
   };
 
   handleAddFriend = (reciverId) => {
-    console.log('following...');
-    let data = { reciverId: reciverId, senderId: this.state.user.userID };
-    console.log(data);
+    // console.log('following...');
+    let data = { reciverId: reciverId, senderId: this.state.user.userID, firstName: this.state.user.firstname,
+      lastName: this.state.user.lastname };
+    // console.log(data);
     socket.emit('addFriend', data);
     this.getFollowing();
     this.getFollowers();
@@ -406,6 +455,8 @@ export class App extends Component {
       receiverId: this.state.messageReceiverId,
       senderId: this.state.user.userID,
       messageRoomId: room,
+      firstName: this.state.user.firstname,
+      lastName: this.state.user.lastname
     };
     console.log('message payload', payload);
     socket.emit('sendMessage', payload);
@@ -443,6 +494,9 @@ export class App extends Component {
     let payload = {
       groupId: groupId,
     };
+    let currID = localStorage.setItem('currentGroupId', JSON.stringify({ groupId }));
+    console.log('curr id: ', currID);
+
     this.setState({
       currentGroupID: groupId,
       currentGroupPath: `/groups/${groupId}`,
@@ -501,6 +555,7 @@ export class App extends Component {
       content: commentContent,
       postId: post_id,
       userId: this.state.user.userID,
+      groupId: this.state.currentGroupID
     };
     socket.emit('groupComment', payload);
   };
@@ -519,6 +574,7 @@ export class App extends Component {
     return (
       <Router>
         <Header path={this.state.path} logOut={this.logOut} />
+        
         <div>
           <Switch>
             <Route exact path="/">
@@ -570,6 +626,7 @@ export class App extends Component {
                   showMessages={this.state.showMessages}
                   getUsergroups={this.getUsergroups}
                   comment={this.comment}
+                  loggedIn={this.state.loggedIn}
                 />
               )}
             </Route>
@@ -653,7 +710,9 @@ export class App extends Component {
             </Route>
           </Switch>
         </div>
+        <NotificationContainer/>
       </Router>
+      
     );
   }
 }
