@@ -451,7 +451,7 @@ export class App extends Component {
     let payload = {
       messageRoomId: room,
     };
-
+    console.log(room);
     socket.emit('returnAllMessages', payload);
   };
 
@@ -587,7 +587,7 @@ export class App extends Component {
   };
   //----updating the post like-----//
   like = (id) => {
-    socket.emit('like', id);
+    socket.emit('like', {id,userID:this.state.user.userID});
   };
   render() {
     return (
