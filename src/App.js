@@ -18,6 +18,8 @@ import TargetProfile from './components/TargetProfile';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import cookie from 'react-cookies';
 import jwt from 'jsonwebtoken';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
@@ -126,8 +128,10 @@ export class App extends Component {
         socket.emit('getUsergroups', { userID: userID });
       });
       socket.on('haveBeenFollowed', (payload) => {
-        if (this.state.user.userID === payload) {
+        let name = `${payload.firstName} ${payload.lastName}`
+        if (this.state.user.userID === payload.reciverId) {
           this.getFollowers();
+          NotificationManager.info(`${name} has followed you!`);
         }
       });
       socket.on('newGroupPostMade', (payload) => {
@@ -207,6 +211,16 @@ export class App extends Component {
       });
       console.log('messages', this.state.allMessages);
     });
+
+    socket.on('notification', (roomID) => {
+      let notifiedID = roomID.receiverId;
+      let name = `${roomID.firstName} ${roomID.lastName}`
+      if(this.state.user.userID === notifiedID){
+        NotificationManager.info(`New message from ${name}`);
+      }
+      console.log('roomID', roomID);
+    });
+
 
     socket.on('returnAllGroups', (returnedGroups) => {
       // let groups = returnedGroups;
@@ -408,9 +422,10 @@ export class App extends Component {
   };
 
   handleAddFriend = (reciverId) => {
-    console.log('following...');
-    let data = { reciverId: reciverId, senderId: this.state.user.userID };
-    console.log(data);
+    // console.log('following...');
+    let data = { reciverId: reciverId, senderId: this.state.user.userID, firstName: this.state.user.firstname,
+      lastName: this.state.user.lastname };
+    // console.log(data);
     socket.emit('addFriend', data);
     this.getFollowing();
     this.getFollowers();
@@ -452,6 +467,8 @@ export class App extends Component {
       receiverId: this.state.messageReceiverId,
       senderId: this.state.user.userID,
       messageRoomId: room,
+      firstName: this.state.user.firstname,
+      lastName: this.state.user.lastname
     };
     console.log('message payload', payload);
     socket.emit('sendMessage', payload);
@@ -556,6 +573,7 @@ export class App extends Component {
       content: commentContent,
       postId: post_id,
       userId: this.state.user.userID,
+      groupId: this.state.currentGroupID
     };
     // console.log('hello from group comment',payload);
     socket.emit('groupComment', payload);
@@ -575,6 +593,7 @@ export class App extends Component {
     return (
       <Router>
         <Header path={this.state.path} logOut={this.logOut} />
+        
         <div>
           <Switch>
             <Route exact path="/">
@@ -688,7 +707,9 @@ export class App extends Component {
             </Route>
           </Switch>
         </div>
+        <NotificationContainer/>
       </Router>
+      
     );
   }
 }
