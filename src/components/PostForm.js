@@ -1,6 +1,7 @@
 // import e from 'cors'
 import React, { Component } from 'react';
 import axios from 'axios';
+import ProgressBar from 'react-bootstrap/ProgressBar'
 
 export class PostForm extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ export class PostForm extends Component {
       content: '',
       file: '',
       imageUrl: '',
+      percentage:0
     };
   }
   post = (e) => {
@@ -22,9 +24,11 @@ export class PostForm extends Component {
     this.setState({
       file: '',
       imageUrl: '',
+      percentage:0
     });
     e.target.reset();
   };
+  
 
   handelOnChangeImage = (e) => {
     console.log(e.target.files[0]);
@@ -47,6 +51,9 @@ export class PostForm extends Component {
                 Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100) +
                 '%'
             );
+            this.setState({
+              percentage: Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100)
+            })
           },
         }
       )
@@ -83,8 +90,13 @@ export class PostForm extends Component {
             value="Upload"
             onClick={this.handelUploadImage}
           />
-
           <input className="mybuttonnn" type="submit" value="post" />
+          {
+            this.state.percentage > 0 &&
+
+          <ProgressBar now={this.state.percentage} label={`${this.state.percentage}%`} />
+          }
+          
         </form>
       </div>
     );
