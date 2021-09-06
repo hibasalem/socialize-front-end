@@ -33,9 +33,8 @@ const ContextProvider = ({ children, user, videoCallData }) => {
     const peer = new Peer({ initiator: false, trickle: false, stream });
 
     peer.on('signal', (data) => {
-      {
-        console.log('answerCall', data);
-      }
+      console.log('answerCall', data);
+
       socket.emit('answerCall', { signal: data, to: videoCallData.room });
     });
 
