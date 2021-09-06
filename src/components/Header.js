@@ -22,6 +22,9 @@ export class Header extends Component {
           <Link className="names" to="/addFriends">
             People
           </Link>
+          <Link className="names" to="/videocall">
+            messanger
+          </Link>
           <Link className="names" to="/groups">
             Groups
           </Link>

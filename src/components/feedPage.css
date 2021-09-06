@@ -113,6 +113,13 @@
   top: 0;
 }
 
+.Messenger2 {
+  /* position: fixed; */
+  margin-top: 200px;
+  left: 30%;
+  top: 0;
+}
+
 .Meessages {
   height: 250px;
   overflow: auto;
@@ -214,7 +221,6 @@
   line-height: 30px;
   vertical-align: center;
 }
-
 
 img {
   border-radius: 12px !important;

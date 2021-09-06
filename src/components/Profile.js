@@ -5,10 +5,8 @@ import Image from 'react-bootstrap/Image';
 
 class Profile extends Component {
   componentDidMount = () => {
-    // console.log(this.props.user);
     this.props.getFollowing();
     this.props.getFollowers();
-    // this.props.getUsergroups();
   };
 
   render() {
@@ -17,13 +15,19 @@ class Profile extends Component {
         {/* {console.log('hello', this.props.user)} */}
 
         <h2 className="profileName">
-          <Image src={this.props.user.image_url} roundedCircle height="70px" />
+          <Image
+            src={this.props.user.image_url}
+            roundedCircle
+            height="70px"
+            width="70px"
+          />
           &nbsp; &nbsp;
           {this.props.user.firstname} {this.props.user.lastname}
         </h2>
 
         <p>{this.props.user.age}</p>
         <p>{this.props.user.gender}</p>
+
         <div className="following">
           <h2>Following</h2>
           {this.props.showFollowing &&
@@ -33,13 +37,20 @@ class Profile extends Component {
                   {/* {console.log(this.props.allFollowing)} */}
 
                   <p>
-                    <Image src={item.image_url} roundedCircle height="30px" />
+                    <Image
+                      src={item.image_url}
+                      roundedCircle
+                      height="30px"
+                      width="30px"
+                    />
                     &nbsp;
                     {item.firstname} {item.lastname}
                   </p>
                   <button
                     className="mybuttonnn"
-                    onClick={() => this.props.handleShowMessenger(item.receiverid)}
+                    onClick={() =>
+                      this.props.handleShowMessenger(item.receiverid)
+                    }
                   >
                     Chat
                   </button>
@@ -56,13 +67,20 @@ class Profile extends Component {
               return (
                 <>
                   <p>
-                    <Image src={item.image_url} roundedCircle height="30px" />
+                    <Image
+                      src={item.image_url}
+                      roundedCircle
+                      height="30px"
+                      width="30px"
+                    />
                     &nbsp;
                     {item.firstname} {item.lastname}
                   </p>
                   <button
                     className="mybuttonnn"
-                    onClick={() => this.props.handleShowMessenger(item.id)}
+                    onClick={() =>
+                      this.props.handleShowMessenger(item.receiverid)
+                    }
                   >
                     Chat
                   </button>

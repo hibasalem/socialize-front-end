@@ -17,7 +17,12 @@ export class TargetProfile extends Component {
           {this.props.targetedFollowing.map((element, index) => {
             return (
               <div key={index}>
-                <Image src={element.image_url} roundedCircle height="30px" />
+                <Image
+                  src={element.image_url}
+                  roundedCircle
+                  height="30px"
+                  width="30px"
+                />
                 &nbsp;
                 {element.firstname} {element.lastname}
               </div>
@@ -30,7 +35,12 @@ export class TargetProfile extends Component {
           {this.props.targetedFollowers.map((element, index) => {
             return (
               <div key={index}>
-                <Image src={element.image_url} roundedCircle height="30px" />
+                <Image
+                  src={element.image_url}
+                  roundedCircle
+                  height="30px"
+                  width="30px"
+                />
                 &nbsp;
                 {element.firstname} {element.lastname}
               </div>
@@ -51,6 +61,7 @@ export class TargetProfile extends Component {
                       src={element.poster_image_url}
                       roundedCircle
                       height="30px"
+                      width="30px"
                     />
                     &nbsp;
                     {element.poster_name}

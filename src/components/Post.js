@@ -17,6 +17,7 @@ export class Post extends Component {
                 src={this.props.poster_image_url}
                 roundedCircle
                 height="30px"
+                width="30px"
               />
               &nbsp;
               {this.props.poster_name}
@@ -39,7 +40,7 @@ export class Post extends Component {
         <CommentForm comment={this.props.comment} id={this.props.postID} />
 
         <div>
-          {console.log(this.props.comments)}
+          {/* {console.log(this.props.comments)} */}
           {this.props.comments.map((item, index) => {
             let value;
             if (this.props.postID === item.post_id) {
@@ -50,6 +51,7 @@ export class Post extends Component {
                       src={item.commenter_image_url}
                       roundedCircle
                       height="30px"
+                      width="30px"
                     />
                     &nbsp;
                     {item.commenter_name}

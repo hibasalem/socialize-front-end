@@ -15,6 +15,7 @@ export class GroupPost extends Component {
               src={this.props.item.poster_image_url}
               roundedCircle
               height="30px"
+              width="30px"
             />
             &nbsp;
             {this.props.item.poster_name}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
+import Group from './Group';
 
 export class Groups extends Component {
   constructor(props) {
@@ -65,7 +66,12 @@ export class Groups extends Component {
                 <div className="elementsRap">
                   <p>
                     <b>
-                      <Image src={item.image_url} roundedCircle height="30px" />
+                      <Image
+                        src={item.image_url}
+                        roundedCircle
+                        height="30px"
+                        width="30px"
+                      />
                       &nbsp;
                       {item.firstname} {item.lastname}
                     </b>
@@ -116,22 +122,18 @@ export class Groups extends Component {
           <h2>
             <b>All groups </b>
           </h2>
+          {/* {console.log(this.props.usergroups)}
+          {console.log(this.props.allGroups)} */}
+
           {this.props.showGroups &&
             this.props.allGroups.map((item, idx) => {
               return (
                 <div className="groupRapRap">
-                  <p>
-                    <b>{item.group_name}</b>
-                  </p>
-                  <p>Description {item.group_description}</p>
-                  <button
-                    className="mybuttonnn"
-                    onClick={() =>
-                      this.props.handleJoinGroup(item.id, item.owner_id)
-                    }
-                  >
-                    Join group
-                  </button>
+                  <Group
+                    handleJoinGroup={this.props.handleJoinGroup}
+                    item={item}
+                    idx={idx}
+                  />
                 </div>
               );
             })}

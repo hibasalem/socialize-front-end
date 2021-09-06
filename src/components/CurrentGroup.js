@@ -20,7 +20,12 @@ export class CurrentGroup extends Component {
             this.props.groupMembers.map((item, idx) => {
               return (
                 <p>
-                  <Image src={item.image_url} roundedCircle height="30px" />
+                  <Image
+                    src={item.image_url}
+                    roundedCircle
+                    height="30px"
+                    width="30px"
+                  />
                   &nbsp;
                   {item.firstname} {item.lastname}
                 </p>
@@ -67,6 +72,7 @@ export class CurrentGroup extends Component {
                                 src={comment.commenter_image_url}
                                 roundedCircle
                                 height="30px"
+                                width="30px"
                               />
                               &nbsp;
                               {comment.g_commenter_name}
