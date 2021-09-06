@@ -34,7 +34,7 @@ export class Post extends Component {
           <button className="like" onClick={() => this.like(this.props.postID)}>
             Like
           </button>
-          <p>{this.props.post_likes}&#128077;</p>
+          <p>{this.props.post_likes?this.props.post_likes.length:0}&#128077;</p>
         </div>
 
         <CommentForm comment={this.props.comment} id={this.props.postID} />
