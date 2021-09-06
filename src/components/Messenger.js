@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Message from './Message';
+import VideoPlayer from './VideoPlayer';
 
 export class Messenger extends Component {
   constructor(props) {
@@ -8,15 +9,16 @@ export class Messenger extends Component {
       messageContent: '',
     };
   }
+
   sendMessage = (e) => {
     e.preventDefault();
     this.props.handleSendMessage(this.state.messageContent);
   };
+
   render() {
     return (
       <div>
         <div className="Meessages">
-          {console.log('hiii', this.props.allMessages)}
           {this.props.showMessages && (
             <Message allMessages={this.props.allMessages} />
           )}
@@ -37,6 +39,19 @@ export class Messenger extends Component {
           />
           <input type="submit" />
         </form>
+
+        <button
+          className="mybuttonnn"
+          onClick={() => this.props.handleShowVideoCall()}
+        >
+          start video call
+        </button>
+
+        {this.props.showVideoCall && (
+          <div>
+            <VideoPlayer videoCallData={this.props.videoCallData} />
+          </div>
+        )}
       </div>
     );
   }

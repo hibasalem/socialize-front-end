@@ -86,7 +86,7 @@ class Signup extends Component {
               required
               onChange={(e) => {
                 this.setState({ email: e.target.value });
-                console.log(this.state.email);
+                // console.log(this.state.email);
               }}
             />
             <br />
@@ -96,7 +96,7 @@ class Signup extends Component {
               required
               onChange={(e) => {
                 this.setState({ password: e.target.value });
-                console.log(this.state.password);
+                // console.log(this.state.password);
               }}
             />
             <br />
@@ -107,7 +107,7 @@ class Signup extends Component {
               placeholder="First name"
               onChange={(e) => {
                 this.setState({ firstName: e.target.value });
-                console.log(this.state.firstName);
+                // console.log(this.state.firstName);
               }}
             />
             <br />
@@ -118,7 +118,7 @@ class Signup extends Component {
               placeholder="Last name"
               onChange={(e) => {
                 this.setState({ lastName: e.target.value });
-                console.log(this.state.lastName);
+                // console.log(this.state.lastName);
               }}
             />
             <br />

@@ -51,7 +51,7 @@ export class Login extends Component {
               required
               onChange={(e) => {
                 this.setState({ email: e.target.value });
-                console.log(this.state.email);
+                // console.log(this.state.email);
               }}
             />
             <br />
@@ -63,7 +63,7 @@ export class Login extends Component {
               required
               onChange={(e) => {
                 this.setState({ password: e.target.value });
-                console.log(this.state.password);
+                // console.log(this.state.password);
               }}
             />
             <br />

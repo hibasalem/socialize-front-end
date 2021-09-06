@@ -29,17 +29,26 @@ export class Friend extends Component {
               src={this.props.item.image_url}
               roundedCircle
               height="40px"
+              width="40px"
             />
             &nbsp;
             {this.props.item.firstname} {this.props.item.lastname}
           </Link>
         </nav>
-        <button
-          className="mybuttonnn"
-          onClick={() => this.props.handleAddFriend(this.props.item.id)}
-        >
-          Follow
-        </button>
+        {!this.props.disableIt && (
+          <button
+            className="mybuttonnn"
+            onClick={() => this.props.handleAddFriend(this.props.item.id)}
+          >
+            Follow
+          </button>
+        )}
+
+        {this.props.disableIt && (
+          <button className="mybuttonnn" disabled>
+            Followed
+          </button>
+        )}
       </div>
     );
   }

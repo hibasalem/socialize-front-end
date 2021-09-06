@@ -16,13 +16,19 @@ import io from 'socket.io-client';
 import Groups from './components/Groups';
 import TargetProfile from './components/TargetProfile';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import MainMessnger from './components/MainMessnger';
 import cookie from 'react-cookies';
 import jwt from 'jsonwebtoken';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import {
+  NotificationContainer,
+  NotificationManager,
+} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
 const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
+
+//
 
 export class App extends Component {
   constructor(props) {
@@ -74,6 +80,8 @@ export class App extends Component {
       showGroupPostsLikes: false,
       groupComments: [],
       showGroupComments: false,
+      followingIds: [],
+      videoCallData: null,
     };
   }
 
@@ -95,15 +103,10 @@ export class App extends Component {
       });
     }
 
-
-
-
     socket.on('connect', () => {
       socket.emit('test');
       socket.emit('getAllUsers');
       socket.on('requestAccepted', (payload) => {
-        // console.log(payload.ownerId);
-        // console.log(payload.memberId);
         if (
           this.state.user.userID === payload.memberId ||
           this.state.user.userID === payload.ownerId
@@ -128,7 +131,7 @@ export class App extends Component {
         socket.emit('getUsergroups', { userID: userID });
       });
       socket.on('haveBeenFollowed', (payload) => {
-        let name = `${payload.firstName} ${payload.lastName}`
+        let name = `${payload.firstName} ${payload.lastName}`;
         if (this.state.user.userID === payload.reciverId) {
           this.getFollowers();
           NotificationManager.info(`${name} has followed you!`);
@@ -147,104 +150,102 @@ export class App extends Component {
         this.setState({
           targetedProfileInfo: payload[0],
         });
-        // console.log(this.state.targetedProfileInfo);
       });
       socket.on('targetFollowing', (payload) => {
         this.setState({
           targetedFollowing: payload,
         });
-        // console.log(this.state.targetedFollowing);
       });
       socket.on('targetFollowers', (payload) => {
         this.setState({
           targetedFollowers: payload,
         });
-        // console.log(this.state.targetedFollowers);
       });
       socket.on('targetPosts', (payload) => {
         this.setState({
           targetedPosts: payload,
         });
-        // console.log(this.state.targetedPosts);
       });
       socket.on('newUsersList', () => {
         socket.emit('getAllUsers');
       });
     });
 
-    // socket.on('newuser',()=>{
-    //   socket.emit('getAllUsers');
-    // })
     socket.on('returnAllUsers', (data) => {
       this.setState({
         allusers: data,
       });
-      // console.log(this.state.allusers);
     });
 
     socket.on('returnFollowing', (data) => {
       let data2 = data;
-      // console.log(data);
+      let followingIdsArr = [];
+
+      for (let i = 0; i < data2.length; i++) {
+        followingIdsArr.push(data2[i].receiverid);
+      }
+
       this.setState({
         allFollowing: data2,
         showFollowing: true,
+        followingIds: followingIdsArr,
       });
-      console.log('following', this.state.allFollowing);
+      // console.log('following', this.state.allFollowing);
     });
 
     socket.on('returnFollowers', (data) => {
       let data2 = data;
-      // console.log(data);
       this.setState({
         allFollowers: data2,
         showFollowers: true,
       });
-      console.log('followers', this.state.allFollowers);
+      // console.log('followers', this.state.allFollowers);
     });
 
     socket.on('returnMessages', (returnedMessages) => {
       let messages = returnedMessages;
-      // console.log(data);
       this.setState({
         allMessages: messages,
         showMessages: true,
       });
-      console.log('messages', this.state.allMessages);
+      // console.log('messages', this.state.allMessages);
     });
 
     socket.on('notification', (roomID) => {
       let notifiedID = roomID.receiverId;
-      let name = `${roomID.firstName} ${roomID.lastName}`
-      if(this.state.user.userID === notifiedID){
+      let name = `${roomID.firstName} ${roomID.lastName}`;
+      if (this.state.user.userID === notifiedID) {
         NotificationManager.info(`New message from ${name}`);
       }
       console.log('roomID', roomID);
     });
 
+    socket.on('callNotification', (data) => {
+      let notifiedID = data.messageReceiverId;
+      let name = data.name;
+      if (this.state.user.userID === notifiedID) {
+        NotificationManager.info(`video call from ${name}`);
+      }
+    });
 
     socket.on('returnAllGroups', (returnedGroups) => {
-      // let groups = returnedGroups;
-      // console.log('before',groups);
       this.setState({
         allGroups: returnedGroups,
         showGroups: true,
       });
-      // console.log('groups', this.state.allGroups);
     });
 
     socket.on('returnGroupRequests', (returnedGroupRequests) => {
       let GroupRequests = returnedGroupRequests;
-      // console.log('hi');
       this.setState({
         GroupRequests: GroupRequests,
         showGroupsRequests: true,
       });
-      console.log('GroupRequests', GroupRequests);
+      // console.log('GroupRequests', GroupRequests);
     });
 
     socket.on('returnUsergroups', (data) => {
       let usergroups = data;
-      // console.log('usergroups', usergroups);
       this.setState({
         usergroups: usergroups,
         showUsergroups: true,
@@ -263,7 +264,6 @@ export class App extends Component {
 
     socket.on('returnCurrentGroupContent', (data) => {
       let currentGroupContent = data;
-      // console.log('usergroups', usergroups);
       this.setState({
         currentGroupContent: currentGroupContent,
         showCurrentGroupContent: true,
@@ -287,7 +287,7 @@ export class App extends Component {
         posts: stuff,
         showPosts: true,
       });
-      console.log('this is the read ', this.state.posts.length);
+      // console.log('this is the read ', this.state.posts.length);
     });
 
     //------getting the comments from the server------//
@@ -300,7 +300,6 @@ export class App extends Component {
     socket.on('commentCreated', () => {
       socket.emit('getAllComments', { userID: this.state.user.userID });
     });
-
 
     socket.on('returnGroupComments', (payload) => {
       this.setState({
@@ -333,7 +332,6 @@ export class App extends Component {
   };
 
   getAllGroupPosts = (data) => {
-    // console.log('this is data: ', data);
     socket.emit('getAllGroupPosts', { groupID: data });
   };
 
@@ -349,11 +347,6 @@ export class App extends Component {
     let userID = this.state.user.userID;
     socket.emit('getFollowing', { userID: userID });
   };
-
-  // getFollowing = () => {
-  //   let userID = this.state.user.userID;
-  //   socket.emit('getFollowing', { userID: userID });
-  // };
 
   getFollowers = () => {
     let userID = this.state.user.userID;
@@ -377,9 +370,8 @@ export class App extends Component {
 
   loggedIn = (token) => {
     try {
-
       const user = jwt.decode(token.token);
-      console.log('user', user)
+      console.log('user', user);
       if (user) {
         cookie.save('auth', token, { path: '/' });
         this.setState({
@@ -408,23 +400,24 @@ export class App extends Component {
     };
     socket.emit('getAllPosts', { userID: this.state.user.userID });
     socket.emit('getNewUsersList');
-    // console.log(this.state.posts);
-    // socket.emit('join', { userID: this.state.user.userID });
-    // console.log('user', this.state.path, this.state.user);
   };
 
   logOut = () => {
     this.setState({
       loggedIn: false,
-      user: {}
+      user: {},
     });
     cookie.save('auth', null, { path: '/' });
   };
 
   handleAddFriend = (reciverId) => {
     // console.log('following...');
-    let data = { reciverId: reciverId, senderId: this.state.user.userID, firstName: this.state.user.firstname,
-      lastName: this.state.user.lastname };
+    let data = {
+      reciverId: reciverId,
+      senderId: this.state.user.userID,
+      firstName: this.state.user.firstname,
+      lastName: this.state.user.lastname,
+    };
     // console.log(data);
     socket.emit('addFriend', data);
     this.getFollowing();
@@ -432,8 +425,6 @@ export class App extends Component {
     socket.on('friendAdded', () => {
       socket.emit('getAllPosts', { userID: this.state.user.userID });
     });
-    // socket.emit('joinFollowRoom', { reciverId });
-    // socket.emit('getAllPosts', { userID: this.state.user.userID });
   };
 
   handleShowMessenger = (reciverId) => {
@@ -451,6 +442,14 @@ export class App extends Component {
     let payload = {
       messageRoomId: room,
     };
+
+    this.setState({
+      videoCallData: {
+        room: room,
+        messageReceiverId: reciverId,
+      },
+    });
+
     console.log(room);
     socket.emit('returnAllMessages', payload);
   };
@@ -468,7 +467,7 @@ export class App extends Component {
       senderId: this.state.user.userID,
       messageRoomId: room,
       firstName: this.state.user.firstname,
-      lastName: this.state.user.lastname
+      lastName: this.state.user.lastname,
     };
     console.log('message payload', payload);
     socket.emit('sendMessage', payload);
@@ -481,8 +480,6 @@ export class App extends Component {
       group_description: groupDescription,
     };
     socket.emit('createGroup', payload);
-    // this.getAllGroups();
-    // this.getUsergroups();
   };
 
   handleJoinGroup = async (groupId, owner_id) => {
@@ -502,15 +499,16 @@ export class App extends Component {
       ownerId: owner_id,
     };
     socket.emit('acceptJoinGroup', payload);
-    // console.log('accept pressed');
-    // this.getGroupRequests();
   };
 
   handleViewgroup = (groupId) => {
     let payload = {
       groupId: groupId,
     };
-    let currID = localStorage.setItem('currentGroupId', JSON.stringify({ groupId }));
+    let currID = localStorage.setItem(
+      'currentGroupId',
+      JSON.stringify({ groupId })
+    );
     console.log('curr id: ', currID);
 
     this.setState({
@@ -519,8 +517,6 @@ export class App extends Component {
       showCurrentGroupPath: true,
     });
     socket.emit('viewGroup', payload);
-    // console.log(payload);
-    // this.getGroupRequests();
   };
 
   groupPostLike = (postId, groupId) => {
@@ -573,9 +569,8 @@ export class App extends Component {
       content: commentContent,
       postId: post_id,
       userId: this.state.user.userID,
-      groupId: this.state.currentGroupID
+      groupId: this.state.currentGroupID,
     };
-    // console.log('hello from group comment',payload);
     socket.emit('groupComment', payload);
   };
   //-----target getting info of the target profile from BE-----//
@@ -593,7 +588,7 @@ export class App extends Component {
     return (
       <Router>
         <Header path={this.state.path} logOut={this.logOut} />
-        
+
         <div>
           <Switch>
             <Route exact path="/">
@@ -655,6 +650,8 @@ export class App extends Component {
                 allusers={this.state.allusers}
                 handleAddFriend={this.handleAddFriend}
                 userID={this.state.user.userID}
+                getFollowing={this.getFollowing}
+                followingIds={this.state.followingIds}
               />
             </Route>
             <Route exact path="/groups">
@@ -705,11 +702,25 @@ export class App extends Component {
                 targetedPosts={this.state.targetedPosts}
               />
             </Route>
+            <Route exact path="/videocall">
+              <MainMessnger
+                getFollowing={this.getFollowing}
+                showFollowing={this.state.showFollowing}
+                allFollowing={this.state.allFollowing}
+                handleShowMessenger={this.handleShowMessenger}
+                showMessenger={this.state.showMessenger}
+                handleSendMessage={this.state.handleSendMessage}
+                allMessages={this.state.allMessages}
+                showMessages={this.state.showMessages}
+                videoCallData={this.state.videoCallData}
+                handleSendMessage={this.handleSendMessage}
+                user={this.state.user}
+              />
+            </Route>
           </Switch>
         </div>
-        <NotificationContainer/>
+        <NotificationContainer />
       </Router>
-      
     );
   }
 }

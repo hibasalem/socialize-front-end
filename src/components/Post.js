@@ -17,6 +17,7 @@ export class Post extends Component {
                 src={this.props.poster_image_url}
                 roundedCircle
                 height="30px"
+                width="30px"
               />
               &nbsp;
               {this.props.poster_name}
@@ -50,6 +51,7 @@ export class Post extends Component {
                       src={item.commenter_image_url}
                       roundedCircle
                       height="30px"
+                      width="30px"
                     />
                     &nbsp;
                     {item.commenter_name}
