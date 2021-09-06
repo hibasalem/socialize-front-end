@@ -19,7 +19,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import MainMessnger from './components/MainMessnger';
 import cookie from 'react-cookies';
 import jwt from 'jsonwebtoken';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import {
+  NotificationContainer,
+  NotificationManager,
+} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
 const SERVER_URL = 'localhost:5000/';
@@ -100,9 +103,6 @@ export class App extends Component {
       });
     }
 
-
-
-
     socket.on('connect', () => {
       socket.emit('test');
       socket.emit('getAllUsers');
@@ -131,7 +131,7 @@ export class App extends Component {
         socket.emit('getUsergroups', { userID: userID });
       });
       socket.on('haveBeenFollowed', (payload) => {
-        let name = `${payload.firstName} ${payload.lastName}`
+        let name = `${payload.firstName} ${payload.lastName}`;
         if (this.state.user.userID === payload.reciverId) {
           this.getFollowers();
           NotificationManager.info(`${name} has followed you!`);
@@ -213,13 +213,20 @@ export class App extends Component {
 
     socket.on('notification', (roomID) => {
       let notifiedID = roomID.receiverId;
-      let name = `${roomID.firstName} ${roomID.lastName}`
-      if(this.state.user.userID === notifiedID){
+      let name = `${roomID.firstName} ${roomID.lastName}`;
+      if (this.state.user.userID === notifiedID) {
         NotificationManager.info(`New message from ${name}`);
       }
       console.log('roomID', roomID);
     });
 
+    socket.on('callNotification', (data) => {
+      let notifiedID = data.messageReceiverId;
+      let name = data.name;
+      if (this.state.user.userID === notifiedID) {
+        NotificationManager.info(`video call from ${name}`);
+      }
+    });
 
     socket.on('returnAllGroups', (returnedGroups) => {
       this.setState({
@@ -363,9 +370,8 @@ export class App extends Component {
 
   loggedIn = (token) => {
     try {
-
       const user = jwt.decode(token.token);
-      console.log('user', user)
+      console.log('user', user);
       if (user) {
         cookie.save('auth', token, { path: '/' });
         this.setState({
@@ -399,15 +405,19 @@ export class App extends Component {
   logOut = () => {
     this.setState({
       loggedIn: false,
-      user: {}
+      user: {},
     });
     cookie.save('auth', null, { path: '/' });
   };
 
   handleAddFriend = (reciverId) => {
     // console.log('following...');
-    let data = { reciverId: reciverId, senderId: this.state.user.userID, firstName: this.state.user.firstname,
-      lastName: this.state.user.lastname };
+    let data = {
+      reciverId: reciverId,
+      senderId: this.state.user.userID,
+      firstName: this.state.user.firstname,
+      lastName: this.state.user.lastname,
+    };
     // console.log(data);
     socket.emit('addFriend', data);
     this.getFollowing();
@@ -456,7 +466,7 @@ export class App extends Component {
       senderId: this.state.user.userID,
       messageRoomId: room,
       firstName: this.state.user.firstname,
-      lastName: this.state.user.lastname
+      lastName: this.state.user.lastname,
     };
     console.log('message payload', payload);
     socket.emit('sendMessage', payload);
@@ -494,7 +504,10 @@ export class App extends Component {
     let payload = {
       groupId: groupId,
     };
-    let currID = localStorage.setItem('currentGroupId', JSON.stringify({ groupId }));
+    let currID = localStorage.setItem(
+      'currentGroupId',
+      JSON.stringify({ groupId })
+    );
     console.log('curr id: ', currID);
 
     this.setState({
@@ -555,7 +568,7 @@ export class App extends Component {
       content: commentContent,
       postId: post_id,
       userId: this.state.user.userID,
-      groupId: this.state.currentGroupID
+      groupId: this.state.currentGroupID,
     };
     socket.emit('groupComment', payload);
   };
@@ -574,7 +587,7 @@ export class App extends Component {
     return (
       <Router>
         <Header path={this.state.path} logOut={this.logOut} />
-        
+
         <div>
           <Switch>
             <Route exact path="/">
@@ -689,8 +702,6 @@ export class App extends Component {
               />
             </Route>
             <Route exact path="/videocall">
-
-
               <MainMessnger
                 getFollowing={this.getFollowing}
                 showFollowing={this.state.showFollowing}
@@ -704,15 +715,11 @@ export class App extends Component {
                 handleSendMessage={this.handleSendMessage}
                 user={this.state.user}
               />
-
-
-              
             </Route>
           </Switch>
         </div>
-        <NotificationContainer/>
+        <NotificationContainer />
       </Router>
-      
     );
   }
 }

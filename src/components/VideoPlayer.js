@@ -32,15 +32,36 @@ const VideoPlayer = (props) => {
     stream,
     call,
     callUser,
+    setStream,
+
+    // setsomething,
   } = useContext(SocketContext);
   const classes = useStyles();
 
   useEffect(() => {
-    callUser(props.videoCallData.room);
+    console.log(props);
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((currentStream) => {
+        setStream(currentStream);
+        myVideo.current.srcObject = currentStream;
+      });
   }, []);
 
   return (
     <div>
+      <button
+        className="mybuttonnn"
+        onClick={() =>
+          callUser(
+            props.videoCallData.room,
+            props.videoCallData.messageReceiverId
+          )
+        }
+      >
+        actuuly start video call
+      </button>
+
       <Grid container className={classes.gridContainer}>
         {stream && (
           <Paper className={classes.paper}>

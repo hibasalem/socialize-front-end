@@ -4,10 +4,7 @@ import Messenger from './Messenger';
 import Image from 'react-bootstrap/Image';
 
 class Profile extends Component {
- 
-  
   componentDidMount = () => {
-    
     this.props.getFollowing();
     this.props.getFollowers();
   };
@@ -34,7 +31,7 @@ class Profile extends Component {
         <div className="following">
           <h2>Following</h2>
           {this.props.showFollowing &&
-            this.props.allFollowing.map((item,idx) => {
+            this.props.allFollowing.map((item, idx) => {
               return (
                 <div key={idx}>
                   {/* {console.log(this.props.allFollowing)} */}
@@ -81,9 +78,7 @@ class Profile extends Component {
                   </p>
                   <button
                     className="mybuttonnn"
-                    onClick={() =>
-                      this.props.handleShowMessenger(item.receiverid)
-                    }
+                    onClick={() => this.props.handleShowMessenger(item.id)}
                   >
                     Chat
                   </button>

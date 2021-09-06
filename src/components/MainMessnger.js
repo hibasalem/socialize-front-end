@@ -5,6 +5,26 @@ import { ContextProvider } from '../context';
 import Notifications from './Notifications';
 
 export default class MainMessnger extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showVideoCall: false,
+    };
+  }
+
+  handleShowVideoCall = () => {
+    this.setState({
+      showVideoCall: true,
+    });
+  };
+
+  handleHideVideoCall = () => {
+    this.setState({
+      showVideoCall: false,
+    });
+  };
+
   componentDidMount = () => {
     this.props.getFollowing();
   };
@@ -44,7 +64,10 @@ export default class MainMessnger extends Component {
             })}
         </div>
 
-        <ContextProvider user={this.props.user}>
+        <ContextProvider
+          videoCallData={this.props.videoCallData}
+          user={this.props.user}
+        >
           {this.props.showMessenger && (
             <div className="Messenger2">
               <h2>Messenger</h2>
@@ -54,9 +77,14 @@ export default class MainMessnger extends Component {
                 allMessages={this.props.allMessages}
                 showMessages={this.props.showMessages}
                 videoCallData={this.props.videoCallData}
+                handleShowVideoCall={this.handleShowVideoCall}
+                showVideoCall={this.state.showVideoCall}
               />
 
-              <Notifications />
+              <Notifications
+                user={this.props.user}
+                handleHideVideoCall={this.handleHideVideoCall}
+              />
             </div>
           )}
         </ContextProvider>

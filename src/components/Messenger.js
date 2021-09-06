@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Message from './Message';
-import VideoCall from './VideoCall';
 import VideoPlayer from './VideoPlayer';
 
 export class Messenger extends Component {
@@ -8,7 +7,6 @@ export class Messenger extends Component {
     super(props);
     this.state = {
       messageContent: '',
-      showVideoCall: false,
     };
   }
 
@@ -17,18 +15,10 @@ export class Messenger extends Component {
     this.props.handleSendMessage(this.state.messageContent);
   };
 
-  handleShowVideoCall = () => {
-    this.setState({
-      showVideoCall: true,
-    });
-    console.log('videoCallData', this.props.videoCallData);
-  };
-
   render() {
     return (
       <div>
         <div className="Meessages">
-          {/* {console.log('hiii', this.props.allMessages)} */}
           {this.props.showMessages && (
             <Message allMessages={this.props.allMessages} />
           )}
@@ -52,19 +42,14 @@ export class Messenger extends Component {
 
         <button
           className="mybuttonnn"
-          onClick={() => this.handleShowVideoCall()}
+          onClick={() => this.props.handleShowVideoCall()}
         >
           start video call
         </button>
 
-        {this.state.showVideoCall && (
+        {this.props.showVideoCall && (
           <div>
             <VideoPlayer videoCallData={this.props.videoCallData} />
-
-            {/* <VideoCall
-              videoCallData={this.props.videoCallData}
-              user={this.props.user}
-            /> */}
           </div>
         )}
       </div>
