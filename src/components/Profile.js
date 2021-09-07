@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Posts from './Posts';
 import Messenger from './Messenger';
 import Image from 'react-bootstrap/Image';
-
+import Button from '@material-ui/core/Button';
 function Profile(props) {
   useEffect(() => {
     props.getFollowing();
@@ -46,14 +46,9 @@ function Profile(props) {
                   &nbsp;
                   {item.firstname} {item.lastname}
                 </p>
-                <button
-                  className="mybuttonnn"
-                  onClick={() =>
+                <Button variant="contained"  onClick={() =>
                     props.handleShowMessenger(item.receiverid)
-                  }
-                >
-                  Chat
-                </button>
+                  }>Chat</Button>
               </div>
             );
           })}
@@ -76,12 +71,13 @@ function Profile(props) {
                   &nbsp;
                   {item.firstname} {item.lastname}
                 </p>
-                <button
+                <Button variant="contained"  onClick={() => props.handleShowMessenger(item.senderid)}>Chat</Button>
+                {/* <button
                   className="mybuttonnn"
                   onClick={() => props.handleShowMessenger(item.senderid)}
                 >
                   Chat
-                </button>
+                </button> */}
               </div>
             );
           })}
