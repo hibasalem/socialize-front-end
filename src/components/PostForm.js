@@ -1,45 +1,37 @@
 // import e from 'cors'
-import React, { Component } from 'react';
+import React, { useState} from 'react';
 import axios from 'axios';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
-export class PostForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      content: '',
-      file: '',
-      imageUrl: '',
-      percentage:0
-    };
-  }
-  post = (e) => {
+export function PostForm(props){
+  const [content, setContent] = useState('');
+  const [file, setFile] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [percentage, setPercentage] = useState(0);
+
+  const post = (e) => {
     e.preventDefault();
 
-    this.props.post(
-      this.state.content,
-      this.state.imageUrl,
-      this.props.groupId
+    props.post(
+      content,
+      imageUrl,
+      props.groupId
     );
-    this.setState({
-      file: '',
-      imageUrl: '',
-      percentage:0
-    });
+    setFile('');
+    setImageUrl('');
+    setPercentage(0);
     e.target.reset();
   };
   
 
-  handelOnChangeImage = (e) => {
+  const handelOnChangeImage = (e) => {
     console.log(e.target.files[0]);
-    this.setState({
-      file: e.target.files[0],
-    });
+    setFile(e.target.files[0]);
   };
 
-  handelUploadImage = () => {
+  const handelUploadImage = () => {
     const fd = new FormData();
-    fd.append('image', this.state.file, this.state.file.name);
+    fd.append('image', file, file.name);
     axios
       .post(
         'https://us-central1-graphite-cell-321207.cloudfunctions.net/uploadFile',
@@ -51,27 +43,23 @@ export class PostForm extends Component {
                 Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100) +
                 '%'
             );
-            this.setState({
-              percentage: Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100)
-            })
+            setPercentage(Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100))
           },
         }
       )
       .then((res) => {
         console.log(res.data.url);
-        this.setState({
-          imageUrl: res.data.url,
-        });
+        setImageUrl(res.data.url);
       });
   };
 
-  render() {
+  
     return (
       <div>
         <form
           className="postForm"
           onSubmit={(e) => {
-            this.post(e);
+            post(e);
           }}
         >
           <input
@@ -79,28 +67,26 @@ export class PostForm extends Component {
             type="text"
             placeholder="type your post here "
             onChange={(e) => {
-              this.setState({
-                content: e.target.value,
-              });
+              setContent(e.target.value);
             }}
           />
-          <input type="file" onChange={this.handelOnChangeImage} />
+          <input type="file" onChange={handelOnChangeImage} />
           <input
             type="button"
             value="Upload"
-            onClick={this.handelUploadImage}
+            onClick={handelUploadImage}
           />
           <input className="mybuttonnn" type="submit" value="post" />
           {
-            this.state.percentage > 0 &&
+            percentage > 0 &&
 
-          <ProgressBar now={this.state.percentage} label={`${this.state.percentage}%`} />
+          <ProgressBar now={percentage} label={`${percentage}%`} />
           }
           
         </form>
       </div>
     );
-  }
+
 }
 
 export default PostForm;

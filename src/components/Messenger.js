@@ -1,60 +1,51 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Message from './Message';
 import VideoPlayer from './VideoPlayer';
 
-export class Messenger extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      messageContent: '',
-    };
-  }
+export default function Messenger(props) {
 
-  sendMessage = (e) => {
+  const [messageContent, setMessageContent] = useState('');
+  const sendMessage = (e) => {
     e.preventDefault();
-    this.props.handleSendMessage(this.state.messageContent);
+    props.handleSendMessage(messageContent);
   };
 
-  render() {
-    return (
-      <div>
-        <div className="Meessages">
-          {this.props.showMessages && (
-            <Message allMessages={this.props.allMessages} />
-          )}
-        </div>
-        <form
-          onSubmit={(e) => {
-            this.sendMessage(e);
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Type Your Message Here"
-            onChange={(e) => {
-              this.setState({
-                messageContent: e.target.value,
-              });
-            }}
-          />
-          <input type="submit" />
-        </form>
 
-        <button
-          className="mybuttonnn"
-          onClick={() => this.props.handleShowVideoCall()}
-        >
-          start video call
-        </button>
-
-        {this.props.showVideoCall && (
-          <div>
-            <VideoPlayer videoCallData={this.props.videoCallData} />
-          </div>
+  return (
+    <div>
+      <div className="Meessages">
+        {props.showMessages && (
+          <Message allMessages={props.allMessages} />
         )}
       </div>
-    );
-  }
-}
+      <form
+        onSubmit={(e) => {
+          sendMessage(e);
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Type Your Message Here"
+          onChange={(e) => {
+            setMessageContent(e.target.value);
+          }}
+        />
+        <input type="submit" />
+      </form>
 
-export default Messenger;
+      <button
+        className="mybuttonnn"
+        onClick={() => props.handleShowVideoCall()}
+      >
+        start video call
+      </button>
+
+      {props.showVideoCall && (
+        <div>
+          <VideoPlayer videoCallData={props.videoCallData} />
+        </div>
+      )}
+    </div>
+  );
+
+}

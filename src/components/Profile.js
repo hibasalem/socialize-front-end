@@ -1,112 +1,112 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import Posts from './Posts';
 import Messenger from './Messenger';
 import Image from 'react-bootstrap/Image';
 
-class Profile extends Component {
-  componentDidMount = () => {
-    this.props.getFollowing();
-    this.props.getFollowers();
-  };
+function Profile(props) {
+  useEffect(() => {
+    props.getFollowing();
+    props.getFollowers();
+  }, [])
 
-  render() {
-    return (
-      <div className="mainDiv">
-        {/* {console.log('hello', this.props.user)} */}
 
-        <h2 className="profileName">
-          <Image
-            src={this.props.user.image_url}
-            roundedCircle
-            height="70px"
-            width="70px"
-          />
-          &nbsp; &nbsp;
-          {this.props.user.firstname} {this.props.user.lastname}
-        </h2>
+  return (
+    <div className="mainDiv">
+      {/* {console.log('hello', props.user)} */}
 
-        <p>{this.props.user.age}</p>
-        <p>{this.props.user.gender}</p>
-
-        <div className="following">
-          <h2>Following</h2>
-          {this.props.showFollowing &&
-            this.props.allFollowing.map((item, idx) => {
-              return (
-                <div key={idx}>
-                  {/* {console.log(this.props.allFollowing)} */}
-
-                  <p>
-                    <Image
-                      src={item.image_url}
-                      roundedCircle
-                      height="30px"
-                      width="30px"
-                    />
-                    &nbsp;
-                    {item.firstname} {item.lastname}
-                  </p>
-                  <button
-                    className="mybuttonnn"
-                    onClick={() =>
-                      this.props.handleShowMessenger(item.receiverid)
-                    }
-                  >
-                    Chat
-                  </button>
-                </div>
-              );
-            })}
-        </div>
-
-        <div className="followers">
-          <h2>Followers</h2>
-
-          {this.props.showFollowers &&
-            this.props.allFollowers.map((item, idx) => {
-              return (
-                <div key={idx}>
-                  <p>
-                    <Image
-                      src={item.image_url}
-                      roundedCircle
-                      height="30px"
-                      width="30px"
-                    />
-                    &nbsp;
-                    {item.firstname} {item.lastname}
-                  </p>
-                  <button
-                    className="mybuttonnn"
-                    onClick={() => this.props.handleShowMessenger(item.senderid)}
-                  >
-                    Chat
-                  </button>
-                </div>
-              );
-            })}
-        </div>
-        <Posts
-          userID={this.props.userID}
-          like={this.props.like}
-          comments={this.props.comments}
-          comment={this.props.comment}
-          allPosts={this.props.allPosts}
-          socket={this.props.socket}
+      <h2 className="profileName">
+        <Image
+          src={props.user.image_url}
+          roundedCircle
+          height="70px"
+          width="70px"
         />
-        {this.props.showMessenger && (
-          <div className="Messenger">
-            <h2>Messenger</h2>
-            <Messenger
-              handleSendMessage={this.props.handleSendMessage}
-              allMessages={this.props.allMessages}
-              showMessages={this.props.showMessages}
-            />
-          </div>
-        )}
+        &nbsp; &nbsp;
+        {props.user.firstname} {props.user.lastname}
+      </h2>
+
+      <p>{props.user.age}</p>
+      <p>{props.user.gender}</p>
+
+      <div className="following">
+        <h2>Following</h2>
+        {props.showFollowing &&
+          props.allFollowing.map((item, idx) => {
+            return (
+              <div key={idx}>
+                {/* {console.log(props.allFollowing)} */}
+
+                <p>
+                  <Image
+                    src={item.image_url}
+                    roundedCircle
+                    height="30px"
+                    width="30px"
+                  />
+                  &nbsp;
+                  {item.firstname} {item.lastname}
+                </p>
+                <button
+                  className="mybuttonnn"
+                  onClick={() =>
+                    props.handleShowMessenger(item.receiverid)
+                  }
+                >
+                  Chat
+                </button>
+              </div>
+            );
+          })}
       </div>
-    );
-  }
+
+      <div className="followers">
+        <h2>Followers</h2>
+
+        {props.showFollowers &&
+          props.allFollowers.map((item, idx) => {
+            return (
+              <div key={idx}>
+                <p>
+                  <Image
+                    src={item.image_url}
+                    roundedCircle
+                    height="30px"
+                    width="30px"
+                  />
+                  &nbsp;
+                  {item.firstname} {item.lastname}
+                </p>
+                <button
+                  className="mybuttonnn"
+                  onClick={() => props.handleShowMessenger(item.senderid)}
+                >
+                  Chat
+                </button>
+              </div>
+            );
+          })}
+      </div>
+      <Posts
+        userID={props.userID}
+        like={props.like}
+        comments={props.comments}
+        comment={props.comment}
+        allPosts={props.allPosts}
+        socket={props.socket}
+      />
+      {props.showMessenger && (
+        <div className="Messenger">
+          <h2>Messenger</h2>
+          <Messenger
+            handleSendMessage={props.handleSendMessage}
+            allMessages={props.allMessages}
+            showMessages={props.showMessages}
+          />
+        </div>
+      )}
+    </div>
+  );
+
 }
 
 export default Profile;

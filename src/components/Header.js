@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import LogOut from './LogOut';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './header.css';
-import { Navbar, Nav } from 'react-bootstrap';
 
-export class Header extends Component {
-  render() {
+
+export default function Header(props){
+
     return (
       <div className="Header">
         <nav>
-          <Link className="name" to="/feedPage">
+          <Link className="name" to="/">
             Socialize
           </Link>
           <Link className="names" to="/feedPage">
             Feed
           </Link>
-          <Link className="names" to={this.props.path}>
+          <Link className="names" to={props.path}>
             Profile
           </Link>
           <Link className="names" to="/addFriends">
@@ -29,11 +29,10 @@ export class Header extends Component {
             Groups
           </Link>
 
-          <LogOut logOut={this.props.logOut} />
+          <LogOut logOut={props.logOut} />
         </nav>
       </div>
     );
-  }
+
 }
 
-export default Header;

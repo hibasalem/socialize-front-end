@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export class Message extends Component {
-  render() {
+export default function Message(props){
+
     return (
       <div>
-        {this.props.allMessages.map((item,idx)=>{
+        {props.allMessages.map((item,idx)=>{
           return(
             <>
             <p key={idx}><b>{item.sender_name}</b> {item.content}, {new Date(item.send_time).toLocaleString()}</p>
@@ -13,7 +13,7 @@ export class Message extends Component {
         })}
       </div>
     )
-  }
+
 }
 
-export default Message
+

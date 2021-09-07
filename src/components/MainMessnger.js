@@ -1,35 +1,26 @@
-import React, { Component } from 'react';
+import React, { useState,useEffect } from 'react';
 import Image from 'react-bootstrap/Image';
 import Messenger from './Messenger';
 import { ContextProvider } from '../context';
 import Notifications from './Notifications';
 
-export default class MainMessnger extends Component {
-  constructor(props) {
-    super(props);
+export default function MainMessnger(props) {
 
-    this.state = {
-      showVideoCall: false,
-    };
-  }
+  const [showVideoCall, setShowVideoCall] = useState(false);
 
-  handleShowVideoCall = () => {
-    this.setState({
-      showVideoCall: true,
-    });
+
+  const handleShowVideoCall = () => {
+    setShowVideoCall(true);
   };
 
-  handleHideVideoCall = () => {
-    this.setState({
-      showVideoCall: false,
-    });
+  const handleHideVideoCall = () => {
+    setShowVideoCall(false);
   };
+  useEffect(()=>{
+    props.getFollowing();
+  },[])
 
-  componentDidMount = () => {
-    this.props.getFollowing();
-  };
 
-  render() {
     return (
       <div>
         <br />
@@ -40,14 +31,14 @@ export default class MainMessnger extends Component {
         <br />
         <div className="following">
           <h2>people</h2>
-          {this.props.showFollowing &&
-            this.props.allFollowing.map((item, idx) => {
+          {props.showFollowing &&
+            props.allFollowing.map((item, idx) => {
               return (
                 <>
                   <p
                     key={idx}
                     onClick={() =>
-                      this.props.handleShowMessenger(item.receiverid)
+                      props.handleShowMessenger(item.receiverid)
                     }
                   >
                     <Image
@@ -65,30 +56,30 @@ export default class MainMessnger extends Component {
         </div>
 
         <ContextProvider
-          videoCallData={this.props.videoCallData}
-          user={this.props.user}
+          videoCallData={props.videoCallData}
+          user={props.user}
         >
-          {this.props.showMessenger && (
+          {props.showMessenger && (
             <div className="Messenger2">
               <h2>Messenger</h2>
               <Messenger
-                user={this.props.user}
-                handleSendMessage={this.props.handleSendMessage}
-                allMessages={this.props.allMessages}
-                showMessages={this.props.showMessages}
-                videoCallData={this.props.videoCallData}
-                handleShowVideoCall={this.handleShowVideoCall}
-                showVideoCall={this.state.showVideoCall}
+                user={props.user}
+                handleSendMessage={props.handleSendMessage}
+                allMessages={props.allMessages}
+                showMessages={props.showMessages}
+                videoCallData={props.videoCallData}
+                handleShowVideoCall={handleShowVideoCall}
+                showVideoCall={showVideoCall}
               />
 
               <Notifications
-                user={this.props.user}
-                handleHideVideoCall={this.handleHideVideoCall}
+                user={props.user}
+                handleHideVideoCall={handleHideVideoCall}
               />
             </div>
           )}
         </ContextProvider>
       </div>
     );
-  }
+  
 }

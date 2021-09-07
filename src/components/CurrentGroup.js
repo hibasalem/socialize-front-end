@@ -1,23 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component,useEffect } from 'react';
 import CommentForm from './CommentForm';
 import GroupPost from './GroupPost';
 import PostForm from './PostForm';
 import Image from 'react-bootstrap/Image';
 
-export class CurrentGroup extends Component {
-  componentDidMount = async () => {
-    this.props.getAllGroupPosts(this.props.currentGroupID);
-    this.props.getGroupMembers(this.props.currentGroupID);
-    this.props.getAllGroupComments();
-  };
+export default function CurrentGroup(props) {
+  useEffect(()=>{
+    props.getAllGroupPosts(props.currentGroupID);
+    props.getGroupMembers(props.currentGroupID);
+    props.getAllGroupComments();
+  },[])
 
-  render() {
+ 
     return (
       <div className="mainDiv">
         <div className="groupMembers">
           <h2>Group members</h2>
-          {this.props.showGroupMembers &&
-            this.props.groupMembers.map((item, idx) => {
+          {props.showGroupMembers &&
+            props.groupMembers.map((item, idx) => {
               return (
                 <p>
                   <Image
@@ -35,34 +35,34 @@ export class CurrentGroup extends Component {
 
         <PostForm
           className="form3"
-          post={this.props.post}
-          groupId={this.props.currentGroupContent.id}
+          post={props.post}
+          groupId={props.currentGroupContent.id}
         />
-        {this.props.showCurrentGroupContent && (
+        {props.showCurrentGroupContent && (
           <>
             <div>
               <h2 className="profileName2">
-                {this.props.currentGroupContent.group_name}
+                {props.currentGroupContent.group_name}
               </h2>
             </div>
           </>
         )}
-        {/* {console.log(this.props.GroupPost)} */}
-        {this.props.showGroupPosts &&
-          this.props.groupPosts.map((item, idx) => {
+        {/* {console.log(props.GroupPost)} */}
+        {props.showGroupPosts &&
+          props.groupPosts.map((item, idx) => {
             return (
               <>
                 <div className="postDiv">
                   <GroupPost
-                    groupPostLike={this.props.groupPostLike}
+                    groupPostLike={props.groupPostLike}
                     item={item}
                     key={idx}
-                    groupPostsLikes={this.props.groupPostsLikes}
+                    groupPostsLikes={props.groupPostsLikes}
                   />
-                  <CommentForm comment={this.props.comment} id={item.id} />
-                  {/* {console.log('hii', this.props.groupComments)} */}
-                  {this.props.showGroupComments &&
-                    this.props.groupComments.map((comment, index) => {
+                  <CommentForm comment={props.comment} id={item.id} />
+                  {/* {console.log('hii', props.groupComments)} */}
+                  {props.showGroupComments &&
+                    props.groupComments.map((comment, index) => {
                       let value;
                       if (item.id === comment.g_post_id) {
                         value = (
@@ -94,7 +94,6 @@ export class CurrentGroup extends Component {
           })}
       </div>
     );
-  }
+ 
 }
 
-export default CurrentGroup;
