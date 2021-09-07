@@ -1,57 +1,53 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
 
-export class Friend extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      path: `/target/${this.props.item.id}`,
-    };
-  }
+export default function Friend(props) {
 
-  targetProfile = () => {
-    this.props.targetProfile(this.props.item.id);
+  const [path, setPath] = useState(`/target/${props.item.id}`)
+
+  const targetProfile = () => {
+    props.targetProfile(props.item.id);
   };
-  render() {
+
     return (
-      <div className="personCont" key={this.props.item.id}>
-        {/* {console.log('hello', this.props.item)} */}
+      <div className="personCont" key={props.item.id}>
+        {/* {console.log('hello', props.item)} */}
         <nav>
           <Link
             className="personName"
-            to={this.state.path}
+            to={path}
             onClick={() => {
-              this.targetProfile();
+              targetProfile();
             }}
           >
             <Image
-              src={this.props.item.image_url}
+              src={props.item.image_url}
               roundedCircle
               height="40px"
               width="40px"
             />
             &nbsp;
-            {this.props.item.firstname} {this.props.item.lastname}
+            {props.item.firstname} {props.item.lastname}
           </Link>
         </nav>
-        {!this.props.disableIt && (
+        {!props.disableIt && (
           <button
             className="mybuttonnn"
-            onClick={() => this.props.handleAddFriend(this.props.item.id)}
+            onClick={() => props.handleAddFriend(props.item.id)}
           >
             Follow
           </button>
         )}
 
-        {this.props.disableIt && (
+        {props.disableIt && (
           <button className="mybuttonnn" disabled>
             Followed
           </button>
         )}
       </div>
     );
-  }
+
 }
 
-export default Friend;
+

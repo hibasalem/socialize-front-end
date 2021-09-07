@@ -1,26 +1,25 @@
 // import axios from 'axios';
-import React, { Component } from 'react';
+import React from 'react';
 // import { Redirect } from 'react-router-dom';
 import Login from './login';
 import Signup from './Signup';
 import LogOut from './LogOut';
 import './home.css';
 
-export class Home extends Component {
-  render() {
+export default function Home(props){
     return (
       <>
         <h1 className="mainTitle">SOCIALIZE</h1>
         <div className="cover"></div>
 
         <div className="homeH">
-          {this.props.loggedIn && <LogOut logOut={this.props.logOut} />}
+          {props.loggedIn && <LogOut logOut={props.logOut} />}
 
-          {!this.props.loggedIn && (
+          {!props.loggedIn && (
             <>
               <Login
-                loggedIn={this.props.loggedIn}
-                loggedInFunction={this.props.loggedInFunction}
+                loggedIn={props.loggedIn}
+                loggedInFunction={props.loggedInFunction}
               />
               <Signup />
             </>
@@ -28,7 +27,6 @@ export class Home extends Component {
         </div>
       </>
     );
-  }
+
 }
 
-export default Home;

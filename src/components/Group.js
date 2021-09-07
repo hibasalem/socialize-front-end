@@ -1,47 +1,43 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-export default class Group extends Component {
-  constructor(props) {
-    super(props);
+export default function Group(props) {
+ 
+  const [disableIt, setDisableIt] = useState(false)
 
-    this.state = {
-      disableIt: false,
-    };
+
+  function handleClicked(id, owner_id) {
+    props.handleJoinGroup(id, owner_id);
+    
+      setDisableIt( true);
+
+    console.log(disableIt);
   }
 
-  handleClicked(id, owner_id) {
-    this.props.handleJoinGroup(id, owner_id);
-    this.setState({
-      disableIt: true,
-    });
-    console.log(this.state.disableIt);
-  }
-
-  render() {
+ 
     return (
       <div>
         <p>
-          <b>{this.props.item.group_name}</b>
+          <b>{props.item.group_name}</b>
         </p>
-        <p>Description {this.props.item.group_description}</p>
+        <p>Description {props.item.group_description}</p>
 
-        {!this.state.disableIt && (
+        {!disableIt && (
           <button
             className="mybuttonnn"
             onClick={() =>
-              this.handleClicked(this.props.item.id, this.props.item.owner_id)
+              handleClicked(props.item.id, props.item.owner_id)
             }
           >
             Join group
           </button>
         )}
 
-        {this.state.disableIt && (
+        {disableIt && (
           <button className="mybuttonnn" disabled>
             request sent
           </button>
         )}
       </div>
     );
-  }
+
 }

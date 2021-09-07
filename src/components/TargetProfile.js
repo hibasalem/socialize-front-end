@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../App.css';
 import Image from 'react-bootstrap/Image';
 
-export class TargetProfile extends Component {
-  render() {
+export function TargetProfile(props){
+  
     return (
       <div className="mainDiv">
         <div className="mainDiv">
           <h2 className="profileName">
-            {this.props.targetedProfileInfo.firstname}
-            {this.props.targetedProfileInfo.lastname}
+            {props.targetedProfileInfo.firstname} {props.targetedProfileInfo.lastname}
           </h2>
         </div>
         <div className="following">
           <h2>Following</h2>
-          {this.props.targetedFollowing.map((element, index) => {
+          {props.targetedFollowing.map((element, index) => {
             return (
               <div key={index}>
                 <Image
@@ -32,7 +31,7 @@ export class TargetProfile extends Component {
 
         <div className="followers">
           <h2>Followers</h2>
-          {this.props.targetedFollowers.map((element, index) => {
+          {props.targetedFollowers.map((element, index) => {
             return (
               <div key={index}>
                 <Image
@@ -49,9 +48,9 @@ export class TargetProfile extends Component {
         </div>
 
         <div>
-          {this.props.targetedPosts.map((element, index) => {
+          {props.targetedPosts.map((element, index) => {
             {
-              console.log(this.props.targetedPosts);
+              console.log(props.targetedPosts);
             }
             return (
               <div className="postDiv" key={index}>
@@ -77,7 +76,7 @@ export class TargetProfile extends Component {
         </div>
       </div>
     );
-  }
+
 }
 
 export default TargetProfile;

@@ -1,23 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component,useEffect,useState } from 'react';
 
-export class CommentForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      content: '',
-    };
-  }
-  comment = (e) => {
+export function CommentForm(props){
+const [content, setContent] = useState('');
+
+  const comment = (e) => {
     e.preventDefault();
-    this.props.comment(this.state.content, this.props.id);
+    props.comment(content, props.id);
   };
-  render() {
+ 
     return (
       <div>
         <form
           className="commentForm"
           onSubmit={(e) => {
-            this.comment(e);
+            comment(e);
           }}
         >
           <input
@@ -25,16 +21,16 @@ export class CommentForm extends Component {
             placeholder="type your comment here"
             type="text"
             onChange={(e) => {
-              this.setState({
-                content: e.target.value,
-              });
+              
+               setContent(e.target.value);
+ 
             }}
           />
           <input className="mybuttonnn" type="submit" value="comment" />
         </form>
       </div>
     );
-  }
+
 }
 
 export default CommentForm;
