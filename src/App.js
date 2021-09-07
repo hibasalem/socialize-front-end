@@ -582,12 +582,17 @@ export class App extends Component {
   };
   //----updating the post like-----//
   like = (id) => {
-    socket.emit('like', {id,userID:this.state.user.userID});
+    socket.emit('like', { id, userID: this.state.user.userID });
   };
   render() {
     return (
       <Router>
-        <Header path={this.state.path} logOut={this.logOut} />
+        <Header
+          user={this.state.user}
+          path={this.state.path}
+          logOut={this.logOut}
+          loggedIn={this.state.loggedIn}
+        />
 
         <div>
           <Switch>
