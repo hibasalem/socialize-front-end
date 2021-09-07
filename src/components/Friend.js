@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 export default function Friend(props) {
 
   const [path, setPath] = useState(`/target/${props.item.id}`)
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(props.disableIt);
   const targetProfile = () => {
     props.targetProfile(props.item.id);
   };
@@ -31,7 +31,7 @@ export default function Friend(props) {
             {props.item.firstname} {props.item.lastname}
           </Link>
         </nav>
-        {!props.disableIt&& visible && (
+        {!props.disableIt&& (
           <Button type="submit" variant="contained" onClick={() => {
             props.handleAddFriend(props.item.id);
             setVisible(false);
@@ -47,7 +47,7 @@ export default function Friend(props) {
           // </button>
         )}
 
-        {props.disableIt && !visible && (
+        {(visible ||props.disableIt) && (
           <Button type="submit" variant="contained">Followed</Button>
         )}
       </div>

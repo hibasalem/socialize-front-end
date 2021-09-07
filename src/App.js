@@ -420,10 +420,11 @@ export class App extends Component {
     };
     // console.log(data);
     socket.emit('addFriend', data);
-    socket.emit('getAllUsers');
+    
     this.getFollowing();
     this.getFollowers();
     socket.on('friendAdded', () => {
+      socket.emit('getFollowing',{ userID: this.state.user.userID });
       socket.emit('getAllUsers');
       socket.emit('getAllPosts', { userID: this.state.user.userID });
     });
@@ -648,6 +649,7 @@ export class App extends Component {
             </Route>
             <Route exact path="/addFriends">
               <AddFriends
+                socket={socket}
                 targetProfile={this.targetProfile}
                 allusers={this.state.allusers}
                 handleAddFriend={this.handleAddFriend}
@@ -707,8 +709,10 @@ export class App extends Component {
             <Route exact path="/videocall">
               <MainMessnger
                 getFollowing={this.getFollowing}
+                getFollowers={this.getFollowers}
                 showFollowing={this.state.showFollowing}
                 allFollowing={this.state.allFollowing}
+                allFollowers={this.state.allFollowers}
                 handleShowMessenger={this.handleShowMessenger}
                 showMessenger={this.state.showMessenger}
                 handleSendMessage={this.state.handleSendMessage}
