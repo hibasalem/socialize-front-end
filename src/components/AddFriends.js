@@ -18,12 +18,13 @@ export default function AddFriends (props) {
             if (item.id !== props.userID) {
               return (
                 <Friend
+                socket={props.socket}
                   targetProfile={props.targetProfile}
                   key={idx}
                   item={item}
                   handleAddFriend={props.handleAddFriend}
                   disableIt={
-                   props.followingIds.includes(item.auth_id)
+                   props.followingIds.includes(item.id)?true:false
                   }
                 />
               );
