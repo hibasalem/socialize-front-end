@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Message from './Message';
 import VideoPlayer from './VideoPlayer';
+import Button from '@material-ui/core/Button';
 
 export default function Messenger(props) {
 
@@ -30,15 +31,15 @@ export default function Messenger(props) {
             setMessageContent(e.target.value);
           }}
         />
-        <input type="submit" />
+         <Button type="submit" variant="contained">send</Button>
       </form>
-
-      <button
+      <Button variant="contained"  onClick={() => props.handleShowVideoCall()}>start video call</Button>
+      {/* <button
         className="mybuttonnn"
         onClick={() => props.handleShowVideoCall()}
       >
         start video call
-      </button>
+      </button> */}
 
       {props.showVideoCall && (
         <div>

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import CommentForm from './CommentForm';
 import Image from 'react-bootstrap/Image';
+import IconButton from '@material-ui/core/IconButton';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { FcLike } from "react-icons/fc";
 
 export default function Post(props){
   const like = (id) => {
@@ -31,9 +34,13 @@ export default function Post(props){
               <img src={props.image_url} width="100%" />
             )}
           </div>
-          <button className="like" onClick={() => like(props.postID)}>
+          {/* <button className="like" onClick={() => like(props.postID)}>
             Like
-          </button>
+          </button> */}
+          <IconButton color="primary" aria-label="upload picture" component="span" onClick={() => like(props.postID)
+            }>
+              <FcLike />
+            </IconButton>
           <p>{props.post_likes?props.post_likes.length:0}&#128077;</p>
         </div>
 

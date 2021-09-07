@@ -2,9 +2,24 @@ import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
 import Group from './Group';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
+}));
+
+
 
 export default function Groups(props) {
-
+  const classes = useStyles();
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');
 
@@ -31,21 +46,31 @@ export default function Groups(props) {
           }}
         >
           <label>Create a group</label>
-          <input
+          <TextField id="standard-basic" label="Enter Group Name"  type="text"
+              required
+              onChange={(e) => {
+                setGroupName(e.target.value);              
+              }} />
+          {/* <input
             type="text"
             placeholder="Enter Group Name"
             onChange={(e) => {
               setGroupName(e.target.value);              
             }}
-          />
-          <input
+          /> */}<TextField id="standard-basic" label="Enter Description"  type="text"
+              required
+              onChange={(e) => {
+                setGroupDescription(e.target.value);
+              }} />
+          {/* <input
             type="text"
             placeholder="Enter Description"
             onChange={(e) => {
               setGroupDescription(e.target.value);
             }}
-          />
-          <input type="submit" />
+          /> */}
+          <Button type="submit" variant="contained">Create Group</Button>
+          {/* <input type="submit" /> */}
         </form>
         <div className="groupsRequests">
           <h2>
@@ -69,7 +94,14 @@ export default function Groups(props) {
                     </b>
                     requsted to join <br /> <b> {item.group_name}</b>
                   </p>
-                  <button
+                  <Button variant="contained" onClick={() =>
+                      props.handleAcceptJoinGroup(
+                        item.group_id,
+                        item.member_id,
+                        item.owner_id
+                      )
+                    }>Accept</Button>
+                  {/* <button
                     className="mybuttonnn"
                     onClick={() =>
                       props.handleAcceptJoinGroup(
@@ -80,7 +112,7 @@ export default function Groups(props) {
                     }
                   >
                     accept
-                  </button>
+                  </button> */}
                 </div>
               );
             })}
@@ -98,7 +130,7 @@ export default function Groups(props) {
                     <b>{item.group_name}</b>
                   </p>
 
-                  <Link to={`/groups/${item.group_id}`} onClick={()=>{props.handleViewgroup(item.group_id)}}> view group</Link>
+                  <Link to={`/groups/${item.group_id}`} onClick={()=>{props.handleViewgroup(item.group_id)}}> <Button variant="contained">View Group</Button></Link>
 
                 </div>
               );

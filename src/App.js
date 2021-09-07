@@ -420,9 +420,11 @@ export class App extends Component {
     };
     // console.log(data);
     socket.emit('addFriend', data);
+    socket.emit('getAllUsers');
     this.getFollowing();
     this.getFollowers();
     socket.on('friendAdded', () => {
+      socket.emit('getAllUsers');
       socket.emit('getAllPosts', { userID: this.state.user.userID });
     });
   };
@@ -582,7 +584,7 @@ export class App extends Component {
   };
   //----updating the post like-----//
   like = (id) => {
-    socket.emit('like', {id,userID:this.state.user.userID});
+    socket.emit('like', { id, userID: this.state.user.userID });
   };
   render() {
     return (

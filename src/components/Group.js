@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Button from '@material-ui/core/Button';
 
 export default function Group(props) {
  
@@ -22,20 +23,24 @@ export default function Group(props) {
         <p>Description {props.item.group_description}</p>
 
         {!disableIt && (
-          <button
-            className="mybuttonnn"
-            onClick={() =>
-              handleClicked(props.item.id, props.item.owner_id)
-            }
-          >
-            Join group
-          </button>
+              <Button variant="contained" onClick={() =>
+                handleClicked(props.item.id, props.item.owner_id)
+              }>Join Group</Button>
+          // <button
+          //   className="mybuttonnn"
+          //   onClick={() =>
+          //     handleClicked(props.item.id, props.item.owner_id)
+          //   }
+          // >
+          //   Join group
+          // </button>
         )}
 
         {disableIt && (
-          <button className="mybuttonnn" disabled>
-            request sent
-          </button>
+             <Button variant="contained" disabled >Request Sent</Button>
+          // <button className="mybuttonnn" disabled>
+          //   request sent
+          // </button>
         )}
       </div>
     );
