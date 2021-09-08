@@ -4,6 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
+import {
+  NotificationContainer,
+  NotificationManager,
+} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 const axios = require('axios');
 const base64 = require('base-64');
@@ -38,7 +43,7 @@ export default function Login(props) {
         props.loggedInFunction(result.data);
       }
     } catch (err) {
-      alert(err.message);
+      NotificationManager.error('Wrong Email or Password!');
     }
   };
 

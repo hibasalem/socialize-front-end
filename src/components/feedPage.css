@@ -427,3 +427,7 @@ img {
   border-radius: 12px !important;
   border: #dddddd 2px solid;
 }
+.notLoggedIn{
+  margin-top: 25%;
+  margin-left: 45%;
+}

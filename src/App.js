@@ -24,8 +24,9 @@ import {
   NotificationManager,
 } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import NotLoggedIn from './components/NotLoggedIn';
 
-const SERVER_URL = 'https://socialize401.herokuapp.com/';
+const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
 export class App extends Component {
@@ -103,8 +104,8 @@ export class App extends Component {
         groupID: JSON.parse(currGroupID).groupId,
       });
     }
-    socket.on('acceptedToGroupNoti',(payload)=>{
-      if(this.state.user.userID==payload.memberId){
+    socket.on('acceptedToGroupNoti', (payload) => {
+      if (this.state.user.userID == payload.memberId) {
         NotificationManager.success('Your Join Group Request Has Been Accepted');
         console.log('accepted')
       }
@@ -488,7 +489,7 @@ export class App extends Component {
       group_owner: this.state.user.userID,
       group_description: groupDescription,
     };
-    console.log('the start',payload);
+    console.log('the start', payload);
     socket.emit('createGroup', payload);
   };
 
@@ -617,7 +618,7 @@ export class App extends Component {
               )}
             </Route>
             <Route exact path="/feedPage">
-              {
+              {this.state.loggedIn &&
                 <FeedPage
                   showPosts={this.state.showPosts}
                   userID={this.state.user.userID}
@@ -629,9 +630,11 @@ export class App extends Component {
                   logOut={this.logOut}
                 />
               }
+              {this.state.loggedIn == false && <NotLoggedIn />}
+
             </Route>
             <Route exact path={this.state.path}>
-              {this.state.path && (
+              {this.state.path && this.state.loggedIn && (
                 <Profile
                   showPosts="/profile/:id"
                   userID={this.state.user.userID}
@@ -658,82 +661,100 @@ export class App extends Component {
                   loggedIn={this.state.loggedIn}
                 />
               )}
+              {this.state.loggedIn == false && <NotLoggedIn />}
+
             </Route>
             <Route exact path="/addFriends">
-              <AddFriends
-                socket={socket}
-                targetProfile={this.targetProfile}
-                allusers={this.state.allusers}
-                handleAddFriend={this.handleAddFriend}
-                userID={this.state.user.userID}
-                getFollowing={this.getFollowing}
-                followingIds={this.state.followingIds}
-              />
+              {this.state.loggedIn &&
+                <AddFriends
+                  socket={socket}
+                  targetProfile={this.targetProfile}
+                  allusers={this.state.allusers}
+                  handleAddFriend={this.handleAddFriend}
+                  userID={this.state.user.userID}
+                  getFollowing={this.getFollowing}
+                  followingIds={this.state.followingIds}
+                />}
+              {this.state.loggedIn == false && <NotLoggedIn />}
+
             </Route>
             <Route exact path="/groups">
-              <Groups
-                handleCreateGroup={this.handleCreateGroup}
-                handleJoinGroup={this.handleJoinGroup}
-                getAllGroups={this.getAllGroups}
-                allGroups={this.state.allGroups}
-                showGroups={this.state.showGroups}
-                getGroupRequests={this.getGroupRequests}
-                GroupRequests={this.state.GroupRequests}
-                showGroupsRequests={this.state.showGroupsRequests}
-                handleAcceptJoinGroup={this.handleAcceptJoinGroup}
-                getUsergroups={this.getUsergroups}
-                usergroups={this.state.usergroups}
-                showUsergroups={this.state.showUsergroups}
-                handleViewgroup={this.handleViewgroup}
-                currentGroupPath={this.state.currentGroupPath}
-                showCurrentGroupPath={this.state.showCurrentGroupPath}
-              />
+              {this.state.loggedIn &&
+                <Groups
+                  handleCreateGroup={this.handleCreateGroup}
+                  handleJoinGroup={this.handleJoinGroup}
+                  getAllGroups={this.getAllGroups}
+                  allGroups={this.state.allGroups}
+                  showGroups={this.state.showGroups}
+                  getGroupRequests={this.getGroupRequests}
+                  GroupRequests={this.state.GroupRequests}
+                  showGroupsRequests={this.state.showGroupsRequests}
+                  handleAcceptJoinGroup={this.handleAcceptJoinGroup}
+                  getUsergroups={this.getUsergroups}
+                  usergroups={this.state.usergroups}
+                  showUsergroups={this.state.showUsergroups}
+                  handleViewgroup={this.handleViewgroup}
+                  currentGroupPath={this.state.currentGroupPath}
+                  showCurrentGroupPath={this.state.showCurrentGroupPath}
+                />}
+              {this.state.loggedIn == false && <NotLoggedIn />}
+
             </Route>
             <Route exact path="/groups/:id">
-              <CurrentGroup
-                currentGroupContent={this.state.currentGroupContent}
-                showCurrentGroupContent={this.state.showCurrentGroupContent}
-                post={this.handelGroupPost}
-                groupPosts={this.state.groupPosts}
-                showGroupPosts={this.state.showGroupPosts}
-                getAllGroupPosts={this.getAllGroupPosts}
-                currentGroupID={this.state.currentGroupID}
-                getGroupMembers={this.getGroupMembers}
-                showCurrentGroupPath={this.state.showCurrentGroupPath}
-                groupMembers={this.state.groupMembers}
-                showGroupMembers={this.state.showGroupMembers}
-                groupPostLike={this.groupPostLike}
-                groupPostsLikes={this.state.groupPostsLikes}
-                comment={this.handleGroupComment}
-                groupComments={this.state.groupComments}
-                showGroupComments={this.state.showGroupComments}
-                getAllGroupComments={this.getAllGroupComments}
-              />
+              {this.state.loggedIn &&
+
+                <CurrentGroup
+                  currentGroupContent={this.state.currentGroupContent}
+                  showCurrentGroupContent={this.state.showCurrentGroupContent}
+                  post={this.handelGroupPost}
+                  groupPosts={this.state.groupPosts}
+                  showGroupPosts={this.state.showGroupPosts}
+                  getAllGroupPosts={this.getAllGroupPosts}
+                  currentGroupID={this.state.currentGroupID}
+                  getGroupMembers={this.getGroupMembers}
+                  showCurrentGroupPath={this.state.showCurrentGroupPath}
+                  groupMembers={this.state.groupMembers}
+                  showGroupMembers={this.state.showGroupMembers}
+                  groupPostLike={this.groupPostLike}
+                  groupPostsLikes={this.state.groupPostsLikes}
+                  comment={this.handleGroupComment}
+                  groupComments={this.state.groupComments}
+                  showGroupComments={this.state.showGroupComments}
+                  getAllGroupComments={this.getAllGroupComments}
+                />}
+              {this.state.loggedIn == false && <NotLoggedIn />}
+
             </Route>
             <Route exact path="/target/:id">
-              <TargetProfile
-                targetedProfileInfo={this.state.targetedProfileInfo}
-                targetedFollowing={this.state.targetedFollowing}
-                targetedFollowers={this.state.targetedFollowers}
-                targetedPosts={this.state.targetedPosts}
-              />
+              {this.state.loggedIn &&
+
+                <TargetProfile
+                  targetedProfileInfo={this.state.targetedProfileInfo}
+                  targetedFollowing={this.state.targetedFollowing}
+                  targetedFollowers={this.state.targetedFollowers}
+                  targetedPosts={this.state.targetedPosts}
+                />}
+              {this.state.loggedIn == false && <NotLoggedIn />}
+
             </Route>
             <Route exact path="/videocall">
-              <MainMessnger
-                getFollowing={this.getFollowing}
-                getFollowers={this.getFollowers}
-                showFollowing={this.state.showFollowing}
-                allFollowing={this.state.allFollowing}
-                allFollowers={this.state.allFollowers}
-                handleShowMessenger={this.handleShowMessenger}
-                showMessenger={this.state.showMessenger}
-                handleSendMessage={this.state.handleSendMessage}
-                allMessages={this.state.allMessages}
-                showMessages={this.state.showMessages}
-                videoCallData={this.state.videoCallData}
-                handleSendMessage={this.handleSendMessage}
-                user={this.state.user}
-              />
+              {this.state.loggedIn &&
+                <MainMessnger
+                  getFollowing={this.getFollowing}
+                  getFollowers={this.getFollowers}
+                  showFollowing={this.state.showFollowing}
+                  allFollowing={this.state.allFollowing}
+                  allFollowers={this.state.allFollowers}
+                  handleShowMessenger={this.handleShowMessenger}
+                  showMessenger={this.state.showMessenger}
+                  handleSendMessage={this.state.handleSendMessage}
+                  allMessages={this.state.allMessages}
+                  showMessages={this.state.showMessages}
+                  videoCallData={this.state.videoCallData}
+                  handleSendMessage={this.handleSendMessage}
+                  user={this.state.user}
+                />}
+              {this.state.loggedIn == false && <NotLoggedIn />}
             </Route>
           </Switch>
         </div>

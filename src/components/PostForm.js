@@ -113,7 +113,7 @@ export function PostForm(props) {
           <textarea
             required
             type="text"
-            placeholder="type your post here "
+            placeholder="Type your post here "
             onChange={(e) => {
               setContent(e.target.value);
             }}
