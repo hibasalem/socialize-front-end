@@ -25,10 +25,8 @@ import {
 } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
-const SERVER_URL = 'localhost:5000/';
+const SERVER_URL = 'https://socialize401.herokuapp.com/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
-
-//
 
 export class App extends Component {
   constructor(props) {
