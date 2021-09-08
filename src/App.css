@@ -1,8 +1,31 @@
 .App {
   text-align: center;
 }
+
 html {
   overflow-y: scroll;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .App-logo {
@@ -57,4 +80,8 @@ html {
   margin-top: 140px;
   margin-left: 7%;
   margin-right: 7%;
+}
+
+h2 {
+  color: #282c34;
 }

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Grid, Typography, Paper, makeStyles } from '@material-ui/core';
 import { SocketContext } from '../context';
-
+import Button from '@material-ui/core/Button';
 const useStyles = makeStyles((theme) => ({
   video: {
     width: '550px',
@@ -50,7 +50,13 @@ const VideoPlayer = (props) => {
 
   return (
     <div>
-      <button
+      <Button variant="contained"  onClick={() =>
+          callUser(
+            props.videoCallData.room,
+            props.videoCallData.messageReceiverId
+          )
+        }>actuuly start video call</Button>
+      {/* <button
         className="mybuttonnn"
         onClick={() =>
           callUser(
@@ -60,7 +66,7 @@ const VideoPlayer = (props) => {
         }
       >
         actuuly start video call
-      </button>
+      </button> */}
 
       <Grid container className={classes.gridContainer}>
         {stream && (

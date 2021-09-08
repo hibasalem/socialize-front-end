@@ -1,5 +1,5 @@
 // import axios from 'axios';
-import React from 'react';
+import React, { useState } from 'react';
 // import { Redirect } from 'react-router-dom';
 import Login from './login';
 import Signup from './Signup';
@@ -8,6 +8,8 @@ import './home.css';
 import back from './0000.png';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArrowDropDownCircleRoundedIcon from '@material-ui/icons/ArrowDropDownCircleRounded';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,10 +17,17 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(1),
     },
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
   },
 }));
 
 export default function Home(props) {
+  const [sign, setsign] = useState('signin');
   const classes = useStyles();
 
   return (
@@ -39,11 +48,28 @@ export default function Home(props) {
 
         {!props.loggedIn && (
           <div id="GETSTARTED">
-            <Login
-              loggedIn={props.loggedIn}
-              loggedInFunction={props.loggedInFunction}
-            />
-            <Signup />
+            <div className="signHeader">
+              {sign == 'signin' && <h2>Log In</h2>}
+              {sign == 'signup' && <h2>Sign Up</h2>}
+              <ButtonGroup
+                variant="text"
+                aria-label="text primary button group"
+              >
+                <Button className="newbuttn" onClick={() => setsign('signin')}>
+                  Log In
+                </Button>
+                <Button className="newbuttn" onClick={() => setsign('signup')}>
+                  Sign Up
+                </Button>
+              </ButtonGroup>
+            </div>
+            {sign == 'signin' && (
+              <Login
+                loggedIn={props.loggedIn}
+                loggedInFunction={props.loggedInFunction}
+              />
+            )}
+            {sign == 'signup' && <Signup />}
           </div>
         )}
       </div>

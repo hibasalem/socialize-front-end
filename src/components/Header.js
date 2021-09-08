@@ -38,7 +38,7 @@ export default function Header(props) {
   return (
     <div className="Header">
       <nav>
-        <Link className="name" to="/">
+        <Link  className="name" to="/">
           Socialize
         </Link>
 

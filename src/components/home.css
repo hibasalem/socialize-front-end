@@ -3,18 +3,56 @@
 }
 .homeH {
   background-color: rgba(110, 1, 1, 0) !important;
+  /* border: #222831 2px solid; */
   position: absolute;
-  top: 800px;
+  top: 750px;
   left: 20%;
   display: inline;
-  border: #5f5f5f 2px solid;
   background-color: white !important;
   width: 60%;
   padding: 30px;
   text-align: center;
   border-radius: 30px;
   margin-bottom: 50px;
+  height: 520px !important;
 }
+
+.signHeader {
+  float: left;
+  display: inline;
+  padding-top: 15%;
+  margin-left: 15%;
+}
+
+.sign {
+  margin: 3%;
+  border: #dddddd 2px solid;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  background-color: #afafaf08;
+  display: inline;
+  float: right;
+  width: 43.5%;
+  height: 420px;
+  border: solid 1px #00bba7 !important;
+}
+
+.sign2 {
+  margin: 3%;
+  border: #dddddd 2px solid;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  background-color: #afafaf08;
+  display: inline;
+  float: right;
+  width: 43.5%;
+  height: 250px;
+  border: solid 1px #00bba7 !important;
+}
+
+/* .progress {
+  height: 10px !important;
+} */
 
 .bottons {
   border-radius: 10% !important;
@@ -23,19 +61,7 @@
   font-size: 20px !important;
 }
 
-.sign {
-  margin: 3%;
-  border: #dddddd 2px solid;
-  padding: 2% !important;
-  border-radius: 15px !important;
-  background-color: #afafaf13;
-  display: inline;
-  float: left;
-  width: 43.5%;
-  height: 400px;
-}
-
-input {
+.input {
   margin: 10px !important;
   border-radius: 10px;
   border: rgb(156, 156, 156) solid !important;
@@ -52,9 +78,9 @@ input {
   color: rgba(255, 255, 255, 0.918);
   position: absolute;
   top: 450px;
-  margin-left: 38%;
+  margin-left: 39.2%;
   letter-spacing: 12px;
-  font-size: 55px;
+  font-size: 50px;
 }
 
 .img {
@@ -72,6 +98,21 @@ input {
 .buttn {
   color: #191d24 !important;
 }
+
 .buttn:hover {
   box-shadow: 0px 0px 10px #00bba7;
+  transition-duration: 0.5s;
+}
+
+.buttn2:hover {
+  box-shadow: 0px 0px 10px #a6e3e9;
+  transition-duration: 0.5s;
+}
+
+.newbuttn {
+  color: #00bba7 !important;
+}
+
+.newbuttn2 {
+  border: solid 1px #00bba7 !important;
 }

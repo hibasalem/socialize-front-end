@@ -23,7 +23,7 @@ export default function AddFriends (props) {
                   item={item}
                   handleAddFriend={props.handleAddFriend}
                   disableIt={
-                    item.auth_id == props.followingIds[idx] ? true : false
+                   props.followingIds.includes(item.auth_id)
                   }
                 />
               );
