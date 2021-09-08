@@ -13,8 +13,8 @@ export default function AddFriends(props) {
     <div className="mainDiv">
       <h2 className="profileName">Find a Friend</h2>
       <div className="peopleCont">
-        {/* {console.log('users', props.allusers)}
-        {console.log(this.props.followingIds)} */}
+        {console.log('users', props.allusers)}
+        {/* {console.log(this.props.followingIds)}  */}
 
         {props.allusers.map((item, idx) => {
           if (item.id !== props.userID) {
