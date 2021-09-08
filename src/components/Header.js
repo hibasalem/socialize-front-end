@@ -8,6 +8,7 @@ import Image from 'react-bootstrap/Image';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -38,7 +39,7 @@ export default function Header(props) {
   return (
     <div className="Header">
       <nav>
-        <Link  className="name" to="/">
+        <Link className="name" to="/">
           Socialize
         </Link>
 

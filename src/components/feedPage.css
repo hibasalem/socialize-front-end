@@ -282,7 +282,8 @@ hr {
 
 .Messenger2 {
   /* position: fixed; */
-  margin-top: 200px;
+  margin-left: 22% !important;
+  /* margin-top: 200px; */
   left: 30%;
   top: 0;
 }
@@ -308,24 +309,27 @@ hr {
   align-items: center;
   text-align: center;
   margin-right: 15px;
+  margin-bottom: 15px;
   display: inline-block;
+  width: 270px !important;
+  height: 200px;
 }
+
 .peopleCont {
-  margin-left: 20%;
-  margin-right: 20%;
-  border: #dddddd 2px solid;
+  margin-left: 17%;
+  /* margin-right: 20%; */
+  /* border: #dddddd 2px solid; */
   padding: 2% !important;
   border-radius: 15px !important;
-  background-color: #afafaf13;
-  width: 60%;
+  width: 75%;
   margin-bottom: 10px;
 }
+
 .personName {
   text-decoration: none;
-  color: black;
-  font-size: 35px;
+  color: #191d24;
+  font-size: 30px;
   align-items: center;
-  margin-bottom: 15px;
 }
 
 /* from here on its for the groups page   */
@@ -333,9 +337,11 @@ hr {
 .groupsRequests {
   position: absolute;
   overflow: auto;
-  height: 350px;
+  height: 450px;
+  width: 250px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
-
 .JoinedGroups {
   position: absolute;
   height: 350px;
@@ -344,12 +350,12 @@ hr {
 }
 
 .groupsCont {
-  margin-left: 20%;
+  margin-left: 21%;
   margin-right: 20%;
-  border: #dddddd 2px solid;
+  border: #00bba7 2px solid;
   padding: 2% !important;
   border-radius: 15px !important;
-  background-color: #afafaf13;
+  /* background-color: #afafaf13; */
   width: 60%;
   margin-bottom: 10px;
 }
@@ -365,6 +371,7 @@ hr {
   align-items: center;
   text-align: center;
   margin-right: 15px;
+  width: 250px !important;
 }
 
 .groupForm {

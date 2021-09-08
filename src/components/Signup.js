@@ -7,6 +7,11 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import {
+  NotificationContainer,
+  NotificationManager,
+} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 require('dotenv').config();
 const useStyles = makeStyles((theme) => ({
@@ -94,6 +99,8 @@ function Signup(props) {
 
   return (
     <div>
+      <NotificationContainer />
+
       <div className="sign">
         <form
           className={classes.root}
@@ -103,6 +110,9 @@ function Signup(props) {
             signup(e);
             e.target.reset();
             setPercentage(0);
+            NotificationManager.info(
+              `a verification email has been sent to your email`
+            );
           }}
         >
           <TextField
@@ -173,7 +183,7 @@ function Signup(props) {
               <LinearProgress
                 variant="determinate"
                 color="primary"
-                className="progress"
+                className="progress2"
                 value={percentage}
               />
             )}

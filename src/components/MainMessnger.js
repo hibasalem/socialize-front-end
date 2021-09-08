@@ -20,10 +20,8 @@ export default function MainMessnger(props) {
     setShowVideoCall(false);
   };
   useEffect(() => {
-
     props.getFollowers();
     props.getFollowing();
-
   }, []);
 
   // useEffect(() => {
@@ -34,11 +32,10 @@ export default function MainMessnger(props) {
   //     props.allFollowing.forEach((item)=>{
   //       followingIDs.push(item.receiverid);
   //     });
-      
-  //   }
-    
-  // }, [props.allFollowing]);
 
+  //   }
+
+  // }, [props.allFollowing]);
 
   // useEffect(() => {
   //   console.log(props.allFollowers.length);
@@ -53,7 +50,6 @@ export default function MainMessnger(props) {
   //     setPeople(temp);
   //   }
   // }, [props.allFollowers]);
-
 
   return (
     <div>
@@ -71,9 +67,7 @@ export default function MainMessnger(props) {
               <>
                 <p
                   key={idx}
-                  onClick={() =>
-                    props.handleShowMessenger(item.receiverid)
-                  }
+                  onClick={() => props.handleShowMessenger(item.receiverid)}
                 >
                   <Image
                     src={item.image_url}
@@ -89,13 +83,14 @@ export default function MainMessnger(props) {
           })}
       </div>
 
-      <ContextProvider
-        videoCallData={props.videoCallData}
-        user={props.user}
-      >
+      <ContextProvider videoCallData={props.videoCallData} user={props.user}>
         {props.showMessenger && (
           <div className="Messenger2">
             <h2>Messenger</h2>
+            <Notifications
+              user={props.user}
+              handleHideVideoCall={handleHideVideoCall}
+            />
             <Messenger
               user={props.user}
               handleSendMessage={props.handleSendMessage}
@@ -105,15 +100,9 @@ export default function MainMessnger(props) {
               handleShowVideoCall={handleShowVideoCall}
               showVideoCall={showVideoCall}
             />
-
-            <Notifications
-              user={props.user}
-              handleHideVideoCall={handleHideVideoCall}
-            />
           </div>
         )}
       </ContextProvider>
     </div>
   );
-
 }
