@@ -105,7 +105,12 @@ export class App extends Component {
         groupID: JSON.parse(currGroupID).groupId,
       });
     }
-
+    socket.on('acceptedToGroupNoti',(payload)=>{
+      if(this.state.user.userID==payload.memberId){
+        NotificationManager.success('Your Join Group Request Has Been Accepted');
+        console.log('accepted')
+      }
+    })
     socket.on('connect', () => {
       socket.emit('test');
       socket.emit('getAllUsers');
@@ -485,6 +490,7 @@ export class App extends Component {
       group_owner: this.state.user.userID,
       group_description: groupDescription,
     };
+    console.log('the start',payload);
     socket.emit('createGroup', payload);
   };
 

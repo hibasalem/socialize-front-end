@@ -48,7 +48,7 @@ export default function CurrentGroup(props) {
         </>
       )}
       {/* {console.log(props.GroupPost)} */}
-      {props.showGroupPosts &&
+      {props.showGroupPosts && props.groupPosts.length>0&&
         props.groupPosts.map((item, idx) => {
           return (
             <>
@@ -92,6 +92,7 @@ export default function CurrentGroup(props) {
             </>
           );
         })}
+        {props.groupPosts.length===0&&<p className="postDiv3">This Group Has No Posts Yet</p>}
     </div>
   );
 }

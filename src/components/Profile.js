@@ -61,7 +61,7 @@ function Profile(props) {
       {current == 'following' && (
         <div className="following">
           <h4>Following</h4>
-          {props.showFollowing &&
+          {props.showFollowing && props.allFollowing.length>0 &&
             props.allFollowing.map((item, idx) => {
               return (
                 <div key={idx}>
@@ -78,6 +78,7 @@ function Profile(props) {
                 </div>
               );
             })}
+            {props.allFollowing.length===0&&<p>you havent followed anyone yet</p>}
         </div>
       )}
 
@@ -85,7 +86,8 @@ function Profile(props) {
         <div className="following">
           <h4>Followers</h4>
 
-          {props.showFollowers &&
+          {props.allFollowers.length===0&&<p>no one has followed you yet</p>}
+          {props.showFollowers && props.allFollowers.length>0&&
             props.allFollowers.map((item, idx) => {
               return (
                 <div key={idx}>

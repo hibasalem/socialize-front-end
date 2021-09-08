@@ -61,7 +61,7 @@ export default function MainMessnger(props) {
       <br />
       <div className="following">
         <h2>people</h2>
-        {props.showFollowing &&
+        {props.showFollowing&&props.allFollowing.length>0 &&
           props.allFollowing.map((item, idx) => {
             return (
               <>
@@ -81,6 +81,7 @@ export default function MainMessnger(props) {
               </>
             );
           })}
+          {props.allFollowing.length===0&&<p>No People to Chat with</p>}
       </div>
 
       <ContextProvider videoCallData={props.videoCallData} user={props.user}>
