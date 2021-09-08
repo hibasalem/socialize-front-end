@@ -61,12 +61,10 @@ const Notifications = (props) => {
       {!(call.from == props.user.userID) &&
         call.isReceivingCall &&
         !callAccepted && (
-          <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <h4>{call.name} is calling:</h4>
+          <div>
             <Button
-              variant="contained"
               color="default"
-              className="newbuttn3"
+              className="newbuttn4"
               startIcon={<PhoneCallbackIcon />}
               variant="outlined"
               onClick={() => answerCall()}
@@ -75,12 +73,10 @@ const Notifications = (props) => {
             </Button>
           </div>
         )}
-      {console.log('iam here ')}
       {callAccepted && !callEnded && (
         <Button
-          variant="contained"
           color="default"
-          className="newbuttn3"
+          className="newbuttn4"
           startIcon={<CallEndIcon />}
           variant="outlined"
           onClick={() => handelClick()}

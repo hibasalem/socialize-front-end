@@ -18,7 +18,9 @@ export default function Messenger(props) {
       <div className="Meessages">
         {props.showMessages && <Message allMessages={props.allMessages} />}
       </div>
+
       <form
+        className="chatForm"
         onSubmit={(e) => {
           sendMessage(e);
           e.target.reset();
@@ -28,12 +30,13 @@ export default function Messenger(props) {
           id="standard-basic"
           label="Type Your Message Here"
           type="text"
+          className="chatField "
           required
           onChange={(e) => {
             setMessageContent(e.target.value);
           }}
         />
-
+        &nbsp; &nbsp; &nbsp; &nbsp;
         <Button
           type="submit"
           color="default"
@@ -46,10 +49,13 @@ export default function Messenger(props) {
       </form>
       <Button
         color="default"
-        className="newbuttn3"
+        className="newbuttn3 preview"
         startIcon={<CameraAltIcon />}
         variant="outlined"
-        onClick={() => props.handleShowVideoCall()}
+        onClick={() => {
+          props.handleShowVideoCall();
+          window.scrollTo(0, 900);
+        }}
       >
         Preview Camera
       </Button>

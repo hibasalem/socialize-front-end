@@ -305,7 +305,7 @@ hr {
 
 .Messenger2 {
   /* position: fixed; */
-  margin-left: 22% !important;
+  margin-left: 25% !important;
   /* margin-top: 200px; */
   left: 30%;
   top: 0;
@@ -314,8 +314,8 @@ hr {
 .Meessages {
   height: 400px;
   overflow: auto;
-  width: 500px !important;
-  border: #00bba7 2px solid;
+  width: 700px !important;
+  /* border: #00bba7 2px solid; */
   padding-right: 5% !important;
   padding-left: 5% !important;
 }
@@ -467,12 +467,57 @@ img {
 }
 
 .time {
-  margin-left: 70% !important;
+  margin-left: 85% !important;
   /* display: inline !important; */
-  margin-top: -28px !important;
+  margin-top: -30px !important;
   color: #191d2483;
   font-size: small;
 }
+
+.chatForm {
+  width: 700px;
+  margin-bottom: 40px !important;
+}
+
+.chatField {
+  width: 65%;
+  margin-left: 50px !important;
+}
+
+.preview {
+  position: absolute !important;
+  top: 185px;
+  right: 470px;
+}
+
+.videothings {
+  margin-left: -290px !important;
+}
+
+.newbuttn4 {
+  border: solid 1px #bb000085 !important;
+  margin-top: -765px !important;
+  margin-left: 150px !important;
+}
+
+.dk {
+  position: absolute;
+  border-left: #191d243f 1px solid !important;
+  border-right: #191d243f 1px solid !important;
+  top: 200px;
+  left: 360px;
+  width: 840px;
+  height: 500px;
+}
+
+.lastClass {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  color: #191d249c;
+  font-size: larger;
+}
+
 .notLoggedIn {
   margin-top: 25%;
   margin-left: 45%;

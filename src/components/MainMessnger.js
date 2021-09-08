@@ -26,6 +26,8 @@ export default function MainMessnger(props) {
 
   return (
     <div className="messanger">
+      <div className="dk"></div>
+      {!props.showMessenger && <p className="lastClass"> Choose a person to start a chat with </p>}
       <br />
       <br />
       <br />

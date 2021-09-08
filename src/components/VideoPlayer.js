@@ -6,10 +6,7 @@ import CallIcon from '@material-ui/icons/Call';
 
 const useStyles = makeStyles((theme) => ({
   video: {
-    width: '550px',
-    [theme.breakpoints.down('xs')]: {
-      width: '300px',
-    },
+    width: '400px',
   },
   gridContainer: {
     justifyContent: 'center',
@@ -67,36 +64,36 @@ const VideoPlayer = (props) => {
       >
         start call
       </Button>
-
-      <Grid container className={classes.gridContainer}>
-        {stream && (
-          <Paper className={classes.paper}>
-            <Grid item xs={12} md={6}>
-              <video
-                playsInline
-                muted
-                ref={myVideo}
-                autoPlay
-                className={classes.video}
-              />
-            </Grid>
-          </Paper>
-        )}
-        {callAccepted && !callEnded && (
-          <Paper className={classes.paper}>
-            <Grid item xs={12} md={6}>
-              <video
-                playsInline
-                ref={userVideo}
-                autoPlay
-                className={classes.video}
-              />
-            </Grid>
-          </Paper>
-        )}
-      </Grid>
+      <div className="videothings">
+        <Grid container className={classes.gridContainer}>
+          {stream && (
+            <Paper className={classes.paper}>
+              <Grid item>
+                <video
+                  playsInline
+                  muted
+                  ref={myVideo}
+                  autoPlay
+                  className={classes.video}
+                />
+              </Grid>
+            </Paper>
+          )}
+          {callAccepted && !callEnded && (
+            <Paper className={classes.paper}>
+              <Grid item>
+                <video
+                  playsInline
+                  ref={userVideo}
+                  autoPlay
+                  className={classes.video}
+                />
+              </Grid>
+            </Paper>
+          )}
+        </Grid>
+      </div>
     </div>
-
   );
 };
 
