@@ -88,7 +88,7 @@ export default function Groups(props) {
           <br />
         </h4>
         {/* {console.log(props.GroupRequests)} */}
-        {props.showGroupsRequests &&
+        {props.showGroupsRequests && props.GroupRequests.length>0 &&
           props.GroupRequests.map((item, idx) => {
             return (
               <div className="elementsRap">
@@ -123,6 +123,7 @@ export default function Groups(props) {
               </div>
             );
           })}
+          {props.GroupRequests.length===0 && <p>no Group Requests for now</p>}
       </div>
 
       <div className="groupsCont">
@@ -144,7 +145,7 @@ export default function Groups(props) {
               <b>Joined groups</b>
               <br />
             </h4>
-            {props.showUsergroups &&
+            {props.showUsergroups && props.usergroups.length>0 &&
               props.usergroups.map((item, idx) => {
                 return (
                   <div className="groupRapRap">
@@ -166,6 +167,7 @@ export default function Groups(props) {
                   </div>
                 );
               })}
+              {props.usergroups.length===0 &&<p>you havent joined any group</p>}
           </div>
         )}
 
@@ -176,7 +178,7 @@ export default function Groups(props) {
               <b>Other groups </b>
             </h4>
 
-            {props.showGroups &&
+            {props.showGroups && props.allGroups.length>0&&
               props.allGroups.map((item, idx) => {
                 return (
                   <div className="groupRapRap">
@@ -188,6 +190,7 @@ export default function Groups(props) {
                   </div>
                 );
               })}
+              {props.allGroups.length===0&&<p>There are no Other Groups</p>}
           </div>
         )}
       </div>

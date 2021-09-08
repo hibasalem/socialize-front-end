@@ -56,7 +56,7 @@ export function TargetProfile(props) {
       {current == 'following' && (
         <div className="following">
           <h2>Following</h2>
-          {props.targetedFollowing.map((element, index) => {
+          {props.targetedFollowing.length>0&&props.targetedFollowing.map((element, index) => {
             return (
               <div key={index}>
                 <Image
@@ -70,13 +70,14 @@ export function TargetProfile(props) {
               </div>
             );
           })}
+         {props.targetedFollowing.length===0&&<p>{props.targetedProfileInfo.firstname} {props.targetedProfileInfo.lastname} is not following anyone yet</p>}
         </div>
       )}
 
       {current == 'followers' && (
         <div className="following">
           <h2>Followers</h2>
-          {props.targetedFollowers.map((element, index) => {
+          {props.targetedFollowers.length>0&&props.targetedFollowers.map((element, index) => {
             return (
               <div key={index}>
                 <Image
@@ -90,10 +91,11 @@ export function TargetProfile(props) {
               </div>
             );
           })}
+        {props.targetedFollowers.length===0&&<p>{props.targetedProfileInfo.firstname} {props.targetedProfileInfo.lastname} has no followers yet</p>}
         </div>
       )}
       <div className="targetPost">
-        {props.targetedPosts.map((element, index) => {
+        {props.targetedPosts.length>0&&props.targetedPosts.map((element, index) => {
           return (
             <div className="postDiv" key={index}>
               <div className="post2">
@@ -117,6 +119,7 @@ export function TargetProfile(props) {
           );
         })}
       </div>
+        {props.targetedPosts.length===0&&<p  className="postDiv2">{props.targetedProfileInfo.firstname} {props.targetedProfileInfo.lastname} has no posts yet</p>}
 
       <Fab
         className="Fab2"
