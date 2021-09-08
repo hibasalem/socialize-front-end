@@ -26,7 +26,8 @@ import {
 import 'react-notifications/lib/notifications.css';
 import NotLoggedIn from './components/NotLoggedIn';
 
-const SERVER_URL = 'localhost:5000/';
+const SERVER_URL = 'https://socialize401.herokuapp.com/';
+// const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
 export class App extends Component {
@@ -81,6 +82,7 @@ export class App extends Component {
       showGroupComments: false,
       followingIds: [],
       videoCallData: null,
+      messageReceiverName: '',
     };
   }
 
@@ -106,10 +108,12 @@ export class App extends Component {
     }
     socket.on('acceptedToGroupNoti', (payload) => {
       if (this.state.user.userID == payload.memberId) {
-        NotificationManager.success('Your Join Group Request Has Been Accepted');
-        console.log('accepted')
+        NotificationManager.success(
+          'Your Join Group Request Has Been Accepted'
+        );
+        console.log('accepted');
       }
-    })
+    });
     socket.on('connect', () => {
       socket.emit('test');
       socket.emit('getAllUsers');
@@ -437,10 +441,11 @@ export class App extends Component {
     });
   };
 
-  handleShowMessenger = (reciverId) => {
+  handleShowMessenger = (reciverId, firstName, lastName) => {
     this.setState({
       showMessenger: true,
       messageReceiverId: reciverId,
+      messageReceiverName: `${firstName} ${lastName}`,
     });
 
     let room;
@@ -478,6 +483,7 @@ export class App extends Component {
       messageRoomId: room,
       firstName: this.state.user.firstname,
       lastName: this.state.user.lastname,
+      image_url: this.state.user.image_url,
     };
     console.log('message payload', payload);
     socket.emit('sendMessage', payload);
@@ -618,7 +624,7 @@ export class App extends Component {
               )}
             </Route>
             <Route exact path="/feedPage">
-              {this.state.loggedIn &&
+              {this.state.loggedIn && (
                 <FeedPage
                   showPosts={this.state.showPosts}
                   userID={this.state.user.userID}
@@ -629,9 +635,8 @@ export class App extends Component {
                   post={this.post}
                   logOut={this.logOut}
                 />
-              }
+              )}
               {this.state.loggedIn == false && <NotLoggedIn />}
-
             </Route>
             <Route exact path={this.state.path}>
               {this.state.path && this.state.loggedIn && (
@@ -662,10 +667,9 @@ export class App extends Component {
                 />
               )}
               {this.state.loggedIn == false && <NotLoggedIn />}
-
             </Route>
             <Route exact path="/addFriends">
-              {this.state.loggedIn &&
+              {this.state.loggedIn && (
                 <AddFriends
                   socket={socket}
                   targetProfile={this.targetProfile}
@@ -674,12 +678,12 @@ export class App extends Component {
                   userID={this.state.user.userID}
                   getFollowing={this.getFollowing}
                   followingIds={this.state.followingIds}
-                />}
+                />
+              )}
               {this.state.loggedIn == false && <NotLoggedIn />}
-
             </Route>
             <Route exact path="/groups">
-              {this.state.loggedIn &&
+              {this.state.loggedIn && (
                 <Groups
                   handleCreateGroup={this.handleCreateGroup}
                   handleJoinGroup={this.handleJoinGroup}
@@ -696,13 +700,12 @@ export class App extends Component {
                   handleViewgroup={this.handleViewgroup}
                   currentGroupPath={this.state.currentGroupPath}
                   showCurrentGroupPath={this.state.showCurrentGroupPath}
-                />}
+                />
+              )}
               {this.state.loggedIn == false && <NotLoggedIn />}
-
             </Route>
             <Route exact path="/groups/:id">
-              {this.state.loggedIn &&
-
+              {this.state.loggedIn && (
                 <CurrentGroup
                   currentGroupContent={this.state.currentGroupContent}
                   showCurrentGroupContent={this.state.showCurrentGroupContent}
@@ -721,24 +724,23 @@ export class App extends Component {
                   groupComments={this.state.groupComments}
                   showGroupComments={this.state.showGroupComments}
                   getAllGroupComments={this.getAllGroupComments}
-                />}
+                />
+              )}
               {this.state.loggedIn == false && <NotLoggedIn />}
-
             </Route>
             <Route exact path="/target/:id">
-              {this.state.loggedIn &&
-
+              {this.state.loggedIn && (
                 <TargetProfile
                   targetedProfileInfo={this.state.targetedProfileInfo}
                   targetedFollowing={this.state.targetedFollowing}
                   targetedFollowers={this.state.targetedFollowers}
                   targetedPosts={this.state.targetedPosts}
-                />}
+                />
+              )}
               {this.state.loggedIn == false && <NotLoggedIn />}
-
             </Route>
             <Route exact path="/videocall">
-              {this.state.loggedIn &&
+              {this.state.loggedIn && (
                 <MainMessnger
                   getFollowing={this.getFollowing}
                   getFollowers={this.getFollowers}
@@ -753,7 +755,9 @@ export class App extends Component {
                   videoCallData={this.state.videoCallData}
                   handleSendMessage={this.handleSendMessage}
                   user={this.state.user}
-                />}
+                  messageReceiverName={this.state.messageReceiverName}
+                />
+              )}
               {this.state.loggedIn == false && <NotLoggedIn />}
             </Route>
           </Switch>

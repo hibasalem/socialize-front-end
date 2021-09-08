@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { Grid, Typography, Paper, makeStyles } from '@material-ui/core';
 import { SocketContext } from '../context';
 import Button from '@material-ui/core/Button';
+import CallIcon from '@material-ui/icons/Call';
+
 const useStyles = makeStyles((theme) => ({
   video: {
     width: '550px',
@@ -50,14 +52,12 @@ const VideoPlayer = (props) => {
 
   return (
     <div>
-      <Button variant="contained"  onClick={() =>
-          callUser(
-            props.videoCallData.room,
-            props.videoCallData.messageReceiverId
-          )
-        }>actuuly start video call</Button>
-      {/* <button
-        className="mybuttonnn"
+      <Button
+        variant="contained"
+        color="default"
+        className="newbuttn3"
+        startIcon={<CallIcon />}
+        variant="outlined"
         onClick={() =>
           callUser(
             props.videoCallData.room,
@@ -65,16 +65,13 @@ const VideoPlayer = (props) => {
           )
         }
       >
-        actuuly start video call
-      </button> */}
+        start call
+      </Button>
 
       <Grid container className={classes.gridContainer}>
         {stream && (
           <Paper className={classes.paper}>
             <Grid item xs={12} md={6}>
-              <Typography variant="h5" gutterBottom>
-                {name || 'Name'}
-              </Typography>
               <video
                 playsInline
                 muted
@@ -88,9 +85,6 @@ const VideoPlayer = (props) => {
         {callAccepted && !callEnded && (
           <Paper className={classes.paper}>
             <Grid item xs={12} md={6}>
-              <Typography variant="h5" gutterBottom>
-                {call.name || 'Name'}
-              </Typography>
               <video
                 playsInline
                 ref={userVideo}
@@ -102,6 +96,7 @@ const VideoPlayer = (props) => {
         )}
       </Grid>
     </div>
+
   );
 };
 
