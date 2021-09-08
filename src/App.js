@@ -26,8 +26,8 @@ import {
 import 'react-notifications/lib/notifications.css';
 import NotLoggedIn from './components/NotLoggedIn';
 
-const SERVER_URL = 'https://socialize401.herokuapp.com/';
-// const SERVER_URL = 'localhost:5000/';
+// const SERVER_URL = 'https://socialize401.herokuapp.com/';
+const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
 export class App extends Component {
