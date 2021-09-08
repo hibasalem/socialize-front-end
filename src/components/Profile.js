@@ -1,87 +1,110 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Posts from './Posts';
-import Messenger from './Messenger';
 import Image from 'react-bootstrap/Image';
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Fab from '@material-ui/core/Fab';
+import KeyboardArrowUpRoundedIcon from '@material-ui/icons/KeyboardArrowUpRounded';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+}));
+
 function Profile(props) {
+  const [current, setCurrent] = useState('following');
+  const classes = useStyles();
+
   useEffect(() => {
     props.getFollowing();
     props.getFollowers();
-  }, [])
-
+  }, []);
 
   return (
     <div className="mainDiv">
-      {/* {console.log('hello', props.user)} */}
-
-      <h2 className="profileName">
-        <Image
-          src={props.user.image_url}
-          roundedCircle
-          height="70px"
-          width="70px"
-        />
-        &nbsp; &nbsp;
-        {props.user.firstname} {props.user.lastname}
-      </h2>
-
+      <div className="person">
+        <h2 className="profileName">
+          <Image
+            src={props.user.image_url}
+            roundedCircle
+            height="70px"
+            width="70px"
+          />
+          &nbsp; &nbsp;
+          {props.user.firstname} {props.user.lastname}
+        </h2>
+      </div>
       <p>{props.user.age}</p>
       <p>{props.user.gender}</p>
 
-      <div className="following">
-        <h2>Following</h2>
-        {props.showFollowing &&
-          props.allFollowing.map((item, idx) => {
-            return (
-              <div key={idx}>
-                {/* {console.log(props.allFollowing)} */}
-
-                <p>
-                  <Image
-                    src={item.image_url}
-                    roundedCircle
-                    height="30px"
-                    width="30px"
-                  />
-                  &nbsp;
-                  {item.firstname} {item.lastname}
-                </p>
-                <Button variant="contained"  onClick={() =>
-                    props.handleShowMessenger(item.receiverid)
-                  }>Chat</Button>
-              </div>
-            );
-          })}
+      <div>
+        <ButtonGroup variant="text" aria-label="text primary button group">
+          <Button className="newbuttn" onClick={() => setCurrent('following')}>
+            Following
+          </Button>
+          <Button className="newbuttn" onClick={() => setCurrent('followers')}>
+            Followers
+          </Button>
+        </ButtonGroup>
       </div>
 
-      <div className="followers">
-        <h2>Followers</h2>
+      {current == 'following' && (
+        <div className="following">
+          <h4>Following</h4>
+          {props.showFollowing &&
+            props.allFollowing.map((item, idx) => {
+              return (
+                <div key={idx}>
+                  <p>
+                    <Image
+                      src={item.image_url}
+                      roundedCircle
+                      height="30px"
+                      width="30px"
+                    />
+                    &nbsp;
+                    {item.firstname} {item.lastname}
+                  </p>
+                </div>
+              );
+            })}
+        </div>
+      )}
 
-        {props.showFollowers &&
-          props.allFollowers.map((item, idx) => {
-            return (
-              <div key={idx}>
-                <p>
-                  <Image
-                    src={item.image_url}
-                    roundedCircle
-                    height="30px"
-                    width="30px"
-                  />
-                  &nbsp;
-                  {item.firstname} {item.lastname}
-                </p>
-                <Button variant="contained"  onClick={() => props.handleShowMessenger(item.senderid)}>Chat</Button>
-                {/* <button
-                  className="mybuttonnn"
-                  onClick={() => props.handleShowMessenger(item.senderid)}
-                >
-                  Chat
-                </button> */}
-              </div>
-            );
-          })}
-      </div>
+      {current == 'followers' && (
+        <div className="following">
+          <h4>Followers</h4>
+
+          {props.showFollowers &&
+            props.allFollowers.map((item, idx) => {
+              return (
+                <div key={idx}>
+                  <p>
+                    <Image
+                      src={item.image_url}
+                      roundedCircle
+                      height="30px"
+                      width="30px"
+                    />
+                    &nbsp;
+                    {item.firstname} {item.lastname}
+                  </p>
+                </div>
+              );
+            })}
+        </div>
+      )}
+
       <Posts
         userID={props.userID}
         like={props.like}
@@ -90,19 +113,16 @@ function Profile(props) {
         allPosts={props.allPosts}
         socket={props.socket}
       />
-      {props.showMessenger && (
-        <div className="Messenger">
-          <h2>Messenger</h2>
-          <Messenger
-            handleSendMessage={props.handleSendMessage}
-            allMessages={props.allMessages}
-            showMessages={props.showMessages}
-          />
-        </div>
-      )}
+
+      <Fab
+        className="Fab2"
+        aria-label="add"
+        onClick={() => window.scrollTo(0, 0)}
+      >
+        <KeyboardArrowUpRoundedIcon />
+      </Fab>
     </div>
   );
-
 }
 
 export default Profile;

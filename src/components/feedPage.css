@@ -1,121 +1,289 @@
-.post {
-  border: #ececec 2px solid;
-  padding: 2% !important;
-  border-radius: 15px !important;
-  background-color: #ffffff;
-  width: 90%;
-  margin-left: 5% !important;
-  margin-bottom: 3% !important;
+.postForm {
+  margin-left: 32% !important;
+  margin-right: 22% !important;
+  margin-bottom: -22px !important;
+  padding-bottom: 60px;
+  padding-left: 15px;
+  padding-top: 15px;
+  border-radius: 12px;
+  width: 575px;
+  background-color: #afafaf08;
+  border: solid 2px #191d243d !important;
 }
+
+.formthings {
+  padding: 10px;
+}
+
+.addicon {
+  margin-left: 20%;
+  display: inline;
+  float: left;
+}
+
+.Fab {
+  display: inline;
+  float: left;
+  color: white !important;
+  background-color: #00bba7 !important;
+  margin-bottom: 5px !important;
+}
+
+.theIcon {
+  padding-top: 15px;
+  margin-left: 22%;
+  float: left;
+  margin-bottom: 22px !important;
+}
+
+textarea {
+  resize: none;
+  height: 35px;
+  width: 530px;
+  border: solid 2px #191d243d !important;
+  border-radius: 12px;
+  display: block;
+}
+textarea:focus {
+  resize: none;
+  height: 90px;
+  width: 530px;
+  background-color: #00acb511;
+  border: solid 2px #191d243d !important;
+  border-radius: 12px;
+  display: block;
+}
+
+.progress {
+  /* color: #00adb5 !important; */
+  background-color: #afafaf08 !important;
+  margin-top: 25px;
+  margin-bottom: -25px;
+  width: 200px;
+  margin-left: -20px;
+}
+
+.newbuttn3 {
+  /* color: #00adb5 !important; */
+  border: solid 2px #191d243d !important;
+}
+
+.formButtons {
+  /* display: inline; */
+  float: left;
+  margin-top: 8px !important;
+}
+
+#upload {
+  float: left;
+}
+
+.feedpage {
+  clear: both;
+}
+
+.Fab2 {
+  position: fixed !important;
+  bottom: 40px;
+  right: 40px;
+  font-size: 100px;
+  background-color: #00bba7 !important;
+  color: white !important;
+  cursor: pointer;
+  border-radius: 100px;
+  border: none;
+  box-shadow: 0 5px 10px #ccc;
+}
+
+/* posts   */
 
 .postCont {
   margin-left: 20% !important;
   margin: 3%;
-  border: #dddddd 2px solid;
   padding: 2% !important;
   border-radius: 15px !important;
-  background-color: #afafaf13;
   width: 60%;
 }
 
-.mybuttonnn {
-  border-radius: 10px;
-  border: rgb(156, 156, 156) solid !important;
-  padding: 3px;
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+.post {
+  border: #00bba7 2px solid;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  /* background-color: #afafaf08; */
+  width: 90%;
+  margin-left: 5% !important;
+  height: 100%;
 }
 
-.mybuttonnn :hover {
-  border: rgba(255, 99, 71, 0.5) solid !important;
-  background-color: tomato !important;
+.post2 {
+  border: #191d242c 2px solid;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  /* background-color: #afafaf08; */
+  width: 90%;
+  margin-left: 5% !important;
+  height: 100%;
+}
+
+.poster {
+  margin-right: 8px;
+}
+
+.posterImg {
+  margin-top: 10px !important;
+}
+
+.posterName {
+  font-size: larger;
+  margin-top: -5px !important;
+  color: #191d24 !important;
+}
+
+.posterDate {
+  margin-left: 57px;
+  margin-right: 8px;
+  margin-top: -30px;
+  line-height: 32px;
+  vertical-align: center;
+  font-size: smaller;
+  color: #191d24b6 !important;
+}
+
+.posterDate2 {
+  margin-left: 57px;
+  margin-right: 2px;
+  margin-top: -35px;
+  line-height: 32px;
+  vertical-align: center;
+  font-size: smaller;
+  color: #191d24b6 !important;
+}
+
+.postcontent {
+  margin-left: 10%;
+  margin-right: 5%;
+  margin-top: -10px;
+  color: #191d24da !important;
+}
+
+.postImg {
+  margin-bottom: 30px;
+  margin-top: -20px !important;
+}
+
+.likeContainer {
+  float: left;
+  display: inline;
+  margin-left: 35px;
+  margin-top: -10px !important;
 }
 
 .like {
-  float: left;
   margin-left: 8.2% !important;
-  border-radius: 10px;
-  border: rgb(156, 156, 156) solid !important;
-  padding: 3px;
-  padding-left: 10px !important;
-  padding-right: 10px !important;
 }
 
+.likeicon {
+  color: #00bba7 !important;
+}
+
+.likesNumber {
+  margin-top: -35px;
+  margin-left: 55px;
+}
+
+hr {
+  clear: both;
+  margin-top: -10px !important;
+}
+
+/* comments */
+
 .comment {
+  clear: both;
   margin-left: 8% !important;
   margin-right: 8% !important;
   border: #dddddd 2px solid;
-  background-color: #ebebeb !important;
   padding: 2% !important;
   border-radius: 15px !important;
-  background-color: #afafaf13;
+  /* background-color: #d1d1d108 !important; */
   margin-bottom: 5px;
+}
+
+.commentInput {
+  color: #00bba7 !important;
+  width: 63% !important;
+  margin-left: 25px !important;
+  margin-bottom: 10px !important;
+  margin-right: 10px !important;
+}
+
+.newbuttn3 {
+  border: solid 1px #00bba7 !important;
+  margin-top: 12px !important;
 }
 
 .commentForm {
   margin-left: 7% !important;
 }
 
-.poster {
-  float: left;
+.commenterName {
+  margin-left: 45px;
   margin-right: 8px;
-}
-
-.posterDate {
-  margin-right: 8px;
-  line-height: 32px;
-  vertical-align: center;
+  margin-top: -40px;
+  color: #191d24 !important;
 }
 
 .commeentDate {
-  margin-right: 8px;
-
+  font-size: smaller;
   line-height: 25px;
   vertical-align: center;
+  margin-left: 45px;
+  margin-right: 8px;
+  margin-top: -28px;
+  line-height: 32px;
+  vertical-align: center;
+  font-size: smaller;
+  color: #191d24b6 !important;
 }
 
-.postForm {
-  margin-left: 22% !important;
-  margin-bottom: -42px !important;
+.commentContent {
+  margin-left: 10%;
+  margin-right: 5%;
+  color: #191d24da !important;
 }
 
 /* from here on its for the profile page   */
 .postDiv {
   margin-left: 20%;
   margin-right: 20%;
-  border: #dddddd 2px solid;
   padding: 2% !important;
   border-radius: 15px !important;
-  background-color: #afafaf13;
   width: 60%;
   margin-bottom: 10px;
+  margin-top: -52px !important;
+}
+
+.person {
+  margin-left: 25%;
+  margin-right: 25% !important;
+  border-radius: 15px !important;
+  padding: 10px !important;
 }
 .profileName {
   margin-left: 22%;
 }
 .following {
+  margin-top: 20px;
   position: absolute;
-  height: 350px;
+  height: 420px;
   overflow: auto;
-}
-
-.followers {
-  position: absolute;
-  margin-top: 400px;
-  height: 350px;
-  overflow: auto;
-}
-
-.Messenger {
-  position: fixed;
-  margin-top: 200px;
-  left: 80%;
-  top: 0;
+  width: 220px !important;
 }
 
 .Messenger2 {
   /* position: fixed; */
-  margin-top: 200px;
+  margin-left: 22% !important;
+  /* margin-top: 200px; */
   left: 30%;
   top: 0;
 }
@@ -123,6 +291,10 @@
 .Meessages {
   height: 250px;
   overflow: auto;
+}
+
+.targetPost {
+  margin-top: -50px !important;
 }
 
 /* from here on its for the people page   */
@@ -137,24 +309,27 @@
   align-items: center;
   text-align: center;
   margin-right: 15px;
+  margin-bottom: 15px;
   display: inline-block;
+  width: 270px !important;
+  height: 200px;
 }
+
 .peopleCont {
-  margin-left: 20%;
-  margin-right: 20%;
-  border: #dddddd 2px solid;
+  margin-left: 17%;
+  /* margin-right: 20%; */
+  /* border: #dddddd 2px solid; */
   padding: 2% !important;
   border-radius: 15px !important;
-  background-color: #afafaf13;
-  width: 60%;
+  width: 75%;
   margin-bottom: 10px;
 }
+
 .personName {
   text-decoration: none;
-  color: black;
-  font-size: 35px;
+  color: #191d24;
+  font-size: 30px;
   align-items: center;
-  margin-bottom: 15px;
 }
 
 /* from here on its for the groups page   */
@@ -162,9 +337,11 @@
 .groupsRequests {
   position: absolute;
   overflow: auto;
-  height: 350px;
+  height: 450px;
+  width: 250px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
-
 .JoinedGroups {
   position: absolute;
   height: 350px;
@@ -173,12 +350,12 @@
 }
 
 .groupsCont {
-  margin-left: 20%;
+  margin-left: 21%;
   margin-right: 20%;
-  border: #dddddd 2px solid;
+  border: #00bba7 2px solid;
   padding: 2% !important;
   border-radius: 15px !important;
-  background-color: #afafaf13;
+  /* background-color: #afafaf13; */
   width: 60%;
   margin-bottom: 10px;
 }
@@ -194,6 +371,7 @@
   align-items: center;
   text-align: center;
   margin-right: 15px;
+  width: 250px !important;
 }
 
 .groupForm {

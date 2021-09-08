@@ -101,6 +101,9 @@ export class App extends Component {
       socket.emit('getAllGroupPosts', {
         groupID: JSON.parse(currGroupID).groupId,
       });
+      socket.emit('getGroupMembers', {
+        groupID: JSON.parse(currGroupID).groupId,
+      });
     }
 
     socket.on('connect', () => {
@@ -420,11 +423,11 @@ export class App extends Component {
     };
     // console.log(data);
     socket.emit('addFriend', data);
-    
+
     this.getFollowing();
     this.getFollowers();
     socket.on('friendAdded', () => {
-      socket.emit('getFollowing',{ userID: this.state.user.userID });
+      socket.emit('getFollowing', { userID: this.state.user.userID });
       socket.emit('getAllUsers');
       socket.emit('getAllPosts', { userID: this.state.user.userID });
     });
@@ -590,7 +593,12 @@ export class App extends Component {
   render() {
     return (
       <Router>
-        <Header path={this.state.path} logOut={this.logOut} />
+        <Header
+          user={this.state.user}
+          path={this.state.path}
+          logOut={this.logOut}
+          loggedIn={this.state.loggedIn}
+        />
 
         <div>
           <Switch>

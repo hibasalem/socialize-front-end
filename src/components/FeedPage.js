@@ -5,21 +5,20 @@ import Posts from './Posts';
 import FeedPosts from './FeedPosts';
 import './feedPage.css';
 
-export default function FeedPage (props) {
-
-    return (
-      <div className="mainDiv">
+export default function FeedPage(props) {
+  return (
+    <div className="mainDiv">
+      <div>
         <PostForm post={props.post} />
-        <FeedPosts
-          showPosts={props.showPosts}
-          userID={props.userID}
-          like={props.like}
-          comments={props.comments}
-          comment={props.comment}
-          allPosts={props.allPosts}
-        />
       </div>
-    );
-  
+      <FeedPosts
+        showPosts={props.showPosts}
+        userID={props.userID}
+        like={props.like}
+        comments={props.comments}
+        comment={props.comment}
+        allPosts={props.allPosts}
+      />
+    </div>
+  );
 }
-
