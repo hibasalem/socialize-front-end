@@ -33,6 +33,7 @@ export default function Post(props) {
               {new Date(props.post_time).toLocaleString()}
             </p>
           </p>
+
           <p className="postcontent">{props.postContent}</p>
 
           <br />
@@ -61,7 +62,7 @@ export default function Post(props) {
                   onClick={() => setShowComments(!ShowComments)}
                   className="likeicon"
                 />
-              </IconButton>{' '}
+              </IconButton>
             </div>
             <hr />
           </p>
@@ -70,6 +71,8 @@ export default function Post(props) {
             {ShowComments && (
               <div>
                 <CommentForm comment={props.comment} id={props.postID} />
+
+                
                 {props.comments.map((item, index) => {
                   let value;
                   if (props.postID === item.post_id) {

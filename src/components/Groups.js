@@ -37,50 +37,40 @@ export default function Groups(props) {
 
   return (
     <div className="mainDiv">
-      <form
-        className="groupForm form2"
-        onSubmit={(e) => {
-          createGroup(e);
-        }}
-      >
-        <label>Create a group</label>
-        <TextField
-          id="standard-basic"
-          label="Enter Group Name"
-          type="text"
-          required
-          onChange={(e) => {
-            setGroupName(e.target.value);
+      <div className="createGroup">
+        <form
+          className="groupForm"
+          onSubmit={(e) => {
+            createGroup(e);
           }}
-        />
-        {/* <input
+        >
+          {/* <label className="createGroup">Create a group</label> */}
+          <TextField
+            id="standard-basic"
+            label="Enter Group Name"
             type="text"
-            placeholder="Enter Group Name"
+            required
             onChange={(e) => {
-              setGroupName(e.target.value);              
+              setGroupName(e.target.value);
             }}
-          /> */}
-        <TextField
-          id="standard-basic"
-          label="Enter Description"
-          type="text"
-          required
-          onChange={(e) => {
-            setGroupDescription(e.target.value);
-          }}
-        />
-        {/* <input
+          />
+          &nbsp; &nbsp; &nbsp;
+          <TextField
+            id="standard-basic"
+            label="Enter Description"
             type="text"
-            placeholder="Enter Description"
+            required
             onChange={(e) => {
               setGroupDescription(e.target.value);
             }}
-          /> */}
-        <Button type="submit" variant="contained">
-          Create Group
-        </Button>
-        {/* <input type="submit" /> */}
-      </form>
+          />
+          &nbsp; &nbsp; &nbsp;
+          <Button type="submit" className="newbuttn3" variant="outlined">
+            Create Group
+          </Button>
+        </form>
+      </div>
+
       <div className="groupsRequests">
         <h4>
           <b>Groups requests</b>
@@ -159,9 +149,11 @@ export default function Groups(props) {
                       onClick={() => {
                         props.handleViewgroup(item.group_id);
                       }}
+                      className="links"
                     >
-                      {' '}
-                      <Button variant="contained">View Group</Button>
+                      <Button className="newbuttn3" variant="outlined">
+                        View Group
+                      </Button>
                     </Link>
                   </div>
                 );

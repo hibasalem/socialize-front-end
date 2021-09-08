@@ -21,7 +21,8 @@ export default function Group(props) {
 
       {!disableIt && (
         <Button
-          variant="contained"
+          className="newbuttn3"
+          variant="outlined"
           onClick={() => handleClicked(props.item.id, props.item.owner_id)}
         >
           Join Group

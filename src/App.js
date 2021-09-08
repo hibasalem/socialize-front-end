@@ -25,7 +25,8 @@ import {
 } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
-const SERVER_URL = 'https://socialize401.herokuapp.com/';
+// const SERVER_URL = 'https://socialize401.herokuapp.com/';
+const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
 export class App extends Component {
@@ -80,6 +81,7 @@ export class App extends Component {
       showGroupComments: false,
       followingIds: [],
       videoCallData: null,
+      messageReceiverName: '',
     };
   }
 
@@ -431,10 +433,11 @@ export class App extends Component {
     });
   };
 
-  handleShowMessenger = (reciverId) => {
+  handleShowMessenger = (reciverId, firstName, lastName) => {
     this.setState({
       showMessenger: true,
       messageReceiverId: reciverId,
+      messageReceiverName: `${firstName} ${lastName}`,
     });
 
     let room;
@@ -472,6 +475,7 @@ export class App extends Component {
       messageRoomId: room,
       firstName: this.state.user.firstname,
       lastName: this.state.user.lastname,
+      image_url: this.state.user.image_url,
     };
     console.log('message payload', payload);
     socket.emit('sendMessage', payload);
@@ -727,6 +731,7 @@ export class App extends Component {
                 videoCallData={this.state.videoCallData}
                 handleSendMessage={this.handleSendMessage}
                 user={this.state.user}
+                messageReceiverName={this.state.messageReceiverName}
               />
             </Route>
           </Switch>

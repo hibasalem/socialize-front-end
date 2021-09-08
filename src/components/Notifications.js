@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { Button } from '@material-ui/core';
 import { PhoneDisabled } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
+import PhoneCallbackIcon from '@material-ui/icons/PhoneCallback';
+import CallEndIcon from '@material-ui/icons/CallEnd';
 
 import { SocketContext } from '../context';
 
@@ -60,18 +62,31 @@ const Notifications = (props) => {
         call.isReceivingCall &&
         !callAccepted && (
           <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <h1>{call.name} is calling:</h1>
-            <button onClick={answerCall}>Answer</button>
+            <h4>{call.name} is calling:</h4>
+            <Button
+              variant="contained"
+              color="default"
+              className="newbuttn3"
+              startIcon={<PhoneCallbackIcon />}
+              variant="outlined"
+              onClick={() => answerCall()}
+            >
+              Answer
+            </Button>
           </div>
         )}
-
+      {console.log('iam here ')}
       {callAccepted && !callEnded && (
-        <button
-          startIcon={<PhoneDisabled fontSize="large" />}
+        <Button
+          variant="contained"
+          color="default"
+          className="newbuttn3"
+          startIcon={<CallEndIcon />}
+          variant="outlined"
           onClick={() => handelClick()}
         >
           Hang Up
-        </button>
+        </Button>
       )}
     </>
   );

@@ -44,7 +44,7 @@ textarea {
   border-radius: 12px;
   display: block;
 }
-textarea:focus {
+textarea:hover {
   resize: none;
   height: 90px;
   width: 530px;
@@ -289,8 +289,12 @@ hr {
 }
 
 .Meessages {
-  height: 250px;
+  height: 400px;
   overflow: auto;
+  width: 500px !important;
+  border: #00bba7 2px solid;
+  padding-right: 5% !important;
+  padding-left: 5% !important;
 }
 
 .targetPost {
@@ -374,8 +378,20 @@ hr {
   width: 250px !important;
 }
 
+.createGroup {
+  /* background-color: #afafaf08;
+  border: solid 2px #191d243d !important;
+  margin-left: 25% !important;
+  margin-right: 22% !important;
+  margin-bottom: 15px !important;
+  padding-bottom: 20px;
+  padding-top: 15px;
+  border-radius: 12px; */
+  /* width: 650px; */
+}
+
 .groupForm {
-  margin-left: 22% !important;
+  margin-left: 25% !important;
   margin-bottom: 50px !important;
 }
 
@@ -392,6 +408,7 @@ hr {
   position: absolute;
   overflow: auto;
   height: 350px;
+  margin-top: 160px !important;
 }
 
 .profileName2 {
@@ -400,7 +417,36 @@ hr {
   vertical-align: center;
 }
 
+.profileName3 {
+  /* margin-left: 45%; */
+  position: absolute;
+  line-height: 30px;
+  margin-bottom: -15px;
+  vertical-align: center;
+  margin-top: 50px !important;
+}
+
 img {
   border-radius: 12px !important;
   border: #dddddd 2px solid;
+}
+
+.links {
+  text-decoration: none;
+}
+
+/* main messenger */
+
+.messanger {
+  margin-top: 50px !important;
+  margin-left: 6% !important;
+  margin-right: 6% !important;
+}
+
+.time {
+  margin-left: 70% !important;
+  /* display: inline !important; */
+  margin-top: -28px !important;
+  color: #191d2483;
+  font-size: small;
 }

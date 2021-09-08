@@ -24,35 +24,8 @@ export default function MainMessnger(props) {
     props.getFollowing();
   }, []);
 
-  // useEffect(() => {
-  //   if(props.allFollowing.length>0){
-  //     followingIDs=[];
-  //     setPeople(props.allFollowing);
-  //     setShowPeople(true);
-  //     props.allFollowing.forEach((item)=>{
-  //       followingIDs.push(item.receiverid);
-  //     });
-
-  //   }
-
-  // }, [props.allFollowing]);
-
-  // useEffect(() => {
-  //   console.log(props.allFollowers.length);
-  //   if(props.allFollowers.length>0){
-  //     notRepeated=[];
-  //     props.allFollowers.forEach((item)=>{
-  //       if(!followingIDs.includes(item.senderid)){
-  //         notRepeated.push(item);
-  //       }
-  //     });
-  //     const temp = [...people,...notRepeated]
-  //     setPeople(temp);
-  //   }
-  // }, [props.allFollowers]);
-
   return (
-    <div>
+    <div className="messanger">
       <br />
       <br />
       <br />
@@ -67,7 +40,13 @@ export default function MainMessnger(props) {
               <>
                 <p
                   key={idx}
-                  onClick={() => props.handleShowMessenger(item.receiverid)}
+                  onClick={() =>
+                    props.handleShowMessenger(
+                      item.receiverid,
+                      item.firstname,
+                      item.lastname
+                    )
+                  }
                 >
                   <Image
                     src={item.image_url}
@@ -86,11 +65,8 @@ export default function MainMessnger(props) {
       <ContextProvider videoCallData={props.videoCallData} user={props.user}>
         {props.showMessenger && (
           <div className="Messenger2">
-            <h2>Messenger</h2>
-            <Notifications
-              user={props.user}
-              handleHideVideoCall={handleHideVideoCall}
-            />
+            <h2>{props.messageReceiverName}</h2>
+            <br />
             <Messenger
               user={props.user}
               handleSendMessage={props.handleSendMessage}
@@ -99,6 +75,10 @@ export default function MainMessnger(props) {
               videoCallData={props.videoCallData}
               handleShowVideoCall={handleShowVideoCall}
               showVideoCall={showVideoCall}
+            />
+            <Notifications
+              user={props.user}
+              handleHideVideoCall={handleHideVideoCall}
             />
           </div>
         )}
