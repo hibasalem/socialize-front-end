@@ -3,7 +3,9 @@ import { io } from 'socket.io-client';
 import Peer from 'simple-peer';
 
 const SocketContext = createContext();
-const SERVER_URL = 'localhost:5000/';
+// const SERVER_URL = 'localhost:5000/';
+
+const SERVER_URL = 'https://socialize401.herokuapp.com/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
 const ContextProvider = ({ children, user, videoCallData }) => {
