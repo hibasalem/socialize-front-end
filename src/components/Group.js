@@ -38,7 +38,7 @@ export default function Group(props) {
       )}
 
       {disableIt && (
-        <Button variant="contained" disabled>
+        <Button className="newbuttn3" variant="outlined" disabled>
           Request Sent
         </Button>
         // <button className="mybuttonnn" disabled>

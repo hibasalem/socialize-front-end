@@ -12,8 +12,8 @@ export default function Message(props) {
               <Image
                 src={item.image_url}
                 roundedCircle
-                height="30px"
-                width="30px"
+                height="40px"
+                width="40px"
               />
               &nbsp; &nbsp;
               {/* <b>{item.sender_name}</b> */}
