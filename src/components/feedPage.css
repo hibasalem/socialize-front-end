@@ -104,7 +104,13 @@ textarea:hover {
   border-radius: 15px !important;
   width: 60%;
 }
-
+.postCont2 {
+  margin-left: 35% !important;
+  margin: 3%;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  width: 60%;
+}
 .post {
   border: #00bba7 2px solid;
   padding: 2% !important;
@@ -262,7 +268,24 @@ hr {
   margin-bottom: 10px;
   margin-top: -52px !important;
 }
-
+.postDiv2 {
+  margin-left: 41%;
+  margin-right: 20%;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  width: 60%;
+  margin-bottom: 10px;
+  margin-top: -52px !important;
+}
+.postDiv3 {
+  margin-left: 41%;
+  margin-right: 20%;
+  padding: 2% !important;
+  border-radius: 15px !important;
+  width: 60%;
+  margin-bottom: 10px;
+  margin-top: 0px !important;
+}
 .person {
   margin-left: 25%;
   margin-right: 25% !important;
@@ -449,4 +472,8 @@ img {
   margin-top: -28px !important;
   color: #191d2483;
   font-size: small;
+}
+.notLoggedIn {
+  margin-top: 25%;
+  margin-left: 45%;
 }

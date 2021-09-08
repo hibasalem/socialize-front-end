@@ -27,6 +27,9 @@ export default function Posts(props) {
             </div>
           );
         })}
+        {props.allPosts.length===0&&<div>
+          <p className="postCont2">No Posts to Show. Create a Post or Follow Someone</p>
+          </div>}
     </div>
   );
 }
