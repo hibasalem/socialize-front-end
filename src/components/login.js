@@ -39,6 +39,7 @@ export default function Login(props) {
           },
         }
       );
+      
       if (!(result instanceof Error)) {
         props.loggedInFunction(result.data);
       }

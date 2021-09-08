@@ -5,7 +5,7 @@ import Peer from 'simple-peer';
 const SocketContext = createContext();
 const SERVER_URL = 'localhost:5000/';
 
-const SERVER_URL = 'https://socialize401.herokuapp.com/';
+// const SERVER_URL = 'https://socialize401.herokuapp.com/';
 // const SERVER_URL = 'localhost:5000/';
 const socket = io(SERVER_URL, { transports: ['websocket'] });
 
