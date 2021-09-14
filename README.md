@@ -53,5 +53,5 @@ this project is the final project for the Advanced Software Development in Full-
 
 
 ## versoin 
-2.0.0 sept 2021 : frontend using react.js functional commponents ,  user interface , video calls , adding images 
+2.0.0 sept 2021 : frontend using react.js functional components ,  user interface , video calls , adding images 
 
