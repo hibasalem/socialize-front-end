@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# Socialize
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+this project is the final project for the Advanced Software Development in Full-Stack JavaScript (401) course
 
-## Available Scripts
+## Project description
 
-In the project directory, you can run:
+* A real time social media web app , in which a user can connect with his friends, chat with them, follow them , or create groups with them and more
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+[Deployment](https://socialize401.netlify.app/)   
+[Backend repo](https://github.com/socialize-401/socialize-back-end)   
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+![demo](./demo.jpg)
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Team members
 
-### `npm run build`
+- Hiba Salem
+- Amro Al Barham
+- Yazan Tafesh
+- Saeed Awwad
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Main Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Authentication and Authorization
+- Email verification
+- Cookies
+- Post , Comment , Like
+- Follow users
+- Messages and video calls
+- Create and join groups
+- Notifications
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Resources and Technologies
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+* Built with React to communicate with a Node.js Express server, utilizing Socket.io with PostgreSQL in addition to pure CSS and Material-UI components.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Front end
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  - React
+  - React-Cookies
+  - React-Notifications
+  - Material-UI
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Backend
 
-## Learn More
+  - Node.js
+  - PostgreSQL
+  - Socket.io
+  - Express
+  - Firebase
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## versoin 
+2.0.0 sept 2021 : frontend using react.js functional commponents ,  user interface , video calls , adding images 
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
